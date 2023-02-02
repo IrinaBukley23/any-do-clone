@@ -1,6 +1,7 @@
 import { Button, Grid, TextField } from '@mui/material'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
+import styles from './form.module.scss'
 
 const validationSchem = yup.object({
   email: yup.string().email('Enter a valid email').required('Email is required'),
@@ -20,10 +21,17 @@ export const LoginView = () => {
     },
   })
   return (
-    <form onSubmit={formik.handleSubmit}>
+    <form onSubmit={formik.handleSubmit} className={styles.form__content}>
       <Grid container spacing={2}>
         <Grid item xs={12}>
-          <TextField id='email' name='email' label='Логин' fullWidth value={formik.values.email} />
+          <TextField
+            id='email'
+            name='email'
+            label='Логин'
+            fullWidth
+            onChange={formik.handleChange}
+            value={formik.values.email}
+          />
         </Grid>
         <Grid item xs={12}>
           <TextField

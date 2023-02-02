@@ -1,6 +1,7 @@
 import { Button, Grid, TextField } from '@mui/material'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
+import styles from './form.module.scss'
 
 const validationSchem = yup.object({
   name: yup
@@ -11,10 +12,8 @@ const validationSchem = yup.object({
 
   password: yup
     .string()
-
     .matches(/[0-9]/, 'Password must contain at least one number')
     .matches(/[A-ZА-Я]/, 'Password must contain at least one uppercase letter')
-
     .min(8, 'Password should be of minimum 8 characters length')
     .matches(
       /^(?=.*[a-zа-я])(?=.*[A-ZА-Я])(?=.*\d)(?=.*[^\da-zA-Zа-яА-Я\s])(?!.*\s).{8,}$/,
@@ -41,7 +40,7 @@ export const RegistrationView = () => {
     },
   })
   return (
-    <form onSubmit={formik.handleSubmit}>
+    <form onSubmit={formik.handleSubmit} className={styles.form__content}>
       <Grid container spacing={2}>
         <Grid item xs={12}>
           <TextField
@@ -64,7 +63,7 @@ export const RegistrationView = () => {
             value={formik.values.email}
             onChange={formik.handleChange}
             error={formik.touched.email && Boolean(formik.errors.email)}
-            helperText={formik.touched.email && formik.errors.email}
+            helperText={formik.values.email && formik.errors.email}
           />
         </Grid>
         <Grid item xs={12}>
