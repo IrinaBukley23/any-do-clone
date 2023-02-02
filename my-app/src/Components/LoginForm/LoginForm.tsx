@@ -1,29 +1,27 @@
 import { Tab, Tabs } from '@mui/material'
-import { SyntheticEvent, useState } from 'react'
+import React, { SyntheticEvent, useState } from 'react'
+import { typeForm } from '../../utils/types'
 import { DialogModal } from '../UI/DialogModal'
 import { LoginView } from './LoginView'
 import { RegistrationView } from './RegistrationView'
 
 interface LoginProps {
   onClose: () => void
+  onChange: (typeForm: typeForm) => void
   isOpen: boolean
-}
-enum typeForm {
-  login = 'login',
-  registr = 'registration',
+  kindForm: typeForm
 }
 
-export const LoginForm = ({ onClose, isOpen }: LoginProps) => {
-  const [kindForm, setKindForm] = useState(typeForm.login)
+export const LoginForm = ({ onClose, onChange, isOpen, kindForm = typeForm.login }: LoginProps) => {
   const handleChange = (e: SyntheticEvent, newValue: typeForm) => {
-    setKindForm(newValue)
+    onChange(newValue)
   }
 
   return (
     <DialogModal onClose={onClose} isOpen={isOpen}>
       <Tabs onChange={handleChange} value={kindForm}>
-        <Tab label='Login' value={typeForm.login} />
-        <Tab label='Registration' value={typeForm.registr} />
+        <Tab label='Войти' value={typeForm.login} />
+        <Tab label='Зарегистрироваться' value={typeForm.registr} />
       </Tabs>
       {kindForm === 'login' ? <LoginView /> : <RegistrationView />}
     </DialogModal>

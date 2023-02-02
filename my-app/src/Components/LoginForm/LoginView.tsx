@@ -23,13 +23,13 @@ export const LoginView = () => {
     <form onSubmit={formik.handleSubmit}>
       <Grid container spacing={2}>
         <Grid item xs={12}>
-          <TextField id='email' name='email' label='login' fullWidth value={formik.values.email} />
+          <TextField id='email' name='email' label='Логин' fullWidth value={formik.values.email} />
         </Grid>
         <Grid item xs={12}>
           <TextField
             id='password'
             name='password'
-            label='Password'
+            label='Пароль'
             fullWidth
             value={formik.values.password}
             onChange={formik.handleChange}

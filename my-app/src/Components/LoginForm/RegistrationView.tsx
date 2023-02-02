@@ -47,7 +47,7 @@ export const RegistrationView = () => {
           <TextField
             id='name'
             name='name'
-            label='Name'
+            label='Имя'
             fullWidth
             value={formik.values.name}
             onChange={formik.handleChange}
@@ -71,7 +71,7 @@ export const RegistrationView = () => {
           <TextField
             id='password'
             name='password'
-            label='Password'
+            label='Пароль'
             fullWidth
             value={formik.values.password}
             onChange={formik.handleChange}
@@ -84,7 +84,7 @@ export const RegistrationView = () => {
           <TextField
             id='passwordConfirm'
             name='passwordConfirm'
-            label='Confirm password'
+            label='Подтвердите пароль'
             fullWidth
             value={formik.values.passwordConfirm}
             onChange={formik.handleChange}
