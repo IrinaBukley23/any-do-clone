@@ -23,6 +23,7 @@ export const DialogModal = ({ onClose, isOpen, children }: PropsDialogModal) => 
             right: 8,
             top: 8,
             color: (theme) => theme.palette.grey[500],
+            zIndex: 200,
           }}
         >
           <CloseIcon />
