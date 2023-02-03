@@ -30,7 +30,10 @@ export const LoginView = () => {
             label='Логин'
             fullWidth
             onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
             value={formik.values.email}
+            error={formik.touched.email && Boolean(formik.errors.email)}
+            helperText={formik.errors.email}
           />
         </Grid>
         <Grid item xs={12}>
@@ -38,12 +41,13 @@ export const LoginView = () => {
             id='password'
             name='password'
             label='Пароль'
+            type='password'
             fullWidth
             value={formik.values.password}
             onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
             error={formik.touched.password && Boolean(formik.errors.password)}
-            type='password'
-            helperText={formik.touched.password && formik.errors.password}
+            helperText={formik.errors.password}
           />
         </Grid>
         <Grid item>

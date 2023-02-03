@@ -6,6 +6,7 @@ import styles from './form.module.scss'
 const validationSchem = yup.object({
   name: yup
     .string()
+    .typeError('Name is string')
     .min(3, 'Name should be of minimum 3 characters length')
     .required('Name is required'),
   email: yup.string().email('Enter a valid email').required('Email is required'),
@@ -23,9 +24,9 @@ const validationSchem = yup.object({
   passwordConfirm: yup
     .string()
     .oneOf([yup.ref('password'), null], 'Password must much')
-
     .required('Confirm password is required'),
 })
+
 export const RegistrationView = () => {
   const formik = useFormik({
     initialValues: {
@@ -50,8 +51,9 @@ export const RegistrationView = () => {
             fullWidth
             value={formik.values.name}
             onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
             error={formik.touched.name && Boolean(formik.errors.name)}
-            helperText={formik.values.name && formik.errors.name}
+            helperText={formik.errors.name}
           />
         </Grid>
         <Grid item xs={12}>
@@ -62,8 +64,9 @@ export const RegistrationView = () => {
             fullWidth
             value={formik.values.email}
             onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
             error={formik.touched.email && Boolean(formik.errors.email)}
-            helperText={formik.values.email && formik.errors.email}
+            helperText={formik.errors.email}
           />
         </Grid>
         <Grid item xs={12}>
@@ -74,9 +77,10 @@ export const RegistrationView = () => {
             fullWidth
             value={formik.values.password}
             onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
             error={formik.touched.password && Boolean(formik.errors.password)}
             type='password'
-            helperText={formik.values.password && formik.errors.password}
+            helperText={formik.errors.password}
           />
         </Grid>
         <Grid item xs={12}>
@@ -87,9 +91,10 @@ export const RegistrationView = () => {
             fullWidth
             value={formik.values.passwordConfirm}
             onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
             error={formik.touched.passwordConfirm && Boolean(formik.errors.passwordConfirm)}
             type='password'
-            helperText={formik.values.passwordConfirm && formik.errors.passwordConfirm}
+            helperText={formik.errors.passwordConfirm}
           />
         </Grid>
         <Grid item>
