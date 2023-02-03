@@ -1,6 +1,6 @@
 // import './tasksBlock.scss';
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const NotFoundPage = () => {
     const navigate = useNavigate();

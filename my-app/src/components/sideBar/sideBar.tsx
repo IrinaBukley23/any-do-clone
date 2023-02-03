@@ -22,7 +22,7 @@ const SideBar = () => {
           <Typography>Мои проекты</Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <NavLink to="/" className={({isActive}) => isActive ? 'active-link' : ''}>
+          <NavLink to="/main" className={({isActive}) => isActive ? 'active-link' : ''}>
             <Typography>Все проекты</Typography>
           </NavLink>
 
