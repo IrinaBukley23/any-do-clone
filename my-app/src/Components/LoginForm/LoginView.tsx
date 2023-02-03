@@ -11,13 +11,17 @@ const validationSchem = yup.object({
     .required('Password is required'),
 })
 
-export const LoginView = () => {
+interface ViewProps {
+  onClose: () => void
+}
+
+export const LoginView = ({ onClose }: ViewProps) => {
   const formik = useFormik({
     initialValues: { email: '', password: '' },
     validationSchema: validationSchem,
     onSubmit: (values) => {
       console.log({ email: values.email, password: values.password })
-      // loginstore.login({ email: values.email, password: values.password })
+      onClose()
     },
   })
   return (

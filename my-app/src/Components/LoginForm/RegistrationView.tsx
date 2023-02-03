@@ -26,8 +26,11 @@ const validationSchem = yup.object({
     .oneOf([yup.ref('password'), null], 'Password must much')
     .required('Confirm password is required'),
 })
+interface ViewProps {
+  onClose: () => void
+}
 
-export const RegistrationView = () => {
+export const RegistrationView = ({ onClose }: ViewProps) => {
   const formik = useFormik({
     initialValues: {
       name: '',
@@ -37,7 +40,8 @@ export const RegistrationView = () => {
     },
     validationSchema: validationSchem,
     onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2))
+      console.log({ name: values.name, email: values.email, password: values.password })
+      onClose()
     },
   })
   return (
