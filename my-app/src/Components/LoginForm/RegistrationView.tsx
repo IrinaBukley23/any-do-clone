@@ -6,25 +6,27 @@ import styles from './form.module.scss'
 const validationSchem = yup.object({
   name: yup
     .string()
-    .typeError('Name is string')
-    .min(3, 'Name should be of minimum 3 characters length')
-    .required('Name is required'),
-  email: yup.string().email('Enter a valid email').required('Email is required'),
+    .min(3, 'Имя должно быть минимум 3 символа') // Name should be of minimum 3 characters length
+    .required('Имя обязательно для заполнения'), // Name is required
+  email: yup
+    .string()
+    .email('Введите корректный e-mail')
+    .required('Email обязателен для заполнения'), // Enter a valid email
 
   password: yup
     .string()
-    .matches(/[0-9]/, 'Password must contain at least one number')
-    .matches(/[A-ZА-Я]/, 'Password must contain at least one uppercase letter')
-    .min(8, 'Password should be of minimum 8 characters length')
+    .matches(/[0-9]/, 'Пароль должен содержать минимум одну цифру') // Password must contain at least one number
+    .matches(/[A-ZА-Я]/, 'Пароль должен содержать хотя бы одну заглавную букву') // Password must contain at least one uppercase letter
+    .min(8, 'Минимальная длина пароля 8 символов') // Password should be of minimum 8 characters length
     .matches(
       /^(?=.*[a-zа-я])(?=.*[A-ZА-Я])(?=.*\d)(?=.*[^\da-zA-Zа-яА-Я\s])(?!.*\s).{8,}$/,
-      'Password must contain at least one special symbol',
-    )
-    .required('Password is required'),
+      'Пароль должен содержать хотя бы один спец символ',
+    ) // Password must contain at least one special symbol
+    .required('Поле обязательно для заполнения'), // Password is required
   passwordConfirm: yup
     .string()
-    .oneOf([yup.ref('password'), null], 'Password must much')
-    .required('Confirm password is required'),
+    .oneOf([yup.ref('password'), null], 'Пароли должны совпадать') // Password must much
+    .required('Требуется подтверждение пароля'), // Confirm password is required
 })
 interface ViewProps {
   onClose: () => void

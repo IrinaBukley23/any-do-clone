@@ -4,11 +4,14 @@ import * as yup from 'yup'
 import styles from './form.module.scss'
 
 const validationSchem = yup.object({
-  email: yup.string().email('Enter a valid email').required('Email is required'),
+  email: yup
+    .string()
+    .email('В качестве логина используется email. Введите корректый email')
+    .required('Поле обязательно для заполнения'), // Enter a valid email Email is required
   password: yup
     .string()
-    .min(8, 'Password should be of minimum 8 characters length')
-    .required('Password is required'),
+    .min(8, 'Длина пароля должна быть минимум 8 символов ') // Password should be of minimum 8 characters length
+    .required('Пароль обязателен для заполнения'), // Password is required
 })
 
 interface ViewProps {
