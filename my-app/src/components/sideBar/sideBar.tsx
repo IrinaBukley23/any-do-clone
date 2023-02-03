@@ -7,6 +7,7 @@ import {
     AccordionDetails 
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { Link } from 'react-router-dom';
 
 const SideBar = () => {
 
@@ -18,13 +19,18 @@ const SideBar = () => {
           aria-controls="panel1a-content"
           id="panel1a-header"
         >
-          <Typography>Accordion 1</Typography>
+          <Typography>Мои проекты</Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <Typography>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-            malesuada lacus ex, sit amet blandit leo lobortis eget.
-          </Typography>
+          <Link to="/">
+            <Typography>Все проекты</Typography>
+          </Link>
+
+          <Typography>Здоровье</Typography>
+          <Typography>Бизнес</Typography>
+          <Typography>Семья</Typography>
+          <Typography>Путешествия</Typography>
+          <Typography>Хобби</Typography> 
         </AccordionDetails>
       </Accordion>
       <Accordion>
@@ -33,13 +39,12 @@ const SideBar = () => {
           aria-controls="panel2a-content"
           id="panel2a-header"
         >
-          <Typography>Accordion 2</Typography>
-        </AccordionSummary>
+          <Typography>Мои доски</Typography>
+          </AccordionSummary>
         <AccordionDetails>
-          <Typography>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-            malesuada lacus ex, sit amet blandit leo lobortis eget.
-          </Typography>
+          <Link to="/board">          
+            <Typography>Мои доски</Typography>
+          </Link>
         </AccordionDetails>
       </Accordion>
     </div>

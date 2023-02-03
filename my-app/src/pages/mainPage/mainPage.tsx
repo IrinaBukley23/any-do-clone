@@ -6,7 +6,6 @@ import TasksBlock from '../../components/tasksBlock/tasksBlock';
 const MainPage = () => {
     return (
         <div className="main">
-            <SideBar />
             <TasksBlock />
         </div>
     )
