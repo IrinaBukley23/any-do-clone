@@ -1,12 +1,15 @@
 // import './tasksBlock.scss';
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const NotFoundPage = () => {
+    const navigate = useNavigate();
+
+    const goBack = () => navigate(-1);
     return (
         <>
             <h1 className="board">NotFoundPage</h1>
-            <Link to="/">back to main page</Link>
+            <a href='##' onClick={goBack}>back to main page</a>
         </>
     )
 }

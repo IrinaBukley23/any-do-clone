@@ -7,7 +7,7 @@ import {
     AccordionDetails 
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 const SideBar = () => {
 
@@ -22,9 +22,9 @@ const SideBar = () => {
           <Typography>Мои проекты</Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <Link to="/">
+          <NavLink to="/" className={({isActive}) => isActive ? 'active-link' : ''}>
             <Typography>Все проекты</Typography>
-          </Link>
+          </NavLink>
 
           <Typography>Здоровье</Typography>
           <Typography>Бизнес</Typography>
@@ -42,9 +42,9 @@ const SideBar = () => {
           <Typography>Мои доски</Typography>
           </AccordionSummary>
         <AccordionDetails>
-          <Link to="/board">          
+          <NavLink to="/board" className={({isActive}) => isActive ? 'active-link' : ''}>          
             <Typography>Мои доски</Typography>
-          </Link>
+          </NavLink>
         </AccordionDetails>
       </Accordion>
     </div>
