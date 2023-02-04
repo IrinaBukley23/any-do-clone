@@ -1,9 +1,9 @@
 import { Tab, Tabs } from '@mui/material'
-import React, { SyntheticEvent, useState } from 'react'
-import { typeForm } from '../../utils/types'
-import { DialogModal } from '../UI/DialogModal'
-import { LoginView } from './LoginView'
-import { RegistrationView } from './RegistrationView'
+import React, { SyntheticEvent, useState } from 'react';
+import { typeForm } from '../../utils/types';
+import { DialogModal } from '../UI/DialogModal';
+import { LoginView } from './LoginView';
+import { RegistrationView } from './RegistrationView';
 
 interface LoginProps {
   onClose: () => void

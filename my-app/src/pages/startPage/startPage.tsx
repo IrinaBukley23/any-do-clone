@@ -8,7 +8,7 @@ import vlada from '../../assets/team/vlada.jpg'
 import polina from '../../assets/team/polina.jpg'
 
 import './startPage.scss'
-import { LoginForm } from '../../Components/LoginForm/LoginForm'
+import { LoginForm } from '../../components/LoginForm/LoginForm';
 import { typeForm } from '../../utils/types'
 
 const StartPage = () => {
