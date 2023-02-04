@@ -1,44 +1,47 @@
-import './sideBar.scss';
-import React, {useState} from 'react';
-import { 
-    Accordion, 
-    AccordionSummary, 
-    Typography, 
-    AccordionDetails 
-} from '@mui/material';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { NavLink } from 'react-router-dom';
-import Calendar from 'react-calendar'
-import 'react-calendar/dist/Calendar.css';
+import './sideBar.scss'
+import 'moment/locale/ru'
+import { useState } from 'react'
+import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment'
+import { Accordion, AccordionSummary, Typography, AccordionDetails } from '@mui/material'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import { NavLink } from 'react-router-dom'
+import { StaticDatePicker } from '@mui/x-date-pickers/StaticDatePicker'
 import moment from 'moment'
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
+import TextField from '@mui/material/TextField'
 
 const SideBar = () => {
-
   const [dateState, setDateState] = useState(new Date())
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const changeDate = (e: any) => {
-    setDateState(e)
+
+  const changeDate = (e: Date | null) => {
+    if (e) setDateState(e)
   }
   console.log(moment(dateState))
 
   return (
-    <div className="sidebar">
-      <Calendar 
-        value={dateState}
-        onChange={changeDate}
-      />
-      
-      <p>Сегодня: <b> {moment(dateState).format('Do MMMM YYYY')}</b></p>
+    <div className='sidebar'>
+      <LocalizationProvider dateAdapter={AdapterMoment} adapterLocale='ru'>
+        <StaticDatePicker
+          displayStaticWrapperAs='desktop'
+          value={dateState}
+          onChange={changeDate}
+          renderInput={(params) => <TextField {...params} />}
+        />
+      </LocalizationProvider>
+
+      <p>
+        Дата: <b> {moment(dateState).format('Do MMMM YYYY')}</b>
+      </p>
       <Accordion>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel1a-content"
-          id="panel1a-header"
+          aria-controls='panel1a-content'
+          id='panel1a-header'
         >
           <Typography>Мои проекты</Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <NavLink to="/main" className={({isActive}) => isActive ? 'active-link' : ''}>
+          <NavLink to='/main' className={({ isActive }) => (isActive ? 'active-link' : '')}>
             <Typography>Все проекты</Typography>
           </NavLink>
 
@@ -46,25 +49,25 @@ const SideBar = () => {
           <Typography>Бизнес</Typography>
           <Typography>Семья</Typography>
           <Typography>Путешествия</Typography>
-          <Typography>Хобби</Typography> 
+          <Typography>Хобби</Typography>
         </AccordionDetails>
       </Accordion>
       <Accordion>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel2a-content"
-          id="panel2a-header"
+          aria-controls='panel2a-content'
+          id='panel2a-header'
         >
           <Typography>Мои доски</Typography>
-          </AccordionSummary>
+        </AccordionSummary>
         <AccordionDetails>
-          <NavLink to="/board" className={({isActive}) => isActive ? 'active-link' : ''}>          
+          <NavLink to='/board' className={({ isActive }) => (isActive ? 'active-link' : '')}>
             <Typography>Мои доски</Typography>
           </NavLink>
         </AccordionDetails>
       </Accordion>
     </div>
-  );
+  )
 }
 
-export default SideBar;
+export default SideBar

@@ -4,7 +4,7 @@ import { Tab, Tabs } from '@mui/material'
 import { typeForm } from '../../utils/types'
 import { DialogModal } from '../UI/DialogModal'
 import { LoginView } from './LoginView'
-import React, { SyntheticEvent, useState } from 'react'
+import { SyntheticEvent } from 'react'
 import { RegistrationView } from './RegistrationView'
 
 interface LoginProps {
