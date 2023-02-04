@@ -1,5 +1,6 @@
 import { Button, Grid, TextField } from '@mui/material'
 import { useFormik } from 'formik'
+import { Link } from 'react-router-dom'
 import * as yup from 'yup'
 import styles from './form.module.scss'
 
@@ -26,7 +27,8 @@ export const LoginView = ({ onClose }: ViewProps) => {
       console.log({ email: values.email, password: values.password })
       onClose()
     },
-  })
+  });
+  const isRedirect = formik.isValid ? '/main' : '/';
   return (
     <form onSubmit={formik.handleSubmit} className={styles.form__content}>
       <Grid container spacing={2}>
@@ -58,9 +60,9 @@ export const LoginView = ({ onClose }: ViewProps) => {
           />
         </Grid>
         <Grid item>
-          <Button color='primary' variant='contained' fullWidth type='submit'>
-            Login
-          </Button>
+            <Button color='primary' variant='contained' fullWidth type='submit'>
+              <Link to={isRedirect}>Login</Link>
+            </Button>
         </Grid>
       </Grid>
     </form>

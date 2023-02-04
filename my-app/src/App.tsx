@@ -1,19 +1,30 @@
-import React from 'react'
-import './App.css'
-import { Avatar } from '@mui/material'
-// import { Avatar, Button } from '@mui/material';
-import StartPage from './pages/startPage/startPage'
-import { Provider } from 'react-redux'
-import setupStore from './store/store'
+import React from 'react';
+import './App.css';
+import StartPage from './pages/startPage/startPage';
+import { Provider } from 'react-redux';
+import setupStore from './store/store';
+import { Routes, Route } from 'react-router-dom';
+import MainPage from './pages/mainPage/mainPage';
+import NotFoundPage from './pages/notFoundPage/notFoundPage';
+import BoardPage from './pages/boardPage/boardPage';
+import Layout from './components/Layout/Layout';
+
+// import { LoginForm } from './components/LoginForm/LoginForm';
 
 function App() {
   // const { user } = useSelector((state: RootState) => state.loginReducer)
   const store = setupStore()
   return (
     <Provider store={store}>
-      <div className='App'>
-        <Avatar alt='Remy Sharp' src='/static/images/avatar/1.jpg' color='secondary' />
-        <StartPage />
+      <div className="App">
+        <Routes>
+          <Route index element={<StartPage />} />
+          <Route path="/" element={<Layout />}>
+            <Route path='main' element={<MainPage /> } /> 
+            <Route path="board" element={<BoardPage />} />
+            <Route path="*" element={<NotFoundPage />} />
+          </Route>
+        </Routes>
       </div>
     </Provider>
   )
