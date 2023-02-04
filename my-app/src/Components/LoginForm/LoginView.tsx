@@ -39,7 +39,7 @@ export const LoginView = ({ formId, onClose }: ViewProps) => {
           <TextField
             id='email'
             name='email'
-            label='Логин'
+            label='Email'
             fullWidth
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
