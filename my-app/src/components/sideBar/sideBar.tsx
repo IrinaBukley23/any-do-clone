@@ -16,7 +16,6 @@ const SideBar = () => {
   const changeDate = (e: Date | null) => {
     if (e) setDateState(e)
   }
-  console.log(moment(dateState))
 
   return (
     <div className='sidebar'>
