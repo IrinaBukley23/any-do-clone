@@ -6,7 +6,7 @@ import { initialState } from '../utils';
 export const columnReducer = (state: IColumn = initialState.column, action: Action) => {
     switch (action.type) {
         case Actions.SET_COLUMNTITLE: {
-            console.log(action.payload)
+            console.log(state);
             return {
                 ...state,
                 columnTitle: action.payload,
