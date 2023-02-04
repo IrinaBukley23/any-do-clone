@@ -1,5 +1,5 @@
 import './sideBar.scss';
-import React from 'react';
+import React, {useState} from 'react';
 import { 
     Accordion, 
     AccordionSummary, 
@@ -8,11 +8,27 @@ import {
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { NavLink } from 'react-router-dom';
+import Calendar from 'react-calendar'
+import 'react-calendar/dist/Calendar.css';
+import moment from 'moment'
 
 const SideBar = () => {
 
+  const [dateState, setDateState] = useState(new Date())
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const changeDate = (e: any) => {
+    setDateState(e)
+  }
+  console.log(moment(dateState))
+
   return (
     <div className="sidebar">
+      <Calendar 
+        value={dateState}
+        onChange={changeDate}
+      />
+      
+      <p>Сегодня: <b> {moment(dateState).format('Do MMMM YYYY')}</b></p>
       <Accordion>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
