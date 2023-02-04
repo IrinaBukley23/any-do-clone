@@ -3,7 +3,7 @@ import { Box } from '@mui/system'
 import { ReactNode } from 'react'
 import CloseIcon from '@mui/icons-material/Close'
 import styles from './dialogModal.module.scss'
-import { FormParam } from '../../utils/types'
+import { FormParam } from '../../types/types'
 interface PropsDialogModal {
   onClose: () => void
   isOpen: boolean

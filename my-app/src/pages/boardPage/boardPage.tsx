@@ -1,7 +1,7 @@
 import './boardPage.scss';
-import React, { useState } from 'react';
+import React, { useId, useState } from 'react';
 import { Button, TextField, Typography } from '@mui/material';
-import { IColumn } from '../../utils/types';
+import { IColumn } from '../../types/types';
 
 const BoardPage = () => {
     const [isCreateColumn, setIsCreateColumn] = useState(false);
@@ -11,20 +11,26 @@ const BoardPage = () => {
 
     const handleChangeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
         setTitle(e.target.value);
+        console.log('change');
     }
 
-    const handleClickCreateColumn = () => {
+    const handleClickCreateColumn = (): void => {
         setIsCreateColumn(true);
+        console.log('click');
     }
 
     const handleSaveColumn = () => {
         setIsCreateColumn(false);
         setCreated(true);
+        console.log(columns);
         setColumns([
             ...columns,
             {
-            title: title
-        }])
+                columnId: useId(),
+                columnTitle: title
+            }
+        ])
+
     }
 
     return (
@@ -38,9 +44,10 @@ const BoardPage = () => {
              */}
             {created && (
                 columns.map(column => {
+                    console.log(column);
                     return (
-                        <div key={column.title} className="column">
-                            <Typography variant="h5">{column.title}</Typography>
+                        <div key={column.columnTitle} className="column">
+                            <Typography variant="h5">{column.columnTitle}</Typography>
 
                             <Button
                                 color='primary'
