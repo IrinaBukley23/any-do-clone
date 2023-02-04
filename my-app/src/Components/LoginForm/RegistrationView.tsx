@@ -29,10 +29,11 @@ const validationSchem = yup.object({
     .required('Требуется подтверждение пароля'), // Confirm password is required
 })
 interface ViewProps {
+  formId: string
   onClose: () => void
 }
 
-export const RegistrationView = ({ onClose }: ViewProps) => {
+export const RegistrationView = ({ formId, onClose }: ViewProps) => {
   const formik = useFormik({
     initialValues: {
       name: '',
@@ -47,7 +48,7 @@ export const RegistrationView = ({ onClose }: ViewProps) => {
     },
   })
   return (
-    <form onSubmit={formik.handleSubmit} className={styles.form__content}>
+    <form id={formId} onSubmit={formik.handleSubmit} className={styles.form__content}>
       <Grid container spacing={2}>
         <Grid item xs={12}>
           <TextField
@@ -102,11 +103,6 @@ export const RegistrationView = ({ onClose }: ViewProps) => {
             type='password'
             helperText={formik.errors.passwordConfirm}
           />
-        </Grid>
-        <Grid item>
-          <Button color='primary' variant='contained' fullWidth type='submit'>
-            Register
-          </Button>
         </Grid>
       </Grid>
     </form>

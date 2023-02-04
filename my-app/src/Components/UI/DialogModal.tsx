@@ -1,18 +1,21 @@
-import { Dialog, IconButton, Paper } from '@mui/material'
+import { Button, Dialog, DialogActions, DialogContent, IconButton, Paper } from '@mui/material'
 import { Box } from '@mui/system'
 import { ReactNode } from 'react'
 import CloseIcon from '@mui/icons-material/Close'
 import styles from './dialogModal.module.scss'
+import { FormParam } from '../../utils/types'
 interface PropsDialogModal {
   onClose: () => void
   isOpen: boolean
+  formsParams: FormParam
   children: ReactNode
 }
 
-export const DialogModal = ({ onClose, isOpen, children }: PropsDialogModal) => {
+export const DialogModal = ({ onClose, isOpen, formsParams, children }: PropsDialogModal) => {
   const handleClose = () => {
     onClose()
   }
+
   return (
     <Dialog onClose={handleClose} open={isOpen}>
       <Box>
@@ -29,7 +32,13 @@ export const DialogModal = ({ onClose, isOpen, children }: PropsDialogModal) => 
           <CloseIcon />
         </IconButton>
       </Box>
-      <Paper className={styles.dialog}>{children}</Paper>
+      <DialogContent className={styles.dialog}>{children}</DialogContent>
+      <DialogActions>
+        <Button onClick={handleClose}>Отмена</Button>
+        <Button form={formsParams.formId} color='primary' variant='contained' type='submit'>
+          {formsParams.textAprove}
+        </Button>
+      </DialogActions>
     </Dialog>
   )
 }
