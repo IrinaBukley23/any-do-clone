@@ -6,3 +6,9 @@ export enum typeForm {
 export interface IColumn {
   title: string
 }
+
+export type FormParam = {
+  textAprove: string
+  formId: string
+}
+

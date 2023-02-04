@@ -1,6 +1,6 @@
 import { Button, Grid, TextField } from '@mui/material'
 import { useFormik } from 'formik'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import * as yup from 'yup'
 import styles from './form.module.scss'
 
@@ -16,21 +16,24 @@ const validationSchem = yup.object({
 })
 
 interface ViewProps {
+  formId: string
   onClose: () => void
 }
 
-export const LoginView = ({ onClose }: ViewProps) => {
+export const LoginView = ({ formId, onClose }: ViewProps) => {
+  const navigate = useNavigate()
   const formik = useFormik({
     initialValues: { email: '', password: '' },
     validationSchema: validationSchem,
     onSubmit: (values) => {
       console.log({ email: values.email, password: values.password })
       onClose()
+      navigate('/main')
     },
-  });
-  const isRedirect = formik.isValid ? '/main' : '/';
+  })
+  const isRedirect = formik.isValid ? '/main' : '/'
   return (
-    <form onSubmit={formik.handleSubmit} className={styles.form__content}>
+    <form id={formId} onSubmit={formik.handleSubmit} className={styles.form__content}>
       <Grid container spacing={2}>
         <Grid item xs={12}>
           <TextField
@@ -58,11 +61,6 @@ export const LoginView = ({ onClose }: ViewProps) => {
             error={formik.touched.password && Boolean(formik.errors.password)}
             helperText={formik.errors.password}
           />
-        </Grid>
-        <Grid item>
-            <Button color='primary' variant='contained' fullWidth type='submit'>
-              <Link to={isRedirect}>Login</Link>
-            </Button>
         </Grid>
       </Grid>
     </form>

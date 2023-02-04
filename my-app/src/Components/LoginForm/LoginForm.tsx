@@ -1,17 +1,27 @@
-import { Tab, Tabs } from '@mui/material';
+import { Tab, Tabs } from '@mui/material'
 // import { useDispatch } from 'react-redux';
 // import { loginSlice } from '../../store/reducers/loginSlice';
-import { typeForm } from '../../utils/types';
-import { DialogModal } from '../UI/DialogModal';
-import { LoginView } from './LoginView';
-import React, { SyntheticEvent, useState } from 'react';
-import { RegistrationView } from './RegistrationView';
+import { typeForm } from '../../utils/types'
+import { DialogModal } from '../UI/DialogModal'
+import { LoginView } from './LoginView'
+import React, { SyntheticEvent, useState } from 'react'
+import { RegistrationView } from './RegistrationView'
 
 interface LoginProps {
   onClose: () => void
   onChange: (typeForm: typeForm) => void
   isOpen: boolean
   kindForm: typeForm
+}
+const formsParams = {
+  [typeForm.login]: {
+    textAprove: 'Войти',
+    formId: `form-${typeForm.login}`,
+  },
+  [typeForm.registr]: {
+    textAprove: 'Зарегистрироваться',
+    formId: `form-${typeForm.login}`,
+  },
 }
 
 export const LoginForm = ({ onClose, onChange, isOpen, kindForm = typeForm.login }: LoginProps) => {
@@ -23,15 +33,15 @@ export const LoginForm = ({ onClose, onChange, isOpen, kindForm = typeForm.login
   }
 
   return (
-    <DialogModal onClose={onClose} isOpen={isOpen}>
+    <DialogModal onClose={onClose} isOpen={isOpen} formsParams={formsParams[kindForm]}>
       <Tabs onChange={handleChange} value={kindForm}>
         <Tab label='Войти' value={typeForm.login} />
         <Tab label='Зарегистрироваться' value={typeForm.registr} />
       </Tabs>
       {kindForm === 'login' ? (
-        <LoginView onClose={onClose} />
+        <LoginView formId={formsParams[kindForm].formId} onClose={onClose} />
       ) : (
-        <RegistrationView onClose={onClose} />
+        <RegistrationView formId={formsParams[kindForm].formId} onClose={onClose} />
       )}
     </DialogModal>
   )
