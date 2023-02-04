@@ -6,7 +6,6 @@ import { useState } from 'react'
 import irina from '../../assets/team/irina.jpg'
 import vlada from '../../assets/team/vlada.jpg'
 import polina from '../../assets/team/polina.jpg'
-
 import './startPage.scss'
 import { LoginForm } from '../../components/LoginForm/LoginForm';
 import { typeForm } from '../../utils/types'
@@ -177,4 +176,4 @@ const StartPage = () => {
   )
 }
 
-export default StartPage
+export default StartPage;

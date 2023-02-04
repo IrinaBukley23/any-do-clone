@@ -5,20 +5,27 @@ import * as yup from 'yup'
 import styles from './form.module.scss'
 
 const validationSchem = yup.object({
-  email: yup.string().email('Enter a valid email').required('Email is required'),
+  email: yup
+    .string()
+    .email('В качестве логина используется email. Введите корректый email')
+    .required('Поле обязательно для заполнения'), // Enter a valid email Email is required
   password: yup
     .string()
-    .min(8, 'Password should be of minimum 8 characters length')
-    .required('Password is required'),
+    .min(8, 'Длина пароля должна быть минимум 8 символов ') // Password should be of minimum 8 characters length
+    .required('Пароль обязателен для заполнения'), // Password is required
 })
 
-export const LoginView = () => {
+interface ViewProps {
+  onClose: () => void
+}
+
+export const LoginView = ({ onClose }: ViewProps) => {
   const formik = useFormik({
     initialValues: { email: '', password: '' },
     validationSchema: validationSchem,
     onSubmit: (values) => {
       console.log({ email: values.email, password: values.password })
-      // loginstore.login({ email: values.email, password: values.password })
+      onClose()
     },
   });
   const isRedirect = formik.isValid ? '/main' : '/';
@@ -32,7 +39,10 @@ export const LoginView = () => {
             label='Логин'
             fullWidth
             onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
             value={formik.values.email}
+            error={formik.touched.email && Boolean(formik.errors.email)}
+            helperText={formik.errors.email}
           />
         </Grid>
         <Grid item xs={12}>
@@ -40,12 +50,13 @@ export const LoginView = () => {
             id='password'
             name='password'
             label='Пароль'
+            type='password'
             fullWidth
             value={formik.values.password}
             onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
             error={formik.touched.password && Boolean(formik.errors.password)}
-            type='password'
-            helperText={formik.touched.password && formik.errors.password}
+            helperText={formik.errors.password}
           />
         </Grid>
         <Grid item>
