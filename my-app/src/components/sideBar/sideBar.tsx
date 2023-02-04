@@ -13,13 +13,11 @@ import 'react-calendar/dist/Calendar.css';
 import moment from 'moment'
 
 const SideBar = () => {
-
   const [dateState, setDateState] = useState(new Date())
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const changeDate = (e: any) => {
     setDateState(e)
   }
-  console.log(moment(dateState))
 
   return (
     <div className="sidebar">
