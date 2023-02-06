@@ -1,7 +1,7 @@
 import './boardPage.scss';
 import React, { useId, useState } from 'react';
 import { Button, TextField } from '@mui/material';
-import { ColumnItemType, IColumn, State } from '../../types/types';
+import { State } from '../../types/types';
 import Column from '../../components/column/column';
 import { AnyAction } from 'redux';
 import { useDispatch, useSelector } from 'react-redux';

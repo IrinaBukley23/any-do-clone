@@ -1,5 +1,5 @@
 import { Actions } from '../../types/enum';
-import { ColumnItemType, IColumn, ITask } from '../../types/types';
+import { ColumnItemType, ITask } from '../../types/types';
 
 
 export const setColumnId = (columnId: string) => ({
