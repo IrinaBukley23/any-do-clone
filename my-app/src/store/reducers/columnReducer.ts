@@ -18,6 +18,7 @@ export const columnReducer = (state: IColumn = initialState.column, action: Acti
                 columnList: [...action.payload],
             }
         }
-        default: return state;
+        default: 
+            return state;
     }
 }

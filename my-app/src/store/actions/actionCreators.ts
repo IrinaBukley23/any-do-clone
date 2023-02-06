@@ -1,5 +1,5 @@
 import { Actions } from '../../types/enum';
-import { IColumn, ITask } from '../../types/types';
+import { ColumnItemType, IColumn, ITask } from '../../types/types';
 
 
 export const setColumnId = (columnId: string) => ({
@@ -12,7 +12,7 @@ export const setColumnTitle = (columnTitle: string) => ({
     payload: columnTitle,
 });
 
-export const setColumnList = (columnList: IColumn[]) => ({
+export const setColumnList = (columnList: ColumnItemType[]) => ({
     type: Actions.SET_COLUMNLIST,
     payload: columnList
 });

@@ -1,7 +1,10 @@
 export interface IColumn {
   columnId: string;
   columnTitle: string;
+  columnList: IColumn[];
 }
+
+export type ColumnItemType = Omit<IColumn, 'columnList'>
 
 export interface ITask {
   taskId: string;
@@ -18,7 +21,7 @@ export type State = {
   token: string;
   user: null;
   column: IColumn;
-  columnList: IColumn[];
+ // columnList: IColumn[];
   task: ITask;
-  taskList: ITask[];
+//  taskList: ITask[];
 }

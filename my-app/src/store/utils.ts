@@ -4,12 +4,12 @@ export const initialState = {
     column: {
         columnId: '',
         columnTitle: '',
+        columnList: [],
     },
-    columnList: [],
     task: {
         taskId: '',
         taskTitle: '',
         taskDescr: '',
+        taskList: [],
     },
-    taskList: [],
   };
