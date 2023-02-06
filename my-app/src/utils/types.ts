@@ -12,3 +12,11 @@ export type FormParam = {
   formId: string
 }
 
+export type Task = {
+  id: number
+  title: string
+  description: string
+  people: Array<number>
+  date?: Date
+  dateTo?: Date
+}
