@@ -10,7 +10,10 @@ export interface ITask {
   taskId: string;
   taskTitle: string;
   taskUser: string;
+  taskList: ITask[];
 }
+
+export type TaskItemType = Omit<ITask, 'taskList'>
 
 export type FormParam = {
   textAprove: string;

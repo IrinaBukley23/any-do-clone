@@ -1,5 +1,5 @@
 import { Actions } from '../../types/enum';
-import { ColumnItemType, ITask } from '../../types/types';
+import { ColumnItemType, TaskItemType } from '../../types/types';
 
 export type Action = 
 | {
@@ -15,6 +15,17 @@ export type Action =
     payload: ColumnItemType[],
 } 
 | {
+    type: Actions.EDIT_COLUMNTITLE;
+    payload: {
+      columnId: string;
+      columnTitle: string;
+    };
+  }
+| {
+    type: Actions.REMOVE_COLUMN;
+    payload: string,
+} 
+| {
     type: Actions.SET_TASKID;
     payload: string,
 } 
@@ -28,5 +39,5 @@ export type Action =
 } 
 | {
     type: Actions.SET_TASKLIST;
-    payload: ITask[],
+    payload: TaskItemType[],
 } 
