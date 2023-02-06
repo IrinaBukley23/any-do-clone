@@ -9,7 +9,7 @@ export type ColumnItemType = Omit<IColumn, 'columnList'>
 export interface ITask {
   taskId: string;
   taskTitle: string;
-  taskUser: string;
+  taskDescr: string;
   taskList: ITask[];
 }
 

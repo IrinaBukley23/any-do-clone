@@ -7,6 +7,7 @@ import { AnyAction } from 'redux';
 import { useDispatch, useSelector } from 'react-redux';
 import { setColumnList, setColumnTitle } from '../../store/actions/actionCreators';
 import nextId from 'react-id-generator';
+import TaskForm from '../../components/taskForm/taskForm';
 
 const BoardPage = () => {
     const [isCreate, setIsCreate] = useState(false);
@@ -74,6 +75,9 @@ const BoardPage = () => {
                   Добавить колонку
               </Button>
             </>
+            <TaskForm formId={''} onClose={function (): void {
+          throw new Error('Function not implemented.');
+        } } />
         </div>
     )
 }
