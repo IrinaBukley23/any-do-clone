@@ -1,6 +1,8 @@
 import { Button, Grid, TextField } from '@mui/material'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
+import { useAppDispatch, useAppSelector } from '../../store/hooks'
+import { register } from '../../store/reducers/authorization'
 import styles from './form.module.scss'
 
 const validationSchem = yup.object({
@@ -30,10 +32,11 @@ const validationSchem = yup.object({
 })
 interface ViewProps {
   formId: string
-  onClose: () => void
 }
 
-export const RegistrationView = ({ formId, onClose }: ViewProps) => {
+export const RegistrationView = ({ formId }: ViewProps) => {
+  // const count = useAppSelector(state => state.counter.value)
+  const dispatch = useAppDispatch()
   const formik = useFormik({
     initialValues: {
       name: '',
@@ -44,7 +47,11 @@ export const RegistrationView = ({ formId, onClose }: ViewProps) => {
     validationSchema: validationSchem,
     onSubmit: (values) => {
       console.log({ name: values.name, email: values.email, password: values.password })
-      onClose()
+      dispatch(register({
+        name: values.name,
+        email: values.email,
+        password: values.password
+      }))
     },
   })
   return (
