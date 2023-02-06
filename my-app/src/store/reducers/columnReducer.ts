@@ -1,5 +1,5 @@
 import { Actions } from '../../types/enum';
-import { IColumn } from '../../types/types';
+import { ColumnItemType, IColumn } from '../../types/types';
 import { Action } from '../actions/actionTypes';
 import { initialState } from '../utils';
 
@@ -18,6 +18,27 @@ export const columnReducer = (state: IColumn = initialState.column, action: Acti
                 columnList: [...action.payload],
             }
         }
+        case Actions.EDIT_COLUMNTITLE: {
+            const newColumnList = state.columnList.map((item: ColumnItemType) => {
+              if (item.columnId === action.payload.columnId) {
+                return {
+                  ...item,
+                  columnTitle: action.payload.columnTitle,
+                };
+              }
+              return item;
+            });
+            return {
+              ...state,
+              columnList: newColumnList,
+            };
+        }
+        case Actions.REMOVE_COLUMN: {
+            return {
+              ...state,
+              columnList: state.columnList.filter((column) => column.columnId !== action.payload),
+            };
+          }
         default: 
             return state;
     }

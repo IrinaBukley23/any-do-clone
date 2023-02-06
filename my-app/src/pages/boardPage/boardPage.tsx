@@ -6,11 +6,13 @@ import Column from '../../components/column/column';
 import { AnyAction } from 'redux';
 import { useDispatch, useSelector } from 'react-redux';
 import { setColumnList, setColumnTitle } from '../../store/actions/actionCreators';
+import nextId from 'react-id-generator';
 
 const BoardPage = () => {
     const [isCreate, setIsCreate] = useState(false);
     const [created, setCreated] = useState(false);
     const id = useId();
+    const myId = nextId();
     const { columnTitle } = useSelector((state: State) => state.column);
     const { columnList } = useSelector((state: State) => state.column);
     const dispatch = useDispatch();
@@ -29,13 +31,12 @@ const BoardPage = () => {
         setColumnList([
           ...columnList,
           {
-            columnId: id,
+            columnId: myId,
             columnTitle: columnTitle,
           },
         ])
       );
     };
-    console.log(columnList)
 
     const handleCreateColumn = (): void => {
         setIsCreate(true);
