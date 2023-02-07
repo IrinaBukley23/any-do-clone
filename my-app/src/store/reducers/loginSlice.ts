@@ -1,9 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
+import { initialState } from '../utils'
 
-const initialState = {
-  token: localStorage.getItem('token'),
-  user: null,
-}
 export const loginSlice = createSlice({
   name: 'login',
   initialState: initialState,

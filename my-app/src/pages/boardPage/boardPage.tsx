@@ -1,85 +1,79 @@
 import './boardPage.scss';
-import React, { useState } from 'react';
-import { Button, TextField, Typography } from '@mui/material';
-import { IColumn } from '../../utils/types';
+import React, { useId, useState } from 'react';
+import { Button, TextField } from '@mui/material';
+import { State } from '../../types/types';
+import Column from '../../components/column/column';
+import { AnyAction } from 'redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { setColumnList, setColumnTitle } from '../../store/actions/actionCreators';
+import nextId from 'react-id-generator';
 
 const BoardPage = () => {
-    const [isCreateColumn, setIsCreateColumn] = useState(false);
+    const [isCreate, setIsCreate] = useState(false);
     const [created, setCreated] = useState(false);
-    const [title, setTitle] = useState('');
-    const [columns, setColumns] = useState<IColumn[]>([]);
-
-    const handleChangeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setTitle(e.target.value);
-    }
-
-    const handleClickCreateColumn = () => {
-        setIsCreateColumn(true);
-    }
-
+    const id = useId();
+    const myId = nextId();
+    const { columnTitle } = useSelector((state: State) => state.column);
+    const { columnList } = useSelector((state: State) => state.column);
+    const dispatch = useDispatch();
+  
+    const handleChangeTitle = (
+      e: React.ChangeEvent<HTMLInputElement>,
+      callback: (value: string) => AnyAction
+    ) => {
+      dispatch(callback(e.target.value));
+    };
+  
     const handleSaveColumn = () => {
-        setIsCreateColumn(false);
-        setCreated(true);
-        setColumns([
-            ...columns,
-            {
-            title: title
-        }])
+      setIsCreate(false);
+      setCreated(true);
+      dispatch(
+        setColumnList([
+          ...columnList,
+          {
+            columnId: myId,
+            columnTitle: columnTitle,
+          },
+        ])
+      );
+    };
+
+    const handleCreateColumn = (): void => {
+        setIsCreate(true);
     }
 
     return (
         <div className="container">
-            {/* <div className="column__wrapper">
-                    <div className="task">Task</div>
-                    <div className="task">Task</div>
-                    <div className="task">Task</div>
-                    <div className="task">Task</div>
-                </div>
-             */}
-            {created && (
-                columns.map(column => {
-                    return (
-                        <div key={column.title} className="column">
-                            <Typography variant="h5">{column.title}</Typography>
-
-                            <Button
-                                color='primary'
-                                variant='contained'
-                                sx={{ height: '40px', mt: '30px' }}>
-                                Добавить задачу
-                            </Button>
-                        </div>
-                    )
-                })
-            )}
-            {isCreateColumn && (
+            <>
+              {columnList?.map((column, i) => (
+                <Column key={i} columnItem={column} />
+             ) )}
+              {isCreate && (
                 <>
                 <TextField 
-                    onChange={handleChangeTitle}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChangeTitle(e, setColumnTitle)}
                     id="filled-basic" 
                     label="Filled" 
                     variant="filled" 
                     sx={{height: '40px', mt: '30px', ml: '15px', minWidth: '210px'}} 
                 />
                 <Button 
-                    onClick={handleSaveColumn} 
-                    color='primary' 
-                    variant='contained'
-                    sx={{height: '40px', mt: '30px', ml: '15px', minWidth: '160px'}}
-                >
+                  onClick={handleSaveColumn} 
+                  color='primary' 
+                  variant='contained'
+                  sx={{height: '40px', mt: '30px', ml: '15px', minWidth: '160px'}}>
                     Сохранить
                 </Button>
                 </>
                 )}
-
-            
-            <Button 
-                onClick={handleClickCreateColumn} 
+              <Button 
+                onClick={handleCreateColumn} 
                 color='primary' 
                 variant='contained'
                 sx={{height: '40px', mt: '30px', ml: '15px', minWidth: '160px'}}>
-                Добавить колонку
-            </Button>
+                  Добавить колонку
+              </Button>
+            </>
         </div>
     )
 }
