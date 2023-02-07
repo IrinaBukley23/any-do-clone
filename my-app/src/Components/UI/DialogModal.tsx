@@ -5,7 +5,7 @@ import CloseIcon from '@mui/icons-material/Close'
 import styles from './dialogModal.module.scss'
 import { FormParam } from '../../types/types'
 interface PropsDialogModal {
-  onClose: () => void
+  onClose?: () => void
   isOpen: boolean
   formsParams: FormParam
   children: ReactNode
@@ -13,7 +13,9 @@ interface PropsDialogModal {
 
 export const DialogModal = ({ onClose, isOpen, formsParams, children }: PropsDialogModal) => {
   const handleClose = () => {
-    onClose()
+    if (onClose) {
+      onClose()
+    }
   }
 
   return (
@@ -36,7 +38,7 @@ export const DialogModal = ({ onClose, isOpen, formsParams, children }: PropsDia
       <DialogActions>
         <Button onClick={handleClose}>Отмена</Button>
         <Button form={formsParams.formId} color='primary' variant='contained' type='submit'>
-          {formsParams.textAprove}
+          {formsParams.textApprove}
         </Button>
       </DialogActions>
     </Dialog>

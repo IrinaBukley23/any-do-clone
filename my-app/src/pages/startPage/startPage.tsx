@@ -2,31 +2,16 @@ import { Box, Button, Card, CardContent, Typography } from '@mui/material'
 import GitHubIcon from '@mui/icons-material/GitHub'
 import TelegramIcon from '@mui/icons-material/Telegram'
 import LinkedInIcon from '@mui/icons-material/LinkedIn'
-import { useState } from 'react'
 import irina from '../../assets/team/irina.jpg'
 import vlada from '../../assets/team/vlada.jpg'
 import polina from '../../assets/team/polina.jpg'
 import './startPage.scss'
 import { LoginForm } from '../../components/LoginForm/LoginForm';
-import { typeForm } from '../../types/enum'
+import { useAppDispatch } from '../../store/hooks';
+import { loginStart, registrationStart } from '../../store/reducers/authorization';
 
 const StartPage = () => {
-  const [isOpen, toggleOpen] = useState(false)
-  const [kindForm, setKindForm] = useState(typeForm.login)
-  const handleClose = () => {
-    toggleOpen(!isOpen)
-  }
-  const handleChange = (newValue: typeForm) => {
-    setKindForm(newValue)
-  }
-  const handleClickLogin = () => {
-    setKindForm(typeForm.login)
-    toggleOpen(true)
-  }
-  const handleClickRegister = () => {
-    setKindForm(typeForm.registr)
-    toggleOpen(true)
-  }
+  const dispatch = useAppDispatch();
   return (
     <div className='wrapper'>
       <Typography variant='h1' component='h6' sx={{ fontSize: 52 }}>
@@ -40,18 +25,13 @@ const StartPage = () => {
           С этого дня ваша личная продуктивность и эффективность сотрудников будут непрерывно расти.
           Вам станет просто и легко управлять делами.
         </Typography>
-        <Button onClick={handleClickLogin} color='primary' variant='contained' sx={{ mr: 5 }}>
+        <Button onClick={() => dispatch(loginStart())} color='primary' variant='contained' sx={{ mr: 5 }}>
           Войти
         </Button>
-        <Button onClick={handleClickRegister} color='primary' variant='contained'>
+        <Button onClick={() => dispatch(registrationStart())} color='primary' variant='contained'>
           Зарегистрироваться
         </Button>
-        <LoginForm
-          onClose={handleClose}
-          onChange={handleChange}
-          isOpen={isOpen}
-          kindForm={kindForm}
-        />
+        <LoginForm />
         <div className='wrapper__team'>
           <Card sx={{ display: 'flex', width: 300, justifyContent: 'center' }}>
             <Box sx={{ display: 'flex', flexDirection: 'column' }}>

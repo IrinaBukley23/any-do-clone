@@ -10,7 +10,7 @@ export enum Actions {
     SET_TASKLIST = 'SET_TASKLIST',
 }
 
-export enum typeForm {
+export enum DialogForm {
     login = 'login',
-    registr = 'registration',
+    register = 'registration',
   }
