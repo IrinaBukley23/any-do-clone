@@ -12,11 +12,13 @@ interface IAuthorizationState {
   dialogForm: DialogForm | null,
 }
 const initialState: IAuthorizationState = {
-  key: null,
+  key: localStorage.getItem('api-key'),
   user: null,
   isDialogShown: false,
   dialogForm: null,
 }
+
+
 
 export const register = createAsyncThunk(
   'authorization/register',
@@ -61,6 +63,7 @@ export const authorizationSlice = createSlice({
       })
       .addCase(login.fulfilled, (state, action) => {
         state.key = action.payload.key;
+        localStorage.setItem('api-key', state.key);
       })
       .addCase(login.rejected, (state, action) => {
         state.isDialogShown = true;
