@@ -8,24 +8,30 @@ import { TextField } from '@mui/material'
 
 const tasks = [
   {
-    id: 1,
-    title: 'Task1',
-    description: 'Description1',
-    people: [],
-    date: moment('2023-03-06 15:30').toDate(),
+    taskId: '1',
+    taskTitle: 'Task1',
+    // description: 'Description1',
+    // people: [],
+    // date: moment('2023-03-06 15:30').toDate(),
+    taskUser: '111',
+    taskList: [],
   },
   {
-    id: 2,
-    title: 'Task2',
-    description: 'Description2',
-    people: [],
-    date: moment('2023-03-06 12:30').toDate(),
+    taskId: '2',
+    taskTitle: 'Task2',
+    // description: 'Description2',
+    // people: [],
+    // date: moment('2023-03-06 12:30').toDate(),
+    taskUser: '222',
+    taskList: [],
   },
   {
-    id: 3,
-    title: 'Task3',
-    description: 'Description3',
-    people: [],
+    taskId: '3',
+    taskTitle: 'Task3',
+    // description: 'Description3',
+    // people: [],
+    taskUser: '333',
+    taskList: [],
   },
 ]
 const TasksBlock = () => {
@@ -33,7 +39,7 @@ const TasksBlock = () => {
     <Stack spacing={2} className='central' p={2}>
       <TextField placeholder='Введите задачу' />
       {tasks.map((task) => (
-        <TaskCard key={task.id} task={task} />
+        <TaskCard key={task.taskId} task={task} />
       ))}
     </Stack>
   )

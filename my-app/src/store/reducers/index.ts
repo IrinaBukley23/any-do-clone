@@ -1,8 +1,10 @@
-import { combineReducers } from 'redux';
-import { columnReducer } from './columnReducer';
-import loginSlice from './loginSlice';
+import { calendarReducer } from './calendarReducer'
+import { combineReducers } from 'redux'
+import { columnReducer } from './columnReducer'
+import loginSlice from './loginSlice'
 
 export default combineReducers({
-    login: loginSlice,
-    column: columnReducer,
+  login: loginSlice,
+  column: columnReducer,
+  calendar: calendarReducer,
 })

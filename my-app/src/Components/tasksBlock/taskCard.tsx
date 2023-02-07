@@ -4,23 +4,23 @@ import CardActions from '@mui/material/CardActions'
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
 import Checkbox from '@mui/material/Checkbox'
-import { Task } from '../../utils/types'
+import { ITask } from '../../types/types'
 import { Stack } from '@mui/system'
 
 type Props = {
-  task: Task
+  task: ITask
 }
 
 const TaskCard = ({ task }: Props) => {
-  console.log(task.date)
+  // console.log(task.taskDate)
   return (
     <Card>
       <CardContent>
         <Stack direction='row'>
           <Checkbox inputProps={{ 'aria-label': 'task' }} />
-          <Typography>{task.description}</Typography>
+          {/* <Typography>{task.taskDescription}</Typography> */}
         </Stack>
-        <p>{task.date?.toDateString()}</p>
+        {/* <p>{task.taskDate?.toDateString()}</p> */}
       </CardContent>
 
       <CardActions>

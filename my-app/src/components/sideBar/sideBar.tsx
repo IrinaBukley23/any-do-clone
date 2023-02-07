@@ -1,6 +1,6 @@
 import './sideBar.scss'
 import 'moment/locale/ru'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment'
 import { Accordion, AccordionSummary, Typography, AccordionDetails } from '@mui/material'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
@@ -9,12 +9,22 @@ import { StaticDatePicker } from '@mui/x-date-pickers/StaticDatePicker'
 import moment from 'moment'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import TextField from '@mui/material/TextField'
+import { useDispatch, useSelector } from 'react-redux'
+import { CreatorsCalendar } from '../../store/actions/calendar/creatorsCalendar'
+import { State } from '../../types/types'
 
 const SideBar = () => {
-  const [dateState, setDateState] = useState(new Date())
-
-  const changeDate = (e: Date | null) => {
-    if (e) setDateState(e)
+  // const [dateState, setDateState] = useState(new Date())
+  const { dateCurrent } = useSelector((state: State) => state.calendar)
+  useEffect(() => {
+    console.log(111, dateCurrent)
+  }, [])
+  const dispatch = useDispatch()
+  const changeDate = (date: Date | null) => {
+    console.log(date)
+    if (date) {
+      dispatch(CreatorsCalendar.setCurrentDate(date))
+    }
   }
 
   return (
@@ -22,14 +32,14 @@ const SideBar = () => {
       <LocalizationProvider dateAdapter={AdapterMoment} adapterLocale='ru'>
         <StaticDatePicker
           displayStaticWrapperAs='desktop'
-          value={dateState}
+          value={dateCurrent}
           onChange={changeDate}
           renderInput={(params) => <TextField {...params} />}
         />
       </LocalizationProvider>
 
       <p>
-        Дата: <b> {moment(dateState).format('Do MMMM YYYY')}</b>
+        Дата: <b> {moment(dateCurrent).format('Do MMMM YYYY')}</b>
       </p>
       <Accordion>
         <AccordionSummary
