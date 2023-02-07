@@ -22,30 +22,6 @@ const generateTime = () => {
   return arr
 }
 
-const tasks = [
-  {
-    id: 1,
-    title: 'Task1',
-    description: 'Description1',
-    people: [],
-    date: moment('2023-03-06 15:30'),
-  },
-  {
-    id: 2,
-    title: 'Task2',
-    description: 'Description2',
-    people: [],
-    date: moment('02.06.22 12:30').toDate(),
-  },
-  {
-    id: 3,
-    title: 'Task3',
-    description: 'Description3',
-    people: [],
-    date: moment('02.06.22 11:30').toDate(),
-  },
-]
-
 const DatePlan = () => {
   return (
     <Paper className={styles.aside}>

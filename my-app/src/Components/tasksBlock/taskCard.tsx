@@ -1,14 +1,15 @@
-import { Card, TextField } from '@mui/material'
+import { Card } from '@mui/material'
 import CardContent from '@mui/material/CardContent'
 import CardActions from '@mui/material/CardActions'
-import Typography from '@mui/material/Typography'
+
 import Button from '@mui/material/Button'
 import Checkbox from '@mui/material/Checkbox'
-import { ITask } from '../../types/types'
+import { TaskCalendarItemType } from '../../types/types'
 import { Stack } from '@mui/system'
+import Typography from '@mui/material/Typography'
 
 type Props = {
-  task: ITask
+  task: TaskCalendarItemType
 }
 
 const TaskCard = ({ task }: Props) => {
@@ -17,10 +18,11 @@ const TaskCard = ({ task }: Props) => {
     <Card>
       <CardContent>
         <Stack direction='row'>
-          <Checkbox inputProps={{ 'aria-label': 'task' }} />
-          {/* <Typography>{task.taskDescription}</Typography> */}
+          <Checkbox inputProps={{ 'aria-label': 'task' }} checked={task.isDone} />
+          <Typography variant='h5'>{task.title}</Typography>
         </Stack>
-        {/* <p>{task.taskDate?.toDateString()}</p> */}
+        <Typography>{task.description}</Typography>
+        <p>{task.dateStart?.toDateString()}</p>
       </CardContent>
 
       <CardActions>

@@ -10,7 +10,6 @@ export const calendarReducer = (
 ) => {
   switch (action.type) {
     case ActionsCalendar.SET_CURRENTDATE: {
-      console.log(3, action.payload)
       return {
         ...state,
         dateCurrent: action.payload,

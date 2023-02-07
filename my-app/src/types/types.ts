@@ -31,7 +31,7 @@ export type State = {
 }
 export type ICalendar = {
   dateCurrent: Date
-  taskList: ITaskCalendar[]
+  taskList: TaskCalendarItemType[]
 }
 
 export interface ITaskCalendar {
@@ -40,9 +40,9 @@ export interface ITaskCalendar {
   dateStart?: Date
   dateEnd?: Date
   title: string
-  description: string
+  description?: string
   idPersons?: number[]
-  isDone: boolean
+  isDone?: boolean
   taskList: ITaskCalendar[]
 }
 export type TaskCalendarItemType = Omit<ITaskCalendar, 'taskList'>
