@@ -1,4 +1,4 @@
-import './boardPage.scss';
+import styles from './boardPage.module.scss';
 import React, { useState } from 'react';
 import { Button, TextField, Typography } from '@mui/material';
 import { State } from '../../types/types';
@@ -14,12 +14,14 @@ const BoardPage = () => {
     const { columnList } = useSelector((state: State) => state.column);
     const [isError, setIsError] = useState(false);
     const dispatch = useDispatch();
+    const [isValidate, setIsValidate] = useState(true);
   
     const handleChangeTitle = (
       e: React.ChangeEvent<HTMLInputElement>,
       callback: (value: string) => AnyAction
     ) => {
-      (e.target.value.length < 3) ? setIsError(true): setIsError(false);
+      (e.target.value.length < 3) ? setIsError(true) : setIsError(false);
+      (e.target.value.length >= 3 && e) ? setIsValidate(false) : setIsValidate(true);
       dispatch(callback(e.target.value));
     };
   
@@ -42,7 +44,7 @@ const BoardPage = () => {
     }
 
     return (
-        <div className="container">
+        <div className={styles.container}>
             <>
               {columnList?.map((column, i) => (
                 <Column key={i} columnItem={column} />
@@ -63,7 +65,7 @@ const BoardPage = () => {
                   onClick={handleSaveColumn} 
                   color='primary' 
                   variant='contained'
-                  sx={{height: '40px', mt: '30px', ml: '15px', minWidth: '160px'}}>
+                  sx={{height: '40px', mt: '30px', ml: '15px', minWidth: '160px'}} disabled={isValidate}>
                     Сохранить
                 </Button>
                 </>

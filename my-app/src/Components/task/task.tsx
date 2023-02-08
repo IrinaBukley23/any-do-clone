@@ -1,10 +1,10 @@
-import './task.modules.scss';
+import styles from './task.module.scss'
 import React, { useState } from 'react';
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, TextField, Tooltip, Typography } from '@mui/material';
+import { IconButton, TextField, Tooltip, Typography } from '@mui/material';
 import { ITask } from '../../types/types';
 import { useDispatch } from 'react-redux';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { editColumnTitle, editTaskDescr, editTaskTitle, setRemoveColumn, setRemoveTask } from '../../store/actions/actionCreators';
+import { editTaskDescr, editTaskTitle, setRemoveTask } from '../../store/actions/actionCreators';
 import CancelIcon from '@mui/icons-material/Cancel';
 import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
 import { DialogConfirm } from '../UI/DialogConfirm';
@@ -14,7 +14,6 @@ interface IProps {
 }
 
 const Task = (props: IProps) => {
-    const [open, setOpen] = useState(false);
     const [openConfirm, setOpenConfirm] = useState(false);
     const { taskTitle, taskId, taskDescr } = props.taskItem;
     const dispatch = useDispatch();
@@ -57,14 +56,6 @@ const Task = (props: IProps) => {
         setIsEditDescr(false);
       };
 
-    const handleOpen = () => {
-        setOpen(true);
-      };
-    
-    const handleClose = () => {
-        setOpen(false);
-    };
-
     const handleRemove = () => {
         dispatch(setRemoveTask(taskId))
     };
@@ -77,19 +68,19 @@ const Task = (props: IProps) => {
     };
 
     return (
-        <div id={taskId} key={taskId} className="task">
-            {!isEditTitle && <Typography variant="h5" className="task" onClick={handleEditTitle}>{taskTitle}</Typography>}
+        <div id={taskId} key={taskId} className={styles.task}>
+            {!isEditTitle && <Typography variant="h5" className={styles.task} onClick={handleEditTitle}>{taskTitle}</Typography>}
             {isEditTitle && (
-                <div className='column__edit'>
+                <div className={styles.task__edit}>
                     <TextField id="outlined-basic" label="Outlined" variant="outlined" value={correctedTitle} onChange={handleCorrectTitle} sx={{width: '160px'}} />
                     <ThumbUpAltIcon onClick={handleSaveTitle} sx={{color: 'green', ml: '10px'}}></ThumbUpAltIcon>
                     <CancelIcon onClick={handleCancelTitle} sx={{color: 'blue', ml: '10px'}}></CancelIcon>
                 </div>
             )}
-            {!isEditDescr && <Typography variant="h5" className="task" onClick={handleEditDescr}>{taskDescr}</Typography>}
+            {!isEditDescr && <Typography variant="h5" className={styles.task} onClick={handleEditDescr} sx={{fontSize: '14px', textAlign: 'left', pl: '10px', pb: '5px'}}>{taskDescr}</Typography>}
             {isEditDescr && (
-                <div className='column__edit'>
-                    <TextField id="outlined-basic" label="Outlined" variant="outlined" value={correctedDescr} onChange={handleCorrectDescr} sx={{width: '160px'}} />
+                <div className={styles.task__edit}>
+                    <TextField id="outlined-basic" label="Outlined" variant="outlined" value={correctedDescr} onChange={handleCorrectDescr} sx={{width: '160px', fontSize: '14px', textAlign: 'left',}} />
                     <ThumbUpAltIcon onClick={handleSaveDescr} sx={{color: 'green', ml: '10px'}}></ThumbUpAltIcon>
                     <CancelIcon onClick={handleCancelDescr} sx={{color: 'blue', ml: '10px'}}></CancelIcon>
                 </div>

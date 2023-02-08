@@ -1,10 +1,10 @@
-import './column.scss';
+import styles from './column.module.scss';
 import React, { useState } from 'react';
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, TextField, Tooltip, Typography } from '@mui/material';
+import { Button, IconButton, TextField, Tooltip, Typography } from '@mui/material';
 import { IColumn, State } from '../../types/types';
 import { useDispatch, useSelector } from 'react-redux';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { editColumnTitle, setRemoveColumn, setTaskList } from '../../store/actions/actionCreators';
+import { editColumnTitle, setRemoveColumn } from '../../store/actions/actionCreators';
 import CancelIcon from '@mui/icons-material/Cancel';
 import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
 import Task from '../task/task';
@@ -63,11 +63,11 @@ const Column = (props: IProps) => {
     };
 
     return (
-        <div id={columnId} key={columnId} className="column">
+        <div id={columnId} key={columnId} className={styles.column}>
             {!isEdit && <Typography variant="h5" onClick={handleEdit}>{columnTitle}</Typography>
             }
             {isEdit && (
-                <div className='column__edit'>
+                <div className={styles.column__edit}>
                     <TextField id="outlined-basic" label="Outlined" variant="outlined" value={correctedTitle} onChange={handleCorrect} sx={{width: '160px'}} />
                     <ThumbUpAltIcon onClick={handleSave} sx={{color: 'green', ml: '10px'}}></ThumbUpAltIcon>
                     <CancelIcon onClick={handleCancel} sx={{color: 'blue', ml: '10px'}}></CancelIcon>
@@ -84,7 +84,7 @@ const Column = (props: IProps) => {
                 </Tooltip>
                 <DialogConfirm isOpen={open} handleClose={handleClose} handleRemove={handleRemove} />
             </div>
-            <div className="column__wrapper">
+            <div className={styles.column__wrapper}>
                 {taskList?.map((task, i) => (
                     <Task key={i} taskItem={task}/>
                 ) )}

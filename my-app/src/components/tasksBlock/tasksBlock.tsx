@@ -1,4 +1,4 @@
-import './tasksBlock.scss'
+import styles from './tasksBlock.module.scss'
 
 import Stack from '@mui/material/Stack'
 
@@ -26,7 +26,7 @@ const tasks = [
 ]
 const TasksBlock = () => {
   return (
-    <Stack spacing={2} className='central' p={2}>
+    <Stack spacing={2} className={styles.central} p={2}>
       {tasks.map((task) => (
         <Task key={task.id} />
       ))}

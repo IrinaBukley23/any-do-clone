@@ -56,7 +56,7 @@ export const taskReducer = (state: ITask = initialState.task, action: Action) =>
         case Actions.REMOVE_TASK: {
           return {
             ...state,
-            taskList: state.taskList.filter((task) => task.taskId !== action.payload),
+            taskList: state.taskList.filter((task) => task.taskTitle !== action.payload),
           };
           }
         default: 

@@ -1,6 +1,6 @@
-import { Button, Grid, TextField } from '@mui/material'
+import { Grid, TextField } from '@mui/material'
 import { useFormik } from 'formik'
-import { Link, useNavigate } from 'react-router-dom'
+import {  useNavigate } from 'react-router-dom'
 import * as yup from 'yup'
 import { useAppDispatch } from '../../store/hooks'
 import { login } from '../../store/reducers/authorization'
@@ -38,7 +38,6 @@ export const LoginView = ({ formId }: ViewProps) => {
     },
   })
 
-  const isRedirect = formik.isValid ? '/main' : '/'
   return (
     <form id={formId} onSubmit={formik.handleSubmit} className={styles.form__content}>
       <Grid container spacing={2}>
