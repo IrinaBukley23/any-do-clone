@@ -2,6 +2,8 @@ import { Button, Grid, TextField } from '@mui/material'
 import { useFormik } from 'formik'
 import { Link, useNavigate } from 'react-router-dom'
 import * as yup from 'yup'
+import { useAppDispatch } from '../../store/hooks'
+import { login } from '../../store/reducers/authorization'
 import styles from './form.module.scss'
 
 const validationSchem = yup.object({
@@ -17,20 +19,25 @@ const validationSchem = yup.object({
 
 interface ViewProps {
   formId: string
-  onClose: () => void
 }
 
-export const LoginView = ({ formId, onClose }: ViewProps) => {
-  const navigate = useNavigate()
+export const LoginView = ({ formId }: ViewProps) => {
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
   const formik = useFormik({
     initialValues: { email: '', password: '' },
     validationSchema: validationSchem,
     onSubmit: (values) => {
       console.log({ email: values.email, password: values.password })
-      onClose()
-      navigate('/main')
+      dispatch(login({ email: values.email, password: values.password }))
+        .unwrap()
+        .then(() => {
+          navigate('/main')
+        })
     },
   })
+
   const isRedirect = formik.isValid ? '/main' : '/'
   return (
     <form id={formId} onSubmit={formik.handleSubmit} className={styles.form__content}>

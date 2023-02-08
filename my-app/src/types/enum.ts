@@ -13,7 +13,7 @@ export enum Actions {
     REMOVE_TASK = 'REMOVE_TASK',
 }
 
-export enum typeForm {
+export enum DialogForm {
     login = 'login',
-    registr = 'registration',
+    register = 'registration',
   }
