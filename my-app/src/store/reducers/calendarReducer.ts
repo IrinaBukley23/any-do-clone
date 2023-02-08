@@ -36,6 +36,7 @@ const today = new Date()
 export const initialState: ICalendar = {
   dateCurrent: today.toDateString(),
   taskListAll: tasks,
+  searchString: '',
   taskList: getCurrTasks(tasks, today),
   dateSelectedInPlan: today.toDateString(),
   taskListInPlan: getCurrTasks(tasks, today),
@@ -48,10 +49,22 @@ export const calendarSlice = createSlice({
     setCurrentDate: (state, action: PayloadAction<string>) => {
       state.dateCurrent = action.payload
       state.taskList = getCurrTasks(state.taskListAll, moment(action.payload).toDate())
+      state.searchString = ''
     },
     setDateSelectedInPlan: (state, action: PayloadAction<Date>) => {
       state.dateSelectedInPlan = action.payload.toDateString()
       state.taskListInPlan = getCurrTasks(tasks, new Date(state.dateSelectedInPlan))
+    },
+    setSearchString: (state, action: PayloadAction<string>) => {
+      const findText = action.payload
+      state.searchString = findText
+      if (!findText)
+        state.taskList = getCurrTasks(state.taskListAll, moment(action.payload).toDate())
+      else {
+        state.taskList = state.taskList.filter((task) =>
+          task.title.toLowerCase().includes(state.searchString.toLowerCase()),
+        )
+      }
     },
     createTask: (state, action: PayloadAction<string>) => {
       const newTask: TaskCalendarItemType = {

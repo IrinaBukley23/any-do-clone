@@ -1,32 +1,51 @@
 import styles from './tasksBlock.module.scss'
+import SearchIcon from '@mui/icons-material/Search'
 
 import Stack from '@mui/material/Stack'
 import TaskCard from './taskCard'
-import { Paper, TextField } from '@mui/material'
+import { InputAdornment, TextField } from '@mui/material'
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
 import { useState } from 'react'
 import { calendarActions } from '../../store/reducers/calendarReducer'
 
 const TasksBlock = () => {
-  const { taskList } = useAppSelector((state) => state.calendar)
+  const { taskList, searchString } = useAppSelector((state) => state.calendar)
+
   const [taskTitle, setTaskTitle] = useState('')
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTaskTitle(e.target.value)
   }
   const dispatch = useAppDispatch()
-  const handleBlur = (e: React.KeyboardEvent<HTMLDivElement>) => {
+  const handleKey = (e: React.KeyboardEvent<HTMLDivElement>) => {
     if (e.key === 'Enter') {
       if (taskTitle) dispatch(calendarActions.createTask(taskTitle))
       setTaskTitle('')
     }
   }
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const findText = e.target.value.trim()
+    dispatch(calendarActions.setSearchString(findText))
+  }
+
   return (
-    <Stack spacing={2} className={styles.central} p={2}>
+    <Stack spacing={2} className={styles.central}>
+      <TextField
+        placeholder='Начните вводить для поиска...'
+        InputProps={{
+          startAdornment: (
+            <InputAdornment position='start'>
+              <SearchIcon />
+            </InputAdornment>
+          ),
+        }}
+        value={searchString}
+        onChange={handleSearchChange}
+      />
       <TextField
         placeholder='Введите задачу'
         value={taskTitle}
         onChange={handleChange}
-        onKeyUp={handleBlur}
+        onKeyUp={handleKey}
       />
       <div className={styles.wrapper}>
         {taskList.map((task) => (

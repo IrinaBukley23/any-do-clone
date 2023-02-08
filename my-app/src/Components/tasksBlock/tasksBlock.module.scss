@@ -1,10 +1,13 @@
 .central {
   width: 40%;
   flex-grow: 1;
+  height: 90vh;
+  padding-left: 1rem;
+  padding-right: 1rem;
 }
 .wrapper {
   overflow: auto;
-  height: 80vh;
+
   background-color: transparent;
   display: flex;
   flex-direction: column;

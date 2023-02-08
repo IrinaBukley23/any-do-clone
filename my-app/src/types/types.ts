@@ -52,6 +52,7 @@ export interface ISession {
 
 export type ICalendar = {
   dateCurrent: string
+  searchString: string
   taskListAll: TaskCalendarItemType[]
   taskList: TaskCalendarItemType[]
   dateSelectedInPlan: string
