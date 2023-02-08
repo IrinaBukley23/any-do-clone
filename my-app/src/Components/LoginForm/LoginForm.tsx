@@ -8,6 +8,7 @@ import { SyntheticEvent } from 'react'
 import { RegistrationView } from './RegistrationView'
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
 import { hideDialog, selectDialogForm } from '../../store/reducers/authorization'
+import TaskForm from '../taskForm/taskForm'
 
 const formsParams = {
   [DialogForm.login]: {
@@ -17,6 +18,10 @@ const formsParams = {
   [DialogForm.register]: {
     textApprove: 'Зарегистрироваться',
     formId: `form-${DialogForm.register}`,
+  },
+  [DialogForm.task]: {
+    textApprove: 'Добавить задачу',
+    formId: `form-${DialogForm.task}`,
   },
 }
 
@@ -43,11 +48,11 @@ export const LoginForm = () => {
         <Tab label='Зарегистрироваться' value={DialogForm.register} />
       </Tabs>
 
-      {dialogForm === DialogForm.login ? (
+      {!(dialogForm === DialogForm.login ? (
         <LoginView formId={formId} />
       ) : (
         <RegistrationView formId={formId} />
-      )}
+      ) ) ? <TaskForm formId={formId} /> : null}
     </DialogModal>
   )
 }

@@ -4,10 +4,11 @@ import { Button, Dialog, DialogActions, DialogContent, DialogContentText, Dialog
 import { IColumn, State } from '../../types/types';
 import { useDispatch, useSelector } from 'react-redux';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { editColumnTitle, setRemoveColumn } from '../../store/actions/actionCreators';
+import { editColumnTitle, setRemoveColumn, setTaskList } from '../../store/actions/actionCreators';
 import CancelIcon from '@mui/icons-material/Cancel';
 import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
 import Task from '../task/task';
+import { DialogConfirm } from '../UI/DialogConfirm';
 
 interface IProps {
     columnItem: IColumn;
@@ -16,9 +17,8 @@ interface IProps {
 const Column = (props: IProps) => {
     const [open, setOpen] = useState(false);
     const { columnTitle, columnId } = props.columnItem;
-    const { taskList } =  useSelector((state: State) => state.task);
     const dispatch = useDispatch();
-    // const { taskList } = useSelector((state: State) => state.task);
+    const { taskList } = useSelector((state: State) => state.task);
     // const taskQuantity = taskList.length;
     const taskQuantity = 0;
   
@@ -73,28 +73,18 @@ const Column = (props: IProps) => {
                         <DeleteIcon />
                     </IconButton>
                 </Tooltip>
-                <Dialog
-                    open={open}
-                    onClose={handleClose}
-                    aria-labelledby="alert-dialog-title"
-                    aria-describedby="alert-dialog-description"
-                >
-                    <DialogTitle id="alert-dialog-title">
-                    {'Удаление'}
-                    </DialogTitle>
-                    <DialogContent>
-                    <DialogContentText id="alert-dialog-description">
-                        Вы действительно хотите удалить?
-                    </DialogContentText>
-                    </DialogContent>
-                    <DialogActions>
-                        <Button onClick={handleClose}>Нет</Button>
-                        <Button onClick={handleRemove} autoFocus>
-                            Да
-                        </Button>
-                    </DialogActions>
-                </Dialog>
+                <DialogConfirm isOpen={open} handleClose={handleClose} handleRemove={handleRemove} />
                 <div className="column__wrapper">
+                    <h2>Task</h2>
+                    <h2>Task</h2>
+                    <h2>Task</h2>
+                    <h2>Task</h2>
+                    <h2>Task</h2>
+                    <h2>Task</h2>
+                    <h2>Task</h2>
+                    <h2>Task</h2>
+                    <h2>Task</h2>
+                    <h2>Task</h2>
                     <h2>Task</h2>
                     <h2>Task</h2>
                     <h2>Task</h2>
@@ -104,10 +94,7 @@ const Column = (props: IProps) => {
                     })} */}
                 </div>
             </div>
-            <Button
-                color='primary'
-                variant='contained'
-                sx={{ height: '40px', mt: '30px'}}>
+            <Button onClick={() => dispatch(setTaskList(taskList))} color='primary' variant='contained' sx={{ height: '40px', mt: '30px'}}>
                 Добавить задачу
             </Button>
         </div>

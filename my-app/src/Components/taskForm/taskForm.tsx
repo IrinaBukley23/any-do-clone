@@ -21,46 +21,57 @@ const validationSchem = yup.object({
 
 interface ViewProps {
   formId: string
-  onClose: () => void
+  onClose?: () => void
 }
 
 const TaskForm = ({ formId, onClose }: ViewProps) => {
   const formik = useFormik({
-    initialValues: { title: '', descr: '' },
+    initialValues: { taskTitle: '', taskDescr: '' },
     validationSchema: validationSchem,
-    onSubmit: () => {
-      onClose();
-    },
+    onSubmit: (values) => {
+     // onClose();
+      console.log(values)
+      dispatch(
+        setTaskList([
+          ...taskList,
+          {
+            taskId: taskTitle,
+            taskTitle: taskTitle,
+            taskDescr: taskDescr,
+          //   taskUser: taskUser,
+          },
+        ])
+      );
+    }
   })
   const { taskList, taskTitle, taskDescr } = useSelector((state: State) => state.task);
   const dispatch = useDispatch();
-  const myId = nextId();
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    callback: (value: string) => AnyAction
-  ) => {
-    console.log(e.target.value)
-    dispatch(callback(e.target.value));
-  };
+  // const handleChange = (
+  //   e: React.ChangeEvent<HTMLInputElement>,
+  //   callback: (value: string) => AnyAction
+  // ) => {
+  //   console.log(e.target.value)
+  //   dispatch(callback(e.target.value));
+  // };
 
-  const handleTaskSubmit = (e: Event) => {
-    e.preventDefault();
-    dispatch(
-      setTaskList([
-        ...taskList,
-        {
-          taskId: myId,
-          taskTitle: taskTitle,
-          taskDescr: taskDescr,
-        //   taskUser: taskUser,
-        },
-      ])
-    );
-  };
+  // const handleTaskSubmit = (e: Event) => {
+  //   e.preventDefault();
+  //   dispatch(
+  //     setTaskList([
+  //       ...taskList,
+  //       {
+  //         taskId: taskTitle,
+  //         taskTitle: taskTitle,
+  //         taskDescr: taskDescr,
+  //       //   taskUser: taskUser,
+  //       },
+  //     ])
+  //   );
+  // };
 
   return (
-    <form id={myId} onSubmit={formik.handleSubmit} className={styles.form__content}>
+    <form id={formId} onSubmit={formik.handleSubmit} className={styles.form__content}>
       <Grid container spacing={2}>
         <Grid item xs={12}>
           <TextField
@@ -68,11 +79,11 @@ const TaskForm = ({ formId, onClose }: ViewProps) => {
             name='title'
             label='Title'
             fullWidth
-            value={formik.values.title}
+            value={formik.values.taskTitle}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            error={formik.touched.title && Boolean(formik.errors.title)}
-            helperText={formik.errors.title}
+            error={formik.touched.taskTitle && Boolean(formik.errors.taskTitle)}
+            helperText={formik.errors.taskTitle}
           />
         </Grid>
         <Grid item xs={12}>
@@ -81,11 +92,11 @@ const TaskForm = ({ formId, onClose }: ViewProps) => {
             name='descr'
             label='Description'
             fullWidth
-            value={formik.values.descr}
+            value={formik.values.taskDescr}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            error={formik.touched.descr && Boolean(formik.errors.descr)}
-            helperText={formik.errors.descr}
+            error={formik.touched.taskDescr && Boolean(formik.errors.taskDescr)}
+            helperText={formik.errors.taskDescr}
           />
         </Grid>
       </Grid>

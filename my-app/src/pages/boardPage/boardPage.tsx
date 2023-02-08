@@ -6,12 +6,11 @@ import Column from '../../components/column/column';
 import { AnyAction } from 'redux';
 import { useDispatch, useSelector } from 'react-redux';
 import { setColumnList, setColumnTitle } from '../../store/actions/actionCreators';
-import nextId from 'react-id-generator';
+import TaskForm from '../../components/taskForm/taskForm';
 
 const BoardPage = () => {
     const [isCreate, setIsCreate] = useState(false);
     const [, setCreated] = useState(false);
-    const myId = nextId();
     const { columnTitle } = useSelector((state: State) => state.column);
     const { columnList } = useSelector((state: State) => state.column);
     const dispatch = useDispatch();
@@ -30,7 +29,7 @@ const BoardPage = () => {
         setColumnList([
           ...columnList,
           {
-            columnId: myId,
+            columnId: columnTitle,
             columnTitle: columnTitle,
           },
         ])

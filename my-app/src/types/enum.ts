@@ -16,4 +16,5 @@ export enum Actions {
 export enum DialogForm {
     login = 'login',
     register = 'registration',
+    task = 'task',
   }
