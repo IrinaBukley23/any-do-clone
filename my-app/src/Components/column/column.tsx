@@ -78,7 +78,7 @@ const Column = (props: IProps) => {
                 <Tooltip title="Delete column">
                     <IconButton 
                         onClick={handleOpen}
-                        sx={{position: 'absolute', top: '5px', right: '5px' , color: 'red'}}>
+                        sx={{position: 'absolute', top: '5px', right: '5px' , color: '#ab45fa'}}>
                         <DeleteIcon />
                     </IconButton>
                 </Tooltip>

@@ -4,9 +4,10 @@ import { Button, Dialog, DialogActions, DialogContent, DialogContentText, Dialog
 import { ITask } from '../../types/types';
 import { useDispatch } from 'react-redux';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { editColumnTitle, editTaskDescr, editTaskTitle, setRemoveColumn } from '../../store/actions/actionCreators';
+import { editColumnTitle, editTaskDescr, editTaskTitle, setRemoveColumn, setRemoveTask } from '../../store/actions/actionCreators';
 import CancelIcon from '@mui/icons-material/Cancel';
 import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
+import { DialogConfirm } from '../UI/DialogConfirm';
 
 interface IProps {
     taskItem: ITask;
@@ -14,6 +15,7 @@ interface IProps {
 
 const Task = (props: IProps) => {
     const [open, setOpen] = useState(false);
+    const [openConfirm, setOpenConfirm] = useState(false);
     const { taskTitle, taskId, taskDescr } = props.taskItem;
     const dispatch = useDispatch();
   
@@ -64,7 +66,14 @@ const Task = (props: IProps) => {
     };
 
     const handleRemove = () => {
-        dispatch(setRemoveColumn(taskId))
+        dispatch(setRemoveTask(taskId))
+    };
+
+    const handleOpenConfirm = () => {
+        setOpenConfirm(true);
+      };
+    const handleCloseConfirm = () => {
+        setOpenConfirm(false);
     };
 
     return (
@@ -86,41 +95,15 @@ const Task = (props: IProps) => {
                 </div>
             )}
             <div>
-                <Tooltip title="Delete column">
+                <Tooltip title="Delete task">
                     <IconButton 
-                        onClick={handleOpen}
-                        sx={{position: 'absolute', top: '5px', right: '5px' , color: 'red'}}>
+                        onClick={handleOpenConfirm}
+                        sx={{position: 'absolute', bottom: '0', right: '0' , color: '#ab45fa'}}>
                         <DeleteIcon />
                     </IconButton>
                 </Tooltip>
-                <Dialog
-                    open={open}
-                    onClose={handleClose}
-                    aria-labelledby="alert-dialog-title"
-                    aria-describedby="alert-dialog-description"
-                >
-                    <DialogTitle id="alert-dialog-title">
-                    {'Удаление'}
-                    </DialogTitle>
-                    <DialogContent>
-                    <DialogContentText id="alert-dialog-description">
-                        Вы действительно хотите удалить?
-                    </DialogContentText>
-                    </DialogContent>
-                    <DialogActions>
-                        <Button onClick={handleClose}>Нет</Button>
-                        <Button onClick={handleRemove} autoFocus>
-                            Да
-                        </Button>
-                    </DialogActions>
-                </Dialog>
+                <DialogConfirm isOpen={openConfirm} handleClose={handleCloseConfirm} handleRemove={handleRemove} />
             </div>
-            {/* <Button
-                color='primary'
-                variant='contained'
-                sx={{ height: '40px', mt: '30px'}}>
-                Добавить задачу
-            </Button> */}
         </div>
     )
 }

@@ -38,7 +38,6 @@ const TaskForm = () => {
       ])
     );
     setOpen(false);
-    console.log(taskList)
   };
 
   return (
