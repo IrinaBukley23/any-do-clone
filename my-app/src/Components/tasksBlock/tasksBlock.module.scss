@@ -1,0 +1,16 @@
+.central {
+  width: 40%;
+  flex-grow: 1;
+}
+.wrapper {
+  overflow: auto;
+  height: 80vh;
+  background-color: transparent;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.card {
+  flex-shrink: 0;
+}
