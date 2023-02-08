@@ -1,47 +1,52 @@
 import { Tab, Tabs } from '@mui/material'
 // import { useDispatch } from 'react-redux';
 // import { loginSlice } from '../../store/reducers/loginSlice';
-import { typeForm } from '../../types/enum'
+import { DialogForm } from '../../types/enum'
 import { DialogModal } from '../UI/DialogModal'
 import { LoginView } from './LoginView'
 import { SyntheticEvent } from 'react'
 import { RegistrationView } from './RegistrationView'
+import { useAppDispatch, useAppSelector } from '../../store/hooks'
+import { hideDialog, selectDialogForm } from '../../store/reducers/authorization'
 
-interface LoginProps {
-  onClose: () => void
-  onChange: (typeForm: typeForm) => void
-  isOpen: boolean
-  kindForm: typeForm
-}
 const formsParams = {
-  [typeForm.login]: {
-    textAprove: 'Войти',
-    formId: `form-${typeForm.login}`,
+  [DialogForm.login]: {
+    textApprove: 'Войти',
+    formId: `form-${DialogForm.login}`,
   },
-  [typeForm.registr]: {
-    textAprove: 'Зарегистрироваться',
-    formId: `form-${typeForm.login}`,
+  [DialogForm.register]: {
+    textApprove: 'Зарегистрироваться',
+    formId: `form-${DialogForm.register}`,
   },
 }
 
-export const LoginForm = ({ onClose, onChange, isOpen, kindForm = typeForm.login }: LoginProps) => {
-  // const { setToken, setUser } = loginSlice.actions
-  // const dispatch = useDispatch()
+export const LoginForm = () => {
+  const dispatch = useAppDispatch();
+  const {isDialogShown, dialogForm: currentDialogForm} = useAppSelector(state => state.authorization);
 
-  const handleChange = (e: SyntheticEvent, newValue: typeForm) => {
-    onChange(newValue)
+  const dialogForm: DialogForm = currentDialogForm ?? DialogForm.login;
+  const formParams = formsParams[dialogForm];
+  const formId = formParams.formId;
+
+  const handleChange = (e: SyntheticEvent, newValue: DialogForm) => {
+    dispatch(selectDialogForm(newValue))
   }
 
   return (
-    <DialogModal onClose={onClose} isOpen={isOpen} formsParams={formsParams[kindForm]}>
-      <Tabs onChange={handleChange} value={kindForm}>
-        <Tab label='Войти' value={typeForm.login} />
-        <Tab label='Зарегистрироваться' value={typeForm.registr} />
+    <DialogModal
+      onClose={() => dispatch(hideDialog())}
+      isOpen={isDialogShown}
+      formsParams={formParams}
+    >
+      <Tabs onChange={handleChange} value={dialogForm}>
+        <Tab label='Войти' value={DialogForm.login} />
+        <Tab label='Зарегистрироваться' value={DialogForm.register} />
       </Tabs>
-      {kindForm === 'login' ? (
-        <LoginView formId={formsParams[kindForm].formId} onClose={onClose} />
+
+      {dialogForm === DialogForm.login ? (
+        <LoginView formId={formId} />
       ) : (
-        <RegistrationView formId={formsParams[kindForm].formId} onClose={onClose} />
+        <RegistrationView formId={formId} />
       )}
     </DialogModal>
   )

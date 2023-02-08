@@ -16,7 +16,7 @@ export interface ITask {
 export type TaskItemType = Omit<ITask, 'taskList'>
 
 export type FormParam = {
-  textAprove: string
+  textApprove: string
   formId: string
 }
 
@@ -29,6 +29,27 @@ export type State = {
   calendar: ICalendar
   //  taskList: ITask[];
 }
+
+export interface IUser {
+  name: string
+  email: string
+  password: string
+}
+
+export interface IAuthorization {
+  email: string
+  password: string
+}
+
+export interface IError {
+  message: string
+}
+
+export interface ISession {
+  key: string
+  userId: number
+}
+
 export type ICalendar = {
   dateCurrent: Date
   taskList: TaskCalendarItemType[]
