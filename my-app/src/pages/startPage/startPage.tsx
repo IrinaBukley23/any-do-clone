@@ -1,4 +1,4 @@
-import { Box, Button, Card, CardContent, Typography } from '@mui/material'
+ import { Box, Button, Card, CardContent, Typography } from '@mui/material'
 import GitHubIcon from '@mui/icons-material/GitHub'
 import TelegramIcon from '@mui/icons-material/Telegram'
 import LinkedInIcon from '@mui/icons-material/LinkedIn'

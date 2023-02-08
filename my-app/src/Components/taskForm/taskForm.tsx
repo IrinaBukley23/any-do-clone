@@ -1,12 +1,11 @@
-import { Grid, TextField } from '@mui/material'
+import { Button, Grid, TextField } from '@mui/material'
 import { useFormik } from 'formik'
-import { useNavigate } from 'react-router-dom'
 import * as yup from 'yup'
 import styles from '../LoginForm/form.module.scss';
 import nextId from 'react-id-generator';
 import { useDispatch, useSelector } from 'react-redux';
 import { AnyAction } from 'redux';
-import { setTaskList } from '../../store/actions/actionCreators';
+import { setTaskDescr, setTaskList, setTaskTitle } from '../../store/actions/actionCreators';
 import { State } from '../../types/types';
 
 const validationSchem = yup.object({
@@ -29,11 +28,11 @@ const TaskForm = ({ formId, onClose }: ViewProps) => {
   const formik = useFormik({
     initialValues: { title: '', descr: '' },
     validationSchema: validationSchem,
-    onSubmit: (values) => {
+    onSubmit: () => {
       onClose();
     },
   })
-  // const { taskList, taskTitle, taskDescr } = useSelector((state: State) => state.task);
+  const { taskList, taskTitle, taskDescr } = useSelector((state: State) => state.task);
   const dispatch = useDispatch();
   const myId = nextId();
 
@@ -41,27 +40,27 @@ const TaskForm = ({ formId, onClose }: ViewProps) => {
     e: React.ChangeEvent<HTMLInputElement>,
     callback: (value: string) => AnyAction
   ) => {
+    console.log(e.target.value)
     dispatch(callback(e.target.value));
   };
 
-  const handleTaskSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleTaskSubmit = (e: Event) => {
     e.preventDefault();
     dispatch(
       setTaskList([
-        // ...taskList,
-        // {
-        //   taskId: myId,
-        //   taskTitle: taskTitle,
-        //   taskDescr: taskDescr,
-        // //   taskUser: taskUser,
-        // },
+        ...taskList,
+        {
+          taskId: myId,
+          taskTitle: taskTitle,
+          taskDescr: taskDescr,
+        //   taskUser: taskUser,
+        },
       ])
     );
   };
 
-
   return (
-    <form id={formId} onSubmit={formik.handleSubmit} className={styles.form__content}>
+    <form id={myId} onSubmit={formik.handleSubmit} className={styles.form__content}>
       <Grid container spacing={2}>
         <Grid item xs={12}>
           <TextField
@@ -69,9 +68,9 @@ const TaskForm = ({ formId, onClose }: ViewProps) => {
             name='title'
             label='Title'
             fullWidth
+            value={formik.values.title}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            value={formik.values.title}
             error={formik.touched.title && Boolean(formik.errors.title)}
             helperText={formik.errors.title}
           />

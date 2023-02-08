@@ -1,5 +1,5 @@
 import './boardPage.scss';
-import React, { useId, useState } from 'react';
+import React, { useState } from 'react';
 import { Button, TextField } from '@mui/material';
 import { State } from '../../types/types';
 import Column from '../../components/column/column';
@@ -7,12 +7,10 @@ import { AnyAction } from 'redux';
 import { useDispatch, useSelector } from 'react-redux';
 import { setColumnList, setColumnTitle } from '../../store/actions/actionCreators';
 import nextId from 'react-id-generator';
-import TaskForm from '../../components/taskForm/taskForm';
 
 const BoardPage = () => {
     const [isCreate, setIsCreate] = useState(false);
-    const [created, setCreated] = useState(false);
-    const id = useId();
+    const [, setCreated] = useState(false);
     const myId = nextId();
     const { columnTitle } = useSelector((state: State) => state.column);
     const { columnList } = useSelector((state: State) => state.column);
@@ -75,9 +73,6 @@ const BoardPage = () => {
                   Добавить колонку
               </Button>
             </>
-            <TaskForm formId={''} onClose={function (): void {
-          throw new Error('Function not implemented.');
-        } } />
         </div>
     )
 }

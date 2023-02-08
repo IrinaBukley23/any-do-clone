@@ -13,11 +13,7 @@
     background-color: #b8b6b6;
     overflow: hidden;
     padding: 5px 10px 15px;
-    &__wrapper {
-        overflow-y: auto;
-        overflow-x: hidden;
-        max-height: 70vh;
-    }
+   
 }
 .task {
     width: 100%;

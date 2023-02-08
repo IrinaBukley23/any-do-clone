@@ -1,29 +1,24 @@
-import './column.scss';
+import './task.modules.scss';
 import React, { useState } from 'react';
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, TextField, Tooltip, Typography } from '@mui/material';
-import { IColumn, State } from '../../types/types';
+import { ITask, State } from '../../types/types';
 import { useDispatch, useSelector } from 'react-redux';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { editColumnTitle, setRemoveColumn } from '../../store/actions/actionCreators';
 import CancelIcon from '@mui/icons-material/Cancel';
 import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
-import Task from '../task/task';
 
 interface IProps {
-    columnItem: IColumn;
+    taskItem: ITask;
 }
 
-const Column = (props: IProps) => {
+const Task = (props: IProps) => {
     const [open, setOpen] = useState(false);
-    const { columnTitle, columnId } = props.columnItem;
-    const { taskList } =  useSelector((state: State) => state.task);
+    const { taskTitle, taskId, taskDescr } = props.taskItem;
     const dispatch = useDispatch();
-    // const { taskList } = useSelector((state: State) => state.task);
-    // const taskQuantity = taskList.length;
-    const taskQuantity = 0;
   
     const [isEdit, setIsEdit] = useState(false);
-    const [correctedTitle, setCorrectedTitle] = useState(columnTitle);
+    const [correctedTitle, setCorrectedTitle] = useState(taskTitle);
   
     const handleEdit = () => {
       setIsEdit(true);
@@ -35,7 +30,7 @@ const Column = (props: IProps) => {
   
     const handleSave = () => {
       setIsEdit(false);
-      dispatch(editColumnTitle(columnId, correctedTitle));
+      dispatch(editColumnTitle(taskId, correctedTitle));
     };
   
     const handleCancel = () => {
@@ -51,12 +46,12 @@ const Column = (props: IProps) => {
     };
 
     const handleRemove = () => {
-        dispatch(setRemoveColumn(columnId))
+        dispatch(setRemoveColumn(taskId))
     };
 
     return (
-        <div id={columnId} key={columnId} className="column">
-            {!isEdit && <Typography variant="h5" onClick={handleEdit}>{columnTitle}</Typography>}
+        <div id={taskId} key={taskId}>
+            {!isEdit && <Typography variant="h5" className="task" onClick={handleEdit}>{taskTitle}</Typography>}
             {isEdit && (
                 <div className='column__edit'>
                     <TextField id="outlined-basic" label="Outlined" variant="outlined" value={correctedTitle} onChange={handleCorrect} sx={{width: '160px'}} />
@@ -64,7 +59,6 @@ const Column = (props: IProps) => {
                     <CancelIcon onClick={handleCancel} sx={{color: 'blue', ml: '10px'}}></CancelIcon>
                 </div>
             )}
-            <Typography variant="h5" component="p" sx={{fontSize: '14px', textAlign: 'left'}}>Карточек - {taskQuantity}</Typography>
             <div>
                 <Tooltip title="Delete column">
                     <IconButton 
@@ -94,15 +88,6 @@ const Column = (props: IProps) => {
                         </Button>
                     </DialogActions>
                 </Dialog>
-                <div className="column__wrapper">
-                    <h2>Task</h2>
-                    <h2>Task</h2>
-                    <h2>Task</h2>
-                    <h2>Task</h2>
-                    {/* {taskList?.map(task => {
-                        <Task taskItem={task}/>
-                    })} */}
-                </div>
             </div>
             <Button
                 color='primary'
@@ -114,4 +99,4 @@ const Column = (props: IProps) => {
     )
 }
 
-export default Column;
+export default Task;
