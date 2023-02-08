@@ -1,6 +1,6 @@
 import './sideBar.scss'
 import 'moment/locale/ru'
-import { useEffect } from 'react'
+
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment'
 import { Accordion, AccordionSummary, Typography, AccordionDetails, Paper } from '@mui/material'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
@@ -12,7 +12,19 @@ import TextField from '@mui/material/TextField'
 
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
 import { setCurrentDate } from '../../store/reducers/calendarReducer'
-
+const CustomBar = () => {
+  const { taskList } = useAppSelector((state) => state.calendar)
+  return (
+    <>
+      <p>
+        Выбранная дата: <b> {moment(new Date()).format('Do MMMM YYYY')}</b>
+      </p>
+      <p>
+        Количество задач: <strong>{taskList.length}</strong>
+      </p>
+    </>
+  )
+}
 const SideBar = () => {
   const { dateCurrent } = useAppSelector((state) => state.calendar)
 
@@ -32,11 +44,11 @@ const SideBar = () => {
             value={dateCurrent}
             onChange={changeDate}
             renderInput={(params) => <TextField {...params} />}
+            components={{
+              ActionBar: CustomBar,
+            }}
           />
         </LocalizationProvider>
-        <p>
-          Дата: <b> {moment(dateCurrent).format('Do MMMM YYYY')}</b>
-        </p>
       </Paper>
       <Accordion>
         <AccordionSummary
