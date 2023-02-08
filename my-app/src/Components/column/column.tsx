@@ -9,6 +9,7 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
 import Task from '../task/task';
 import { DialogConfirm } from '../UI/DialogConfirm';
+import ResponsiveDialog from '../UI/OpenDialog';
 
 interface IProps {
     columnItem: IColumn;
@@ -16,11 +17,11 @@ interface IProps {
 
 const Column = (props: IProps) => {
     const [open, setOpen] = useState(false);
+    const [isTaskModal, setIsTaskModal] = useState(false);
     const { columnTitle, columnId } = props.columnItem;
     const dispatch = useDispatch();
     const { taskList } = useSelector((state: State) => state.task);
-    // const taskQuantity = taskList.length;
-    const taskQuantity = 0;
+    const taskQuantity = taskList.length;
   
     const [isEdit, setIsEdit] = useState(false);
     const [correctedTitle, setCorrectedTitle] = useState(columnTitle);
@@ -50,13 +51,21 @@ const Column = (props: IProps) => {
         setOpen(false);
     };
 
+    const handleTaskFormOpen = () => {
+        setIsTaskModal(true);
+    };
+    const handleTaskFormClose = () => {
+        setIsTaskModal(false);
+    };
+
     const handleRemove = () => {
         dispatch(setRemoveColumn(columnId))
     };
 
     return (
         <div id={columnId} key={columnId} className="column">
-            {!isEdit && <Typography variant="h5" onClick={handleEdit}>{columnTitle}</Typography>}
+            {!isEdit && <Typography variant="h5" onClick={handleEdit}>{columnTitle}</Typography>
+            }
             {isEdit && (
                 <div className='column__edit'>
                     <TextField id="outlined-basic" label="Outlined" variant="outlined" value={correctedTitle} onChange={handleCorrect} sx={{width: '160px'}} />
@@ -74,29 +83,16 @@ const Column = (props: IProps) => {
                     </IconButton>
                 </Tooltip>
                 <DialogConfirm isOpen={open} handleClose={handleClose} handleRemove={handleRemove} />
-                <div className="column__wrapper">
-                    <h2>Task</h2>
-                    <h2>Task</h2>
-                    <h2>Task</h2>
-                    <h2>Task</h2>
-                    <h2>Task</h2>
-                    <h2>Task</h2>
-                    <h2>Task</h2>
-                    <h2>Task</h2>
-                    <h2>Task</h2>
-                    <h2>Task</h2>
-                    <h2>Task</h2>
-                    <h2>Task</h2>
-                    <h2>Task</h2>
-                    <h2>Task</h2>
-                    {/* {taskList?.map(task => {
-                        <Task taskItem={task}/>
-                    })} */}
-                </div>
             </div>
-            <Button onClick={() => dispatch(setTaskList(taskList))} color='primary' variant='contained' sx={{ height: '40px', mt: '30px'}}>
+            <div className="column__wrapper">
+                {taskList?.map((task, i) => (
+                    <Task key={i} taskItem={task}/>
+                ) )}
+            </div>
+            <Button onClick={handleTaskFormOpen} color='primary' variant='contained' sx={{ height: '40px', mt: '30px'}}>
                 Добавить задачу
             </Button>
+            <ResponsiveDialog isOpen={isTaskModal} handleClose={handleTaskFormClose} />
         </div>
     )
 }

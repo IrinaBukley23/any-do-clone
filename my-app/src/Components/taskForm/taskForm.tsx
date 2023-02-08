@@ -1,77 +1,48 @@
-import { Button, Grid, TextField } from '@mui/material'
-import { useFormik } from 'formik'
-import * as yup from 'yup'
+import { Button, Grid, TextField, Typography } from '@mui/material'
 import styles from '../LoginForm/form.module.scss';
-import nextId from 'react-id-generator';
 import { useDispatch, useSelector } from 'react-redux';
 import { AnyAction } from 'redux';
 import { setTaskDescr, setTaskList, setTaskTitle } from '../../store/actions/actionCreators';
 import { State } from '../../types/types';
+import { useState } from 'react';
 
-const validationSchem = yup.object({
-  title: yup
-    .string()
-    .min(3, 'Длина заголовка должна быть минимум 3 символа ')
-    .required('Поле обязательно для заполнения'),
-  descr: yup
-    .string()
-    .min(8, 'Длина описания должна быть минимум 5 символов ') 
-    .required('Поле обязательно для заполнения'), 
-})
-
-interface ViewProps {
-  formId: string
-  onClose?: () => void
-}
-
-const TaskForm = ({ formId, onClose }: ViewProps) => {
-  const formik = useFormik({
-    initialValues: { taskTitle: '', taskDescr: '' },
-    validationSchema: validationSchem,
-    onSubmit: (values) => {
-     // onClose();
-      console.log(values)
-      dispatch(
-        setTaskList([
-          ...taskList,
-          {
-            taskId: taskTitle,
-            taskTitle: taskTitle,
-            taskDescr: taskDescr,
-          //   taskUser: taskUser,
-          },
-        ])
-      );
-    }
-  })
+const TaskForm = () => {
+  const [open, setOpen] = useState(false);
   const { taskList, taskTitle, taskDescr } = useSelector((state: State) => state.task);
   const dispatch = useDispatch();
+  const [isError, setIsError] = useState(false);
+  const [isErrorDescr, setIsErrorDescr] = useState(false);
 
-  // const handleChange = (
-  //   e: React.ChangeEvent<HTMLInputElement>,
-  //   callback: (value: string) => AnyAction
-  // ) => {
-  //   console.log(e.target.value)
-  //   dispatch(callback(e.target.value));
-  // };
+  const handleClose = () => {
+    setOpen(false);
+};
 
-  // const handleTaskSubmit = (e: Event) => {
-  //   e.preventDefault();
-  //   dispatch(
-  //     setTaskList([
-  //       ...taskList,
-  //       {
-  //         taskId: taskTitle,
-  //         taskTitle: taskTitle,
-  //         taskDescr: taskDescr,
-  //       //   taskUser: taskUser,
-  //       },
-  //     ])
-  //   );
-  // };
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    callback: (value: string) => AnyAction,
+    foo: (value: boolean) => void
+  ) => {
+    (e.target.value.length < 3) ? foo(true): foo(false);
+    dispatch(callback(e.target.value));
+  };
+
+  const handleTaskSubmit = () => {
+    dispatch(
+      setTaskList([
+        ...taskList,
+        {
+          taskId: taskTitle,
+          taskTitle: taskTitle,
+          taskDescr: taskDescr,
+        },
+      ])
+    );
+    setOpen(false);
+    console.log(taskList)
+  };
 
   return (
-    <form id={formId} onSubmit={formik.handleSubmit} className={styles.form__content}>
+    <form id='task' className={styles.form__content}>
       <Grid container spacing={2}>
         <Grid item xs={12}>
           <TextField
@@ -79,12 +50,9 @@ const TaskForm = ({ formId, onClose }: ViewProps) => {
             name='title'
             label='Title'
             fullWidth
-            value={formik.values.taskTitle}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={formik.touched.taskTitle && Boolean(formik.errors.taskTitle)}
-            helperText={formik.errors.taskTitle}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange(e, setTaskTitle, setIsError)}
           />
+          {isError && <Typography variant="h5" component="p" sx={{fontSize: '12px', textAlign: 'left', color: 'red'}}>Необходимо минимум три символа</Typography>}
         </Grid>
         <Grid item xs={12}>
           <TextField
@@ -92,14 +60,13 @@ const TaskForm = ({ formId, onClose }: ViewProps) => {
             name='descr'
             label='Description'
             fullWidth
-            value={formik.values.taskDescr}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={formik.touched.taskDescr && Boolean(formik.errors.taskDescr)}
-            helperText={formik.errors.taskDescr}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange(e, setTaskDescr, setIsErrorDescr)}
           />
+          {isErrorDescr && <Typography variant="h5" component="p" sx={{fontSize: '12px', textAlign: 'left', color: 'red'}}>Необходимо минимум три символа</Typography>}
         </Grid>
       </Grid>
+      <Button autoFocus onClick={handleClose}>Отмена</Button>
+      <Button onClick={handleTaskSubmit}>Создать</Button>
     </form>
   )
 }

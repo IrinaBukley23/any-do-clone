@@ -6,7 +6,7 @@ export enum Actions {
     REMOVE_COLUMN = 'REMOVE_COLUMN',
     SET_TASKID = 'SET_TASKID',
     SET_TASKTITLE = 'SET_TASKTITLE',
-    SET_TASKDESCR = 'SET_TASKTITLE',
+    SET_TASKDESCR = 'SET_TASKDESCR',
     SET_TASKLIST = 'SET_TASKLIST',
     EDIT_TASKTITLE= 'EDIT_TASKTITLE',
     EDIT_TASKDESCR= 'EDIT_TASKDESCR',
@@ -16,5 +16,4 @@ export enum Actions {
 export enum DialogForm {
     login = 'login',
     register = 'registration',
-    task = 'task',
   }

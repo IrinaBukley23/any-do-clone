@@ -12,7 +12,6 @@ export const taskReducer = (state: ITask = initialState.task, action: Action) =>
           }
         }
         case Actions.SET_TASKDESCR: {
-          console.log(state);
           return {
               ...state,
               taskDescr: action.payload,
