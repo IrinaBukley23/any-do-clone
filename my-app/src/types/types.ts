@@ -51,15 +51,18 @@ export interface ISession {
 }
 
 export type ICalendar = {
-  dateCurrent: Date
+  dateCurrent: string
+  taskListAll: TaskCalendarItemType[]
   taskList: TaskCalendarItemType[]
+  dateSelectedInPlan: string
+  taskListInPlan: TaskCalendarItemType[]
 }
 
 export interface ITaskCalendar {
   id: number
-  dateCreate: Date
-  dateStart?: Date
-  dateEnd?: Date
+  dateCreate: string
+  dateStart?: string
+  dateEnd?: string
   title: string
   description?: string
   idPersons?: number[]
