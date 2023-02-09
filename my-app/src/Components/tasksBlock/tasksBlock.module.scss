@@ -1,19 +1,4 @@
 .central {
   width: 40%;
   flex-grow: 1;
-  height: 90vh;
-  padding-left: 1rem;
-  padding-right: 1rem;
-}
-.wrapper {
-  overflow: auto;
-
-  background-color: transparent;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.card {
-  flex-shrink: 0;
 }

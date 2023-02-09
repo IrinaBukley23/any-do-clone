@@ -39,12 +39,33 @@ export const setTaskTitle = (taskTitle: string) => ({
   payload: taskTitle,
 })
 
-export const setTaskDescr = (taskTitle: string) => ({
-  type: Actions.SET_TASKTITLE,
-  payload: taskTitle,
+export const setTaskDescr = (taskDescr: string) => ({
+  type: Actions.SET_TASKDESCR,
+  payload: taskDescr,
 })
 
 export const setTaskList = (taskList: TaskItemType[]) => ({
   type: Actions.SET_TASKLIST,
   payload: taskList,
+})
+
+export const editTaskTitle = (taskId: string, taskTitle: string) => ({
+  type: Actions.EDIT_TASKTITLE,
+  payload: {
+    taskId,
+    taskTitle,
+  },
+})
+
+export const editTaskDescr = (taskId: string, taskDescr: string) => ({
+  type: Actions.EDIT_TASKDESCR,
+  payload: {
+    taskId,
+    taskDescr,
+  },
+})
+
+export const setRemoveTask = (taskTitle: string) => ({
+  type: Actions.REMOVE_TASK,
+  payload: taskTitle,
 })

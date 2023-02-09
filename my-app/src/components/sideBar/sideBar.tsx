@@ -1,4 +1,4 @@
-import './sideBar.scss'
+import styles from './sideBar.module.scss'
 import 'moment/locale/ru'
 
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment'

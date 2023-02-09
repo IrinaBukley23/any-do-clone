@@ -1,13 +1,13 @@
 import { Outlet } from 'react-router-dom'
 import SideBar from '../sideBar/sideBar'
 
-import './Layout.scss'
+import styles from './Layout.module.scss'
 
 const Layout = () => {
   return (
     <>
       <header style={{ height: '70px', background: '#ffffff' }}>Здесь могут быть цитаты </header>
-      <main className='coinatiner'>
+      <main className={styles.container}>
         <SideBar />
         <Outlet />
       </main>

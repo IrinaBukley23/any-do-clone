@@ -1,11 +1,11 @@
-import { Box, Button, Card, CardContent, Typography } from '@mui/material'
+ import { Box, Button, Card, CardContent, Typography } from '@mui/material'
 import GitHubIcon from '@mui/icons-material/GitHub'
 import TelegramIcon from '@mui/icons-material/Telegram'
 import LinkedInIcon from '@mui/icons-material/LinkedIn'
 import irina from '../../assets/team/irina.jpg'
 import vlada from '../../assets/team/vlada.jpg'
 import polina from '../../assets/team/polina.jpg'
-import './startPage.scss'
+import styles from './startPage.module.scss';
 import { LoginForm } from '../../components/LoginForm/LoginForm';
 import { useAppDispatch } from '../../store/hooks';
 import { loginStart, registrationStart } from '../../store/reducers/authorization';
@@ -13,14 +13,14 @@ import { loginStart, registrationStart } from '../../store/reducers/authorizatio
 const StartPage = () => {
   const dispatch = useAppDispatch();
   return (
-    <div className='wrapper'>
+    <div className={styles.wrapper}>
       <Typography variant='h1' component='h6' sx={{ fontSize: 52 }}>
         Добро пожаловать в ЛидерТаск!
       </Typography>
       <Typography variant='h3' component='p' sx={{ fontWeitgh: 700, fontSize: 38, mt: 7 }}>
         Поздравляем! Сегодня ваш день — это великолепный день!
       </Typography>
-      <div className='wrapper__text'>
+      <div className={styles.wrapper__text}>
         <Typography component='p' sx={{ fontSize: 28, mb: 10 }}>
           С этого дня ваша личная продуктивность и эффективность сотрудников будут непрерывно расти.
           Вам станет просто и легко управлять делами.
@@ -32,10 +32,10 @@ const StartPage = () => {
           Зарегистрироваться
         </Button>
         <LoginForm />
-        <div className='wrapper__team'>
+        <div className={styles.wrapper__team}>
           <Card sx={{ display: 'flex', width: 300, justifyContent: 'center' }}>
             <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-              <div className='wrapper__team-photo'>
+              <div className={styles.wrapper__photo}>
                 <img src={irina} alt='irina' />
               </div>
               <CardContent sx={{ flex: '1 0 auto' }}>
@@ -74,7 +74,7 @@ const StartPage = () => {
           </Card>
           <Card sx={{ display: 'flex', mr: 5, ml: 5, width: 300, justifyContent: 'center' }}>
             <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-              <div className='wrapper__team-photo'>
+              <div className={styles.wrapper__photo}>
                 <img src={vlada} alt='vlada' />
               </div>
               <CardContent sx={{ flex: '1 0 auto' }}>
@@ -113,7 +113,7 @@ const StartPage = () => {
           </Card>
           <Card sx={{ display: 'flex', width: 300, justifyContent: 'center' }}>
             <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-              <div className='wrapper__team-photo'>
+              <div className={styles.wrapper__photo}>
                 <img src={polina} alt='polina' />
               </div>
               <CardContent sx={{ flex: '1 0 auto' }}>

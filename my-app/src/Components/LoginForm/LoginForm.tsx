@@ -17,7 +17,7 @@ const formsParams = {
   [DialogForm.register]: {
     textApprove: 'Зарегистрироваться',
     formId: `form-${DialogForm.register}`,
-  },
+  }
 }
 
 export const LoginForm = () => {
@@ -47,7 +47,7 @@ export const LoginForm = () => {
         <LoginView formId={formId} />
       ) : (
         <RegistrationView formId={formId} />
-      )}
+      ) }
     </DialogModal>
   )
 }
