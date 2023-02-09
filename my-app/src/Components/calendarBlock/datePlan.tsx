@@ -9,30 +9,79 @@ import ArrowLeftIcon from '@mui/icons-material/ArrowLeft'
 import ArrowRightIcon from '@mui/icons-material/ArrowRight'
 
 import styles from './datePlan.module.scss'
-import moment from 'moment'
+import moment, { Moment } from 'moment'
 import DataRow from './dataRow'
+import { useAppDispatch, useAppSelector } from '../../store/hooks'
+import { calendarActions } from '../../store/reducers/calendarReducer'
+import { useEffect, useState } from 'react'
+import { TaskCalendarItemType } from '../../types/types'
+import { DateBody } from './dateBody'
 
-const generateTime = () => {
-  const arr = []
+type timeCalendar = {
+  id: number
+  time: Moment
+  task: string
+}
+const generateTime = (date: string, tasks: TaskCalendarItemType[]): timeCalendar[] => {
+  const arr: timeCalendar[] = []
   // const date= new Date()
   for (let t = 7; t <= 20; t++) {
-    arr.push({ id: t, time: moment().hour(t).minutes(0), task: '' })
-    arr.push({ id: t + 30, time: moment().hour(t).minutes(30), task: ' ' })
+    arr.push({
+      id: t,
+      time: moment(date).hour(t).minutes(0),
+      task: '',
+    })
+    arr.push({ id: t + 30, time: moment(date).hour(t).minutes(30), task: ' ' })
   }
+  const roundMin = (date: string) => moment(date).minute() % 30
+  tasks.forEach((task) => {
+    const findTask = arr.find((elem) =>
+      elem.time.isSame(moment(task.dateCreate).add(roundMin(task.dateCreate), 'minutes')),
+    )
+
+    if (findTask) findTask.task = task.title
+  })
+
   return arr
 }
 
 const DatePlan = () => {
+  const { dateSelectedInPlan, taskListInPlan } = useAppSelector((state) => state.calendar)
+  const [listTasks, setListTasks] = useState([] as timeCalendar[])
+  const dispatch = useAppDispatch()
+  const handleLeft = () => {
+    dispatch(
+      calendarActions.setDateSelectedInPlan(
+        moment(dateSelectedInPlan).add(1, 'd').format('YYYY-MM-DD hh:mm'),
+      ),
+    )
+  }
+  useEffect(() => {
+    const list = generateTime(dateSelectedInPlan, taskListInPlan)
+
+    setListTasks([...list])
+  }, [dateSelectedInPlan])
+  const handleRight = () => {
+    dispatch(
+      calendarActions.setDateSelectedInPlan(
+        moment(dateSelectedInPlan).subtract(1, 'd').format('YYYY-MM-DD hh:mm'),
+      ),
+    )
+  }
+  // const getTimeTask=(row:{id:number, time:Date, task:''})=>{
+
+  //   taskListInPlan.filter((task)=> moment(task.dateCreate).isSame(row.))
+  // }
   return (
     <Paper className={styles.aside}>
       <Stack className={styles.content}>
         <Stack direction='row' justifyContent='space-between' spacing={2}>
-          <IconButton>
+          <IconButton onClick={handleRight}>
             <ArrowLeftIcon />
           </IconButton>
-          <p>{moment().format('DD.MM.yyyy')}</p>
+          <p>{moment(dateSelectedInPlan).format('DD.MM.yyyy')}</p>
 
-          <IconButton>
+          <IconButton onClick={handleLeft}>
             <ArrowRightIcon />
           </IconButton>
         </Stack>
@@ -43,17 +92,7 @@ const DatePlan = () => {
               <col style={{ width: '90%' }} />
             </colgroup>
             <TableHead></TableHead>
-            <TableBody>
-              {generateTime().map((row, index) => (
-                <DataRow
-                  key={row.id}
-                  hh={row.time.format('HH')}
-                  mm={row.time.format('mm')}
-                  task={row.task}
-                  isEven={index % 2 === 0}
-                />
-              ))}
-            </TableBody>
+            <DateBody listTasks={listTasks} />
           </Table>
         </TableContainer>
       </Stack>

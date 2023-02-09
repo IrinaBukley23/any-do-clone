@@ -9,7 +9,7 @@ const tasks: TaskCalendarItemType[] = [
     // description: 'Description1',
     // people: [],
     // date: moment('2023-03-06 15:30').toDate(),
-    dateCreate: '2023-02-06 15:30',
+    dateCreate: '2023-02-06 11:20',
   },
   {
     id: 2,
@@ -17,14 +17,14 @@ const tasks: TaskCalendarItemType[] = [
     // description: 'Description2',
     // people: [],
     // date: moment('2023-03-06 12:30').toDate(),
-    dateCreate: '2023-02-07 15:30',
+    dateCreate: '2023-02-07 17:00',
   },
   {
     id: 3,
     title: 'Task3',
     // description: 'Description3',
     // people: [],
-    dateCreate: '2023-02-08 15:30',
+    dateCreate: '2023-02-09 15:30',
   },
 ]
 
@@ -76,8 +76,8 @@ export const calendarSlice = createSlice({
       state.taskListAll.push(newTask)
 
       state.taskList = getCurrTasks(state.taskListAll, new Date(state.dateCurrent))
-      if (moment(state.dateCurrent).isSame(state.dateSelectedInPlan, 'day'))
-        state.taskListInPlan = getCurrTasks(state.taskListAll, new Date(state.dateSelectedInPlan))
+
+      state.taskListInPlan = getCurrTasks(state.taskListAll, new Date(state.dateSelectedInPlan))
     },
     deleteTask: (state, action: PayloadAction<number>) => {
       state.taskListAll = state.taskListAll.filter((task) => task.id !== action.payload)
