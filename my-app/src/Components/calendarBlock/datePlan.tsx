@@ -42,7 +42,7 @@ const generateTime = (date: string, tasks: TaskCalendarItemType[]): TimeCalendar
 
 const DatePlan = () => {
   const { dateSelectedInPlan, taskListInPlan } = useAppSelector((state) => state.calendar)
-  const [listTasks, setListTasks] = useState(generateTime(dateSelectedInPlan, []))
+  const [listTasks, setListTasks] = useState([] as TimeCalendar[])
   const dispatch = useAppDispatch()
   const handleLeft = () => {
     dispatch(
@@ -53,8 +53,9 @@ const DatePlan = () => {
   }
   useEffect(() => {
     const list = generateTime(dateSelectedInPlan, taskListInPlan)
+    console.log(list)
     setListTasks([...list])
-  }, [dateSelectedInPlan])
+  }, [taskListInPlan])
 
   const handleRight = () => {
     dispatch(
