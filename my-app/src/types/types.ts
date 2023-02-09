@@ -1,3 +1,4 @@
+import { Moment } from 'moment'
 export interface IColumn {
   columnId: string
   columnTitle: string
@@ -71,3 +72,8 @@ export interface ITaskCalendar {
   taskList: ITaskCalendar[]
 }
 export type TaskCalendarItemType = Omit<ITaskCalendar, 'taskList'>
+export type TimeCalendar = {
+  id: number
+  time: Moment
+  task: string
+}

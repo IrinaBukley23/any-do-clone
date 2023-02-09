@@ -1,15 +1,9 @@
 import { TableBody } from '@mui/material'
 import DataRow from './dataRow'
-import { Moment } from 'moment'
-
-type timeCalendar = {
-  id: number
-  time: Moment
-  task: string
-}
+import { TimeCalendar } from '../../types/types'
 
 type Props = {
-  listTasks: timeCalendar[]
+  listTasks: TimeCalendar[]
 }
 export const DateBody = ({ listTasks }: Props) => {
   return (

@@ -9,21 +9,16 @@ import ArrowLeftIcon from '@mui/icons-material/ArrowLeft'
 import ArrowRightIcon from '@mui/icons-material/ArrowRight'
 
 import styles from './datePlan.module.scss'
-import moment, { Moment } from 'moment'
-import DataRow from './dataRow'
+import moment from 'moment'
+
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
 import { calendarActions } from '../../store/reducers/calendarReducer'
 import { useEffect, useState } from 'react'
-import { TaskCalendarItemType } from '../../types/types'
+import { TaskCalendarItemType, TimeCalendar } from '../../types/types'
 import { DateBody } from './dateBody'
 
-type timeCalendar = {
-  id: number
-  time: Moment
-  task: string
-}
-const generateTime = (date: string, tasks: TaskCalendarItemType[]): timeCalendar[] => {
-  const arr: timeCalendar[] = []
+const generateTime = (date: string, tasks: TaskCalendarItemType[]): TimeCalendar[] => {
+  const arr: TimeCalendar[] = []
   // const date= new Date()
   for (let t = 7; t <= 20; t++) {
     arr.push({
@@ -47,7 +42,7 @@ const generateTime = (date: string, tasks: TaskCalendarItemType[]): timeCalendar
 
 const DatePlan = () => {
   const { dateSelectedInPlan, taskListInPlan } = useAppSelector((state) => state.calendar)
-  const [listTasks, setListTasks] = useState([] as timeCalendar[])
+  const [listTasks, setListTasks] = useState(generateTime(dateSelectedInPlan, []))
   const dispatch = useAppDispatch()
   const handleLeft = () => {
     dispatch(
@@ -58,9 +53,9 @@ const DatePlan = () => {
   }
   useEffect(() => {
     const list = generateTime(dateSelectedInPlan, taskListInPlan)
-
     setListTasks([...list])
   }, [dateSelectedInPlan])
+
   const handleRight = () => {
     dispatch(
       calendarActions.setDateSelectedInPlan(
