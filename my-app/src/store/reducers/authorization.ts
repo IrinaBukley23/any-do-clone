@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice, Dispatch, PayloadAction } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import AuthorizationApi from '../../api/AuthorizationApi';
 import { DialogForm } from '../../types/enum';
 import { IUser, IAuthorization } from '../../types/types';
@@ -27,6 +27,20 @@ export const register = createAsyncThunk(
 export const login = createAsyncThunk(
   'authorization/login',
   async (authorization: IAuthorization) => authorizationApi.login(authorization),
+)
+
+export const logout = createAsyncThunk(
+  'authorization/logout',
+  async (arg, thunkApi) => {
+    const state = thunkApi.getState();
+    const { authorization } = state as { authorization: IAuthorizationState }; 
+
+    if (!authorization.key) {
+      throw new Error('User isn\'t authorized.');
+    }
+
+    return authorizationApi.logout(authorization.key);
+  },
 )
 
 export const authorizationSlice = createSlice({
@@ -75,6 +89,15 @@ export const authorizationSlice = createSlice({
         state.dialogForm = DialogForm.login;
         if (action.error.message !== undefined) {
           state.serverError = action.error.message;
+          console.error(action.error.message);
+        }
+      })
+      .addCase(logout.fulfilled, (state) => {
+        state.key = null;
+        localStorage.removeItem('api-key');
+      })
+      .addCase(logout.rejected, (state, action) => {
+        if (action.error.message !== undefined) {
           console.error(action.error.message);
         }
       })
