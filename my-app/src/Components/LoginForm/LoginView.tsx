@@ -1,8 +1,8 @@
-import { Grid, TextField } from '@mui/material'
+import { Grid, TextField, Alert } from '@mui/material'
 import { useFormik } from 'formik'
 import {  useNavigate } from 'react-router-dom'
 import * as yup from 'yup'
-import { useAppDispatch } from '../../store/hooks'
+import { useAppDispatch, useAppSelector } from '../../store/hooks'
 import { login } from '../../store/reducers/authorization'
 import styles from './form.module.scss'
 
@@ -24,6 +24,7 @@ interface ViewProps {
 export const LoginView = ({ formId }: ViewProps) => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const error = useAppSelector(state => state.authorization.serverError);
 
   const formik = useFormik({
     initialValues: { email: '', password: '' },
@@ -41,6 +42,11 @@ export const LoginView = ({ formId }: ViewProps) => {
   return (
     <form id={formId} onSubmit={formik.handleSubmit} className={styles.form__content}>
       <Grid container spacing={2}>
+        {error !== null && (
+          <Grid item xs={12}>
+            <Alert color='error' severity="error">{error}</Alert>
+          </Grid>
+        )}
         <Grid item xs={12}>
           <TextField
             id='email'

@@ -1,6 +1,7 @@
-import { Button, Grid, TextField } from '@mui/material'
+import { Alert, Button, Grid, TextField } from '@mui/material'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
+import theme from '../../defaultTheme'
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
 import { register } from '../../store/reducers/authorization'
 import styles from './form.module.scss'
@@ -35,8 +36,8 @@ interface ViewProps {
 }
 
 export const RegistrationView = ({ formId }: ViewProps) => {
-  // const count = useAppSelector(state => state.counter.value)
   const dispatch = useAppDispatch()
+  const error = useAppSelector(state => state.authorization.serverError);
   const formik = useFormik({
     initialValues: {
       name: '',
@@ -57,6 +58,11 @@ export const RegistrationView = ({ formId }: ViewProps) => {
   return (
     <form id={formId} onSubmit={formik.handleSubmit} className={styles.form__content}>
       <Grid container spacing={2}>
+        {error !== null && (
+          <Grid item xs={12}>
+            <Alert color='error' severity="error">{error}</Alert>
+          </Grid>
+        )}
         <Grid item xs={12}>
           <TextField
             id='name'
