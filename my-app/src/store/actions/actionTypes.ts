@@ -41,3 +41,21 @@ export type Action =
     type: Actions.SET_TASKLIST;
     payload: TaskItemType[],
 } 
+| {
+    type: Actions.EDIT_TASKTITLE;
+    payload: {
+      taskId: string;
+      taskTitle: string;
+    };
+  }
+| {
+    type: Actions.EDIT_TASKDESCR;
+    payload: {
+      taskId: string;
+      taskDescr: string;
+    };
+  }
+| {
+    type: Actions.REMOVE_TASK;
+    payload: string,
+} 

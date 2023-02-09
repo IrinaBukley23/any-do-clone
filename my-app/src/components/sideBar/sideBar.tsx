@@ -1,4 +1,4 @@
-import './sideBar.scss'
+import styles from './sideBar.module.scss'
 import 'moment/locale/ru'
 import { useState } from 'react'
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment'
@@ -18,7 +18,7 @@ const SideBar = () => {
   }
 
   return (
-    <div className='sidebar'>
+    <div className={styles.sidebar}>
       <LocalizationProvider dateAdapter={AdapterMoment} adapterLocale='ru'>
         <StaticDatePicker
           displayStaticWrapperAs='desktop'
