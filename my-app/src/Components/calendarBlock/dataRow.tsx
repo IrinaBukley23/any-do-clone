@@ -1,5 +1,5 @@
 import { TableCell, TableRow, TextField } from '@mui/material'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import styles from './datePlan.module.scss'
 
 type Props = {
@@ -7,10 +7,12 @@ type Props = {
   mm: string
   task: string
   isEven: boolean
+  changeTask: (value: string) => void
 }
-const DataRow = ({ hh, mm, task, isEven }: Props) => {
+const DataRow = ({ hh, mm, task, isEven, changeTask }: Props) => {
   const [isEdit, setIsEdit] = useState(false)
   const [taskSt, setTaskSt] = useState(task)
+  useEffect(() => setTaskSt(task), [task])
 
   const handleClick = () => {
     setIsEdit(true)
@@ -18,8 +20,11 @@ const DataRow = ({ hh, mm, task, isEven }: Props) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTaskSt(e.target.value)
   }
-  const handleBlur = () => {
+  const handleBlur = (e: unknown) => {
+    console.log(e)
+
     setIsEdit(false)
+    changeTask(taskSt)
   }
   return (
     <TableRow>
@@ -30,7 +35,7 @@ const DataRow = ({ hh, mm, task, isEven }: Props) => {
             <sup>{mm}</sup>
           </>
         ) : (
-          <></>
+          <p></p>
         )}
       </TableCell>
       <TableCell onDoubleClick={handleClick}>
@@ -44,7 +49,7 @@ const DataRow = ({ hh, mm, task, isEven }: Props) => {
             value={taskSt}
           />
         ) : (
-          <pre className={styles.text}>{taskSt}</pre>
+          <p className={styles.text}>{taskSt}</p>
         )}
       </TableCell>
     </TableRow>

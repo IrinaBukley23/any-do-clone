@@ -19,14 +19,13 @@ import { DateBody } from './dateBody'
 
 const generateTime = (date: string, tasks: TaskCalendarItemType[]): TimeCalendar[] => {
   const arr: TimeCalendar[] = []
-  // const date= new Date()
+
   for (let t = 7; t <= 20; t++) {
     arr.push({
       id: t,
       time: moment(date).hour(t).minutes(0),
-      task: '',
     })
-    arr.push({ id: t + 30, time: moment(date).hour(t).minutes(30), task: ' ' })
+    arr.push({ id: t + 30, time: moment(date).hour(t).minutes(30) })
   }
   const roundMin = (date: string) => moment(date).minute() % 30
   tasks.forEach((task) => {
@@ -34,7 +33,7 @@ const generateTime = (date: string, tasks: TaskCalendarItemType[]): TimeCalendar
       elem.time.isSame(moment(task.dateCreate).add(roundMin(task.dateCreate), 'minutes')),
     )
 
-    if (findTask) findTask.task = task.title
+    if (findTask) findTask.task = task
   })
 
   return arr
@@ -52,8 +51,8 @@ const DatePlan = () => {
     )
   }
   useEffect(() => {
-    const list = generateTime(dateSelectedInPlan, taskListInPlan)
-    console.log(list)
+    const list = generateTime(dateSelectedInPlan, [...taskListInPlan])
+
     setListTasks([...list])
   }, [taskListInPlan])
 
@@ -64,10 +63,10 @@ const DatePlan = () => {
       ),
     )
   }
-  // const getTimeTask=(row:{id:number, time:Date, task:''})=>{
+  const handleChahgeTask = (value: string) => {
+    // dispatch(calendarActions.changeTask(value, id))
+  }
 
-  //   taskListInPlan.filter((task)=> moment(task.dateCreate).isSame(row.))
-  // }
   return (
     <Paper className={styles.aside}>
       <Stack className={styles.content}>
@@ -88,7 +87,7 @@ const DatePlan = () => {
               <col style={{ width: '90%' }} />
             </colgroup>
             <TableHead></TableHead>
-            <DateBody listTasks={listTasks} />
+            <DateBody listTasks={listTasks} changeTask={handleChahgeTask} />
           </Table>
         </TableContainer>
       </Stack>
