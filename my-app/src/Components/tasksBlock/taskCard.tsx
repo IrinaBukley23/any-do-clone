@@ -11,10 +11,14 @@ import styles from './tasksBlock.module.scss'
 
 type Props = {
   task: TaskCalendarItemType
+  onDelete: (id: number) => void
 }
 
-const TaskCard = ({ task }: Props) => {
+const TaskCard = ({ task, onDelete }: Props) => {
   // console.log(task.taskDate)
+  const handleClick = () => {
+    onDelete(task.id)
+  }
   return (
     <Card className={styles.card}>
       <CardContent>
@@ -27,7 +31,7 @@ const TaskCard = ({ task }: Props) => {
       </CardContent>
 
       <CardActions>
-        <Button>Delete</Button>
+        <Button onClick={handleClick}>Delete</Button>
       </CardActions>
     </Card>
   )

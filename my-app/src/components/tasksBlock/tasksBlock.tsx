@@ -26,6 +26,9 @@ const TasksBlock = () => {
     const findText = e.target.value.trim()
     dispatch(calendarActions.setSearchString(findText))
   }
+  const handleDelete = (id: number) => {
+    dispatch(calendarActions.deleteTask(id))
+  }
 
   return (
     <Stack spacing={2} className={styles.central}>
@@ -49,7 +52,7 @@ const TasksBlock = () => {
       />
       <div className={styles.wrapper}>
         {taskList.map((task) => (
-          <TaskCard key={task.id} task={task} />
+          <TaskCard key={task.id} task={task} onDelete={handleDelete} />
         ))}
       </div>
     </Stack>

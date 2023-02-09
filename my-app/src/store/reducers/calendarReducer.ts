@@ -51,8 +51,8 @@ export const calendarSlice = createSlice({
       state.taskList = getCurrTasks(state.taskListAll, moment(action.payload).toDate())
       state.searchString = ''
     },
-    setDateSelectedInPlan: (state, action: PayloadAction<Date>) => {
-      state.dateSelectedInPlan = action.payload.toDateString()
+    setDateSelectedInPlan: (state, action: PayloadAction<string>) => {
+      state.dateSelectedInPlan = action.payload
       state.taskListInPlan = getCurrTasks(tasks, new Date(state.dateSelectedInPlan))
     },
     setSearchString: (state, action: PayloadAction<string>) => {
@@ -74,7 +74,13 @@ export const calendarSlice = createSlice({
       }
 
       state.taskListAll.push(newTask)
-      console.log(newTask)
+
+      state.taskList = getCurrTasks(state.taskListAll, new Date(state.dateCurrent))
+      if (moment(state.dateCurrent).isSame(state.dateSelectedInPlan, 'day'))
+        state.taskListInPlan = getCurrTasks(state.taskListAll, new Date(state.dateSelectedInPlan))
+    },
+    deleteTask: (state, action: PayloadAction<number>) => {
+      state.taskListAll = state.taskListAll.filter((task) => task.id !== action.payload)
       state.taskList = getCurrTasks(state.taskListAll, new Date(state.dateCurrent))
       if (moment(state.dateCurrent).isSame(state.dateSelectedInPlan, 'day'))
         state.taskListInPlan = getCurrTasks(state.taskListAll, new Date(state.dateSelectedInPlan))
