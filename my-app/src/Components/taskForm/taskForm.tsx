@@ -8,29 +8,24 @@ import { useState } from 'react';
 import nextId from 'react-id-generator';
 
 interface IProps {
-  isOpen?: boolean;
   handleClose: () => void;
 }
 
 const TaskForm = ({ handleClose }: IProps) => {
-  const [open, setOpen] = useState(false);
   const { taskList, taskTitle, taskDescr } = useSelector((state: State) => state.task);
   const dispatch = useDispatch();
   const [isError, setIsError] = useState(false);
-  const [isErrorDescr, ] = useState(false);
+  const [isErrorDescr, setIsErrorDescr] = useState(false);
   const [isValidate, setIsValidate] = useState(true);
   const myId = nextId();
-
-//   const handleClose = () => {
-//     setOpen(false);
-// };
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement>,
     callback: (value: string) => AnyAction,
+    foo: (value: boolean) => void
   ) => {
-    (e.target.value.length < 3) ? setIsError(true) : setIsError(false);
-      (e.target.value.length >= 3 && e) ? setIsValidate(false) : setIsValidate(true);
+    (e.target.value.length < 3) ? foo(true) : foo(false);
+    (e.target.value.length >= 3 && e) ? setIsValidate(false) : setIsValidate(true);
     dispatch(callback(e.target.value));
   };
 
@@ -46,7 +41,6 @@ const TaskForm = ({ handleClose }: IProps) => {
       ])
     );
     handleClose();
-    // setOpen(false);
   };
 
   return (
@@ -58,7 +52,7 @@ const TaskForm = ({ handleClose }: IProps) => {
             name='title'
             label='Title'
             fullWidth
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange(e, setTaskTitle)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange(e, setTaskTitle, setIsError)}
             required
           />
           {isError && <Typography variant="h5" component="p" sx={{fontSize: '12px', textAlign: 'left', color: 'red'}}>Необходимо минимум три символа</Typography>}
@@ -69,7 +63,7 @@ const TaskForm = ({ handleClose }: IProps) => {
             name='descr'
             label='Description'
             fullWidth
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange(e, setTaskDescr)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange(e, setTaskDescr, setIsErrorDescr)}
             required
           />
           {isErrorDescr && <Typography variant="h5" component="p" sx={{fontSize: '12px', textAlign: 'left', color: 'red'}}>Необходимо минимум три символа</Typography>}
