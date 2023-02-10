@@ -50,8 +50,10 @@ export interface IError {
 }
 
 export interface ISession {
-  key: string
-  userId: number
+  key: string,
+  userId: number,
+  name: string,
+  email: string
 }
 
 export type ICalendar = {

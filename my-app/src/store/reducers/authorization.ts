@@ -9,14 +9,18 @@ interface IAuthorizationState {
   user: IUser | null,
   isDialogShown: boolean,
   dialogForm: DialogForm | null,
-  serverError: string | null
+  serverError: string | null,
+  loginName: string | null,
+  loginEmail: string | null,
 }
 const initialState: IAuthorizationState = {
   key: localStorage.getItem('api-key'),
   user: null,
   isDialogShown: false,
   dialogForm: null,
-  serverError: null
+  serverError: null,
+  loginName: null,
+  loginEmail: null,
 }
 
 export const register = createAsyncThunk(
@@ -82,7 +86,10 @@ export const authorizationSlice = createSlice({
       })
       .addCase(login.fulfilled, (state, action) => {
         state.key = action.payload.key;
+        state.loginName = action.payload.name;
+        state.loginEmail = action.payload.email;
         localStorage.setItem('api-key', state.key);
+        console.log(action.payload)
       })
       .addCase(login.rejected, (state, action) => {
         state.isDialogShown = true;
@@ -94,6 +101,8 @@ export const authorizationSlice = createSlice({
       })
       .addCase(logout.fulfilled, (state) => {
         state.key = null;
+        state.loginName = null;
+        state.loginEmail = null;
         localStorage.removeItem('api-key');
       })
       .addCase(logout.rejected, (state, action) => {
