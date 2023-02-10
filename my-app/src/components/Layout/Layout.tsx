@@ -4,6 +4,7 @@ import { Outlet, useNavigate } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
 import { logout } from '../../store/reducers/authorization'
 import SideBar from '../sideBar/sideBar'
+import Weather from '../widgets/weather/weather'
 
 import styles from './Layout.module.scss'
 
@@ -17,7 +18,7 @@ const Layout = () => {
       <header style={{ height: '70px', background: '#ffffff' }}>
         <Grid container spacing={1}>
           <Grid item xs={4}>
-            Погода
+            <Weather></Weather>
           </Grid>
           <Grid item xs={4}>
             Цитаты
