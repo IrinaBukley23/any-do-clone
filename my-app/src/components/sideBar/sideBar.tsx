@@ -1,8 +1,8 @@
 import styles from './sideBar.module.scss'
 import 'moment/locale/ru'
-import { useState } from 'react'
+
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment'
-import { Accordion, AccordionSummary, Typography, AccordionDetails } from '@mui/material'
+import { Accordion, AccordionSummary, Typography, AccordionDetails, Paper } from '@mui/material'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import { NavLink } from 'react-router-dom'
 import { StaticDatePicker } from '@mui/x-date-pickers/StaticDatePicker'
@@ -10,27 +10,46 @@ import moment from 'moment'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import TextField from '@mui/material/TextField'
 
+import { useAppDispatch, useAppSelector } from '../../store/hooks'
+import { setCurrentDate } from '../../store/reducers/calendarReducer'
+const CustomBar = () => {
+  const { taskList } = useAppSelector((state) => state.calendar)
+  return (
+    <>
+      <p>
+        Выбранная дата: <b> {moment(new Date()).format('Do MMMM YYYY')}</b>
+      </p>
+      <p>
+        Количество задач: <strong>{taskList.length}</strong>
+      </p>
+    </>
+  )
+}
 const SideBar = () => {
-  const [dateState, setDateState] = useState(new Date())
+  const { dateCurrent } = useAppSelector((state) => state.calendar)
 
-  const changeDate = (e: Date | null) => {
-    if (e) setDateState(e)
+  const dispatch = useAppDispatch()
+  const changeDate = (date: string | null) => {
+    if (date) {
+      dispatch(setCurrentDate(moment(date).format('YYYY-MM-DD hh:mm')))
+    }
   }
 
   return (
-    <div className={styles.sidebar}>
-      <LocalizationProvider dateAdapter={AdapterMoment} adapterLocale='ru'>
-        <StaticDatePicker
-          displayStaticWrapperAs='desktop'
-          value={dateState}
-          onChange={changeDate}
-          renderInput={(params) => <TextField {...params} />}
-        />
-      </LocalizationProvider>
-
-      <p>
-        Дата: <b> {moment(dateState).format('Do MMMM YYYY')}</b>
-      </p>
+    <div className='sidebar'>
+      <Paper>
+        <LocalizationProvider dateAdapter={AdapterMoment} adapterLocale='ru'>
+          <StaticDatePicker
+            displayStaticWrapperAs='desktop'
+            value={dateCurrent}
+            onChange={changeDate}
+            renderInput={(params) => <TextField {...params} />}
+            components={{
+              ActionBar: CustomBar,
+            }}
+          />
+        </LocalizationProvider>
+      </Paper>
       <Accordion>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}

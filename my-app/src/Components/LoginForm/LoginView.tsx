@@ -1,6 +1,6 @@
 import { Grid, TextField, Alert } from '@mui/material'
 import { useFormik } from 'formik'
-import {  useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import * as yup from 'yup'
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
 import { login } from '../../store/reducers/authorization'
@@ -22,9 +22,9 @@ interface ViewProps {
 }
 
 export const LoginView = ({ formId }: ViewProps) => {
-  const dispatch = useAppDispatch();
-  const navigate = useNavigate();
-  const error = useAppSelector(state => state.authorization.serverError);
+  const dispatch = useAppDispatch()
+  const navigate = useNavigate()
+  const error = useAppSelector((state) => state.authorization.serverError)
 
   const formik = useFormik({
     initialValues: { email: '', password: '' },
@@ -44,7 +44,9 @@ export const LoginView = ({ formId }: ViewProps) => {
       <Grid container spacing={2}>
         {error !== null && (
           <Grid item xs={12}>
-            <Alert color='error' severity="error">{error}</Alert>
+            <Alert color='error' severity='error'>
+              {error}
+            </Alert>
           </Grid>
         )}
         <Grid item xs={12}>
