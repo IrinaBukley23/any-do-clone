@@ -5,18 +5,25 @@ import { AnyAction } from 'redux';
 import { setTaskDescr, setTaskList, setTaskTitle } from '../../store/actions/actionCreators';
 import { State } from '../../types/types';
 import { useState } from 'react';
+import nextId from 'react-id-generator';
 
-const TaskForm = () => {
-  const [, setOpen] = useState(false);
+interface IProps {
+  isOpen?: boolean;
+  handleClose: () => void;
+}
+
+const TaskForm = ({ handleClose }: IProps) => {
+  const [open, setOpen] = useState(false);
   const { taskList, taskTitle, taskDescr } = useSelector((state: State) => state.task);
   const dispatch = useDispatch();
   const [isError, setIsError] = useState(false);
   const [isErrorDescr, ] = useState(false);
   const [isValidate, setIsValidate] = useState(true);
+  const myId = nextId();
 
-  const handleClose = () => {
-    setOpen(false);
-};
+//   const handleClose = () => {
+//     setOpen(false);
+// };
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -32,13 +39,14 @@ const TaskForm = () => {
       setTaskList([
         ...taskList,
         {
-          taskId: taskTitle,
+          taskId: myId,
           taskTitle: taskTitle,
           taskDescr: taskDescr,
         },
       ])
     );
-    setOpen(false);
+    handleClose();
+    // setOpen(false);
   };
 
   return (
@@ -51,6 +59,7 @@ const TaskForm = () => {
             label='Title'
             fullWidth
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange(e, setTaskTitle)}
+            required
           />
           {isError && <Typography variant="h5" component="p" sx={{fontSize: '12px', textAlign: 'left', color: 'red'}}>Необходимо минимум три символа</Typography>}
         </Grid>
@@ -61,6 +70,7 @@ const TaskForm = () => {
             label='Description'
             fullWidth
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange(e, setTaskDescr)}
+            required
           />
           {isErrorDescr && <Typography variant="h5" component="p" sx={{fontSize: '12px', textAlign: 'left', color: 'red'}}>Необходимо минимум три символа</Typography>}
         </Grid>

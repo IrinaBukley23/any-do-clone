@@ -65,7 +65,7 @@ export const editTaskDescr = (taskId: string, taskDescr: string) => ({
   },
 })
 
-export const setRemoveTask = (taskTitle: string) => ({
+export const setRemoveTask = (taskId: string) => ({
   type: Actions.REMOVE_TASK,
-  payload: taskTitle,
+  payload: taskId,
 })

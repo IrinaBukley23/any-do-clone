@@ -55,6 +55,7 @@ const Column = (props: IProps) => {
         setIsTaskModal(true);
     };
     const handleTaskFormClose = () => {
+        console.log('remove')
         setIsTaskModal(false);
     };
 
