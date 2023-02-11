@@ -34,6 +34,11 @@ export const setTaskId = (taskId: string) => ({
   payload: taskId,
 })
 
+export const setCurrentId = (currentId: string) => ({
+  type: Actions.SET_CURRENTID,
+  payload: currentId,
+})
+
 export const setTaskTitle = (taskTitle: string) => ({
   type: Actions.SET_TASKTITLE,
   payload: taskTitle,

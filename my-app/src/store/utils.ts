@@ -5,6 +5,7 @@ export const initialState = {
     columnId: '',
     columnTitle: '',
     columnList: [],
+    currentId: '',
   },
   task: {
     taskId: '',

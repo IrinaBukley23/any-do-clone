@@ -5,24 +5,24 @@ import { initialState } from '../utils';
 
 export const taskReducer = (state: ITask = initialState.task, action: Action) => {
     switch (action.type) {
-        case Actions.SET_TASKTITLE: {
-          return {
-              ...state,
-              taskTitle: action.payload,
-          }
-        }
-        case Actions.SET_TASKDESCR: {
-          return {
-              ...state,
-              taskDescr: action.payload,
-          }
-        }
-        case Actions.SET_TASKLIST: {
-          return {
-              ...state,
-              taskList: [...action.payload],
-          }
-        }
+        // case Actions.SET_TASKTITLE: {
+        //   return {
+        //       ...state,
+        //       taskTitle: action.payload,
+        //   }
+        // }
+        // case Actions.SET_TASKDESCR: {
+        //   return {
+        //       ...state,
+        //       taskDescr: action.payload,
+        //   }
+        // }
+        // case Actions.SET_TASKLIST: {
+        //   return {
+        //       ...state,
+        //       taskList: [...action.payload],
+        //   }
+        // }
         case Actions.EDIT_TASKTITLE: {
           const newTaskList = state.taskList.map((item: TaskItemType) => {
             if (item.taskId === action.payload.taskId) {

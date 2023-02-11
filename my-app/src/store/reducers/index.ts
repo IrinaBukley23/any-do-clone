@@ -4,6 +4,7 @@ import authorizationReducer from './authorization'
 import { columnReducer } from './columnReducer'
 import loginSlice from './loginSlice'
 import { taskReducer } from './taskReducer'
+
 export default combineReducers({
   authorization: authorizationReducer,
   login: loginSlice,

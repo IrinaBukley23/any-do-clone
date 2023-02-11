@@ -26,6 +26,10 @@ export type Action =
       payload: string
     }
   | {
+    type: Actions.SET_CURRENTID
+    payload: string
+  }
+  | {
       type: Actions.SET_TASKID
       payload: string
     }

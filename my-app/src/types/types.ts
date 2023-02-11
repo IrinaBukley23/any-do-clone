@@ -3,6 +3,8 @@ export interface IColumn {
   columnId: string
   columnTitle: string
   columnList: IColumn[]
+  taskList?: [],
+  currentId?: string
 }
 
 export type ColumnItemType = Omit<IColumn, 'columnList'>
