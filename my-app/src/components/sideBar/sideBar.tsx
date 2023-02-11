@@ -79,7 +79,7 @@ const SideBar = () => {
           <Typography>Мои доски</Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <NavLink to='/board' className={({ isActive }) => (isActive ? 'active-link' : '')}>
+          <NavLink to='/board' className={({ isActive }) => (isActive ? styles.activeLink : '')}>
             <Typography>Мои доски</Typography>
           </NavLink>
         </AccordionDetails>
