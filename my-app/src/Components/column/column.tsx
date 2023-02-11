@@ -87,9 +87,6 @@ const Column = (props: IProps) => {
                 <DialogConfirm isOpen={open} handleClose={handleClose} handleRemove={handleRemove} />
             </div>
             <div className={styles.column__wrapper}>
-                {/* {taskList?.map((task, i) => (
-                    <Task key={i} taskItem={task}/>
-                ) )} */}
                 {taskList?.filter(task => task.currentColumnId === columnId).map((task, i) => (
                     <Task key={i} taskItem={task}/>
                 ) )}
