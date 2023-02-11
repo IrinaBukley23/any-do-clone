@@ -12,11 +12,10 @@ import styles from './datePlan.module.scss'
 import moment from 'moment'
 
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
-import { calendarActions } from '../../store/reducers/calendarReducer'
 import { useEffect, useState } from 'react'
 import { TaskCalendarItemType, TimeCalendar } from '../../types/types'
 import { DateBody } from './dateBody'
-
+import { setDateSelectedInPlan } from '../../store/actions/actionCalenda'
 
 const generateTime = (date: string, tasks: TaskCalendarItemType[]): TimeCalendar[] => {
   const arr: TimeCalendar[] = []
@@ -45,24 +44,19 @@ const DatePlan = () => {
   const [listTasks, setListTasks] = useState([] as TimeCalendar[])
   const dispatch = useAppDispatch()
   const handleLeft = () => {
-  
     dispatch(
-      calendarActions.setDateSelectedInPlan(
-        moment(dateSelectedInPlan).add(1, 'd').format('YYYY-MM-DD hh:mm'),
-      ),
+      setDateSelectedInPlan(moment(dateSelectedInPlan).add(1, 'd').format('YYYY-MM-DD hh:mm')),
     )
   }
   useEffect(() => {
     const list = generateTime(dateSelectedInPlan, [...taskListInPlan])
-
+    console.log(taskListInPlan)
     setListTasks([...list])
   }, [taskListInPlan])
 
   const handleRight = () => {
     dispatch(
-      calendarActions.setDateSelectedInPlan(
-        moment(dateSelectedInPlan).subtract(1, 'd').format('YYYY-MM-DD hh:mm'),
-      ),
+      setDateSelectedInPlan(moment(dateSelectedInPlan).subtract(1, 'd').format('YYYY-MM-DD hh:mm')),
     )
   }
   const handleChahgeTask = (value: string) => {

@@ -46,8 +46,8 @@ export const calendarSlice = createSlice({
     setCurrentDate: (state, action: PayloadAction<string>) => {
       state.dateCurrent = action.payload
     },
-    getCurrTasks: (state, action: PayloadAction<string>) => {
-      state.taskList = getCurrTasks(state.taskListAll, moment(action.payload).toDate())
+    getCurrTasks: (state) => {
+      state.taskList = getCurrTasks(state.taskListAll, new Date(state.dateCurrent))
     },
     filterCurrTasks: (state, action: PayloadAction<string>) => {
       state.taskList = state.taskList.filter((task) =>
@@ -57,17 +57,11 @@ export const calendarSlice = createSlice({
     setDateSelectedInPlan: (state, action: PayloadAction<string>) => {
       state.dateSelectedInPlan = action.payload
     },
-    getListInPlan: (state, action: PayloadAction<string>) => {
-      state.taskListInPlan = getCurrTasks(tasks, new Date(state.dateSelectedInPlan))
+    getListInPlan: (state) => {
+      state.taskListInPlan = getCurrTasks(state.taskListAll, new Date(state.dateSelectedInPlan))
     },
-    createTask: (state, action: PayloadAction<string>) => {
-      const newTask: TaskCalendarItemType = {
-        dateCreate: state.dateCurrent,
-        title: action.payload,
-        id: Number(new Date()),
-      }
-
-      state.taskListAll.push(newTask)
+    createTask: (state, action: PayloadAction<TaskCalendarItemType>) => {
+      state.taskListAll.push(action.payload)
     },
     deleteTask: (state, action: PayloadAction<number>) => {
       state.taskListAll = state.taskListAll.filter((task) => task.id !== action.payload)

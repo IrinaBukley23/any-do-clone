@@ -6,11 +6,10 @@ import TaskCard from './taskCard'
 import { InputAdornment, TextField } from '@mui/material'
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
 import { useEffect, useState } from 'react'
-import { calendarActions } from '../../store/reducers/calendarReducer'
-import { getSearchedList } from '../../store/actions/actionCalenda'
+import { createTask, deleteTask, getSearchedList } from '../../store/actions/actionCalenda'
 
 const TasksBlock = () => {
-  const { taskList } = useAppSelector((state) => state.calendar)
+  const { taskList, dateCurrent } = useAppSelector((state) => state.calendar)
   const [searchString, setSearchString] = useState('')
   const [taskTitle, setTaskTitle] = useState('')
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -22,7 +21,7 @@ const TasksBlock = () => {
   const dispatch = useAppDispatch()
   const handleKey = (e: React.KeyboardEvent<HTMLDivElement>) => {
     if (e.key === 'Enter') {
-      if (taskTitle) dispatch(calendarActions.createTask(taskTitle))
+      if (taskTitle) dispatch(createTask(taskTitle, dateCurrent))
       setTaskTitle('')
     }
   }
@@ -31,7 +30,7 @@ const TasksBlock = () => {
     setSearchString(findText)
   }
   const handleDelete = (id: number) => {
-    dispatch(calendarActions.deleteTask(id))
+    dispatch(deleteTask(id))
   }
 
   return (
