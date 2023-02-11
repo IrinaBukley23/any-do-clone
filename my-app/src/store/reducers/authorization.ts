@@ -88,6 +88,8 @@ export const authorizationSlice = createSlice({
         state.key = action.payload.key;
         state.loginName = action.payload.name;
         state.loginEmail = action.payload.email;
+        localStorage.setItem('name', state.loginName);
+        localStorage.setItem('email', state.loginEmail);
         localStorage.setItem('api-key', state.key);
         console.log(action.payload)
       })

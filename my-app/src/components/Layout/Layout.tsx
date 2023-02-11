@@ -1,46 +1,25 @@
-import { Button, Grid } from '@mui/material'
-import { Box } from '@mui/system'
-import { Outlet, useNavigate } from 'react-router-dom'
-import { useAppDispatch, useAppSelector } from '../../store/hooks'
-import { logout } from '../../store/reducers/authorization'
+import { Grid } from '@mui/material'
+import { Outlet } from 'react-router-dom'
 import SideBar from '../sideBar/sideBar'
+import UserMenu from '../widgets/menu/userMenu'
+import Quotes from '../widgets/quotes/quotes'
 import Weather from '../widgets/weather/weather'
 
 import styles from './Layout.module.scss'
 
 const Layout = () => {
-  const navigate = useNavigate();
-  const dispatch = useAppDispatch();
-  const name = useAppSelector(state => state.authorization.loginName);
-  const email = useAppSelector(state => state.authorization.loginEmail);
   return (
     <>
-      <header style={{ height: '70px', background: '#ffffff' }}>
-        <Grid container spacing={1}>
-          <Grid item xs={4}>
+      <header style={{ height: '70px', background: '#ffffff', display: 'flex', alignItems: 'center'}}>
+        <Grid container columnSpacing={{ xs: 1, sm: 2, md: 12 }} sx={{alignItems: 'center'}}>
+          <Grid item md={3}>
             <Weather></Weather>
           </Grid>
-          <Grid item xs={4}>
-            Цитаты
+          <Grid item md={5}>
+            <Quotes></Quotes>
           </Grid>
-          <Grid item xs={2}>
-            <Box>
-              {name}
-            </Box>
-            <Box>
-              {email}
-            </Box>
-          </Grid>
-          <Grid item xs={2}>
-            <Button 
-              onClick={() => {
-                navigate('/');
-                dispatch(logout())
-              }} 
-              color='secondary' 
-              variant="outlined">
-              Выход
-            </Button>
+          <Grid item md={4} sx={{justifyContent: 'end'}}>
+            <UserMenu></UserMenu>
           </Grid>
         </Grid>
       </header>
