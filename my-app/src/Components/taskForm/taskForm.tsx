@@ -31,7 +31,6 @@ const TaskForm = ({ handleClose }: IProps) => {
   };
 
   const handleTaskSubmit = () => {
-    console.log(taskList);
     dispatch(
       setTaskList([
         ...taskList,

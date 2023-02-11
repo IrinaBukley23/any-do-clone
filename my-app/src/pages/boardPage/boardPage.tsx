@@ -28,7 +28,6 @@ const BoardPage = () => {
     };
 
     const handleSaveColumn = () => {
-      console.log(columnList)
       setIsCreate(false);
       setCreated(true);
       dispatch(
