@@ -3,17 +3,19 @@ export interface IColumn {
   columnId: string
   columnTitle: string
   columnList: IColumn[]
-  taskList?: [],
-  currentId?: string
 }
 
 export type ColumnItemType = Omit<IColumn, 'columnList'>
+export type CurrentId = {
+  currentId: string
+};
 
 export interface ITask {
   taskId: string
   taskTitle: string
   taskDescr: string
   taskList: ITask[]
+  currentColumnId: string
 }
 
 export type TaskItemType = Omit<ITask, 'taskList'>
@@ -27,10 +29,9 @@ export type State = {
   token: string
   user: null
   column: IColumn
-  // columnList: IColumn[];
   task: ITask
   calendar: ICalendar
-  //  taskList: ITask[];
+  currentId: CurrentId
 }
 
 export interface IUser {

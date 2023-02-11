@@ -63,3 +63,7 @@ export type Action =
       type: Actions.REMOVE_TASK
       payload: string
     }
+    | {
+      type: Actions.SET_CURRENTCOLUMNID
+      payload: string
+    }

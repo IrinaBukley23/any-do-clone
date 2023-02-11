@@ -26,8 +26,9 @@ const BoardPage = () => {
       (e.target.value.length >= 3 && e) ? setIsValidate(false) : setIsValidate(true);
       dispatch(callback(e.target.value));
     };
-  
+
     const handleSaveColumn = () => {
+      console.log(columnList)
       setIsCreate(false);
       setCreated(true);
       dispatch(

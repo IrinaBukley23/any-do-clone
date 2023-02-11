@@ -54,6 +54,11 @@ export const setTaskList = (taskList: TaskItemType[]) => ({
   payload: taskList,
 })
 
+export const setCurrentColumnId = (currentColumnId: string) => ({
+  type: Actions.SET_CURRENTCOLUMNID,
+  payload: currentColumnId,
+})
+
 export const editTaskTitle = (taskId: string, taskTitle: string) => ({
   type: Actions.EDIT_TASKTITLE,
   payload: {
