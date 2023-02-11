@@ -1,4 +1,4 @@
-import { TableBody, TableContainer, TableHead } from '@mui/material'
+import { TableContainer, TableHead } from '@mui/material'
 
 import IconButton from '@mui/material/IconButton'
 import Paper from '@mui/material/Paper'
@@ -16,6 +16,7 @@ import { calendarActions } from '../../store/reducers/calendarReducer'
 import { useEffect, useState } from 'react'
 import { TaskCalendarItemType, TimeCalendar } from '../../types/types'
 import { DateBody } from './dateBody'
+
 
 const generateTime = (date: string, tasks: TaskCalendarItemType[]): TimeCalendar[] => {
   const arr: TimeCalendar[] = []
@@ -44,6 +45,7 @@ const DatePlan = () => {
   const [listTasks, setListTasks] = useState([] as TimeCalendar[])
   const dispatch = useAppDispatch()
   const handleLeft = () => {
+  
     dispatch(
       calendarActions.setDateSelectedInPlan(
         moment(dateSelectedInPlan).add(1, 'd').format('YYYY-MM-DD hh:mm'),

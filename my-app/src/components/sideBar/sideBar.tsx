@@ -11,7 +11,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import TextField from '@mui/material/TextField'
 
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
-import { setCurrentDate } from '../../store/reducers/calendarReducer'
+import { setCurrDate } from '../../store/actions/actionCalenda'
 const CustomBar = () => {
   const { taskList } = useAppSelector((state) => state.calendar)
   return (
@@ -31,12 +31,12 @@ const SideBar = () => {
   const dispatch = useAppDispatch()
   const changeDate = (date: string | null) => {
     if (date) {
-      dispatch(setCurrentDate(moment(date).format('YYYY-MM-DD hh:mm')))
+      dispatch(setCurrDate(moment(date).format('YYYY-MM-DD hh:mm')))
     }
   }
 
   return (
-    <div className='sidebar'>
+    <div className={styles.sidebar}>
       <Paper>
         <LocalizationProvider dateAdapter={AdapterMoment} adapterLocale='ru'>
           <StaticDatePicker

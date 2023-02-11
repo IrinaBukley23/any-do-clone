@@ -5,16 +5,20 @@ import Stack from '@mui/material/Stack'
 import TaskCard from './taskCard'
 import { InputAdornment, TextField } from '@mui/material'
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { calendarActions } from '../../store/reducers/calendarReducer'
+import { getSearchedList } from '../../store/actions/actionCalenda'
 
 const TasksBlock = () => {
-  const { taskList, searchString } = useAppSelector((state) => state.calendar)
-
+  const { taskList } = useAppSelector((state) => state.calendar)
+  const [searchString, setSearchString] = useState('')
   const [taskTitle, setTaskTitle] = useState('')
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTaskTitle(e.target.value)
   }
+  useEffect(() => {
+    getSearchedList(searchString)
+  }, [searchString])
   const dispatch = useAppDispatch()
   const handleKey = (e: React.KeyboardEvent<HTMLDivElement>) => {
     if (e.key === 'Enter') {
@@ -24,7 +28,7 @@ const TasksBlock = () => {
   }
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const findText = e.target.value.trim()
-    dispatch(calendarActions.setSearchString(findText))
+    setSearchString(findText)
   }
   const handleDelete = (id: number) => {
     dispatch(calendarActions.deleteTask(id))
