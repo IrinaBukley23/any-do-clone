@@ -1,3 +1,4 @@
+import { createTask } from './../actions/actionCalenda'
 import { getCurrTasks } from './../utils'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { ICalendar, TaskCalendarItemType } from './../../types/types'
@@ -65,6 +66,11 @@ export const calendarSlice = createSlice({
     },
     deleteTask: (state, action: PayloadAction<number>) => {
       state.taskListAll = state.taskListAll.filter((task) => task.id !== action.payload)
+    },
+    changeTask: (state, action: PayloadAction<TaskCalendarItemType>) => {
+      const searchTask = state.taskListAll.find((task) => task.id === action.payload.id)
+      if (searchTask) Object.assign(searchTask, action.payload)
+      else state.taskListAll.push(action.payload)
     },
   },
 })

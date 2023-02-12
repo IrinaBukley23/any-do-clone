@@ -37,9 +37,9 @@ export const deleteTask = (id: number) => (dispatch: Dispatch) => {
   dispatch(calendarActions.getCurrTasks())
   dispatch(calendarActions.getListInPlan())
 }
-// deleteTask: (state, action: PayloadAction<number>) => {
-//   state.taskListAll = state.taskListAll.filter((task) => task.id !== action.payload)
-//   state.taskList = getCurrTasks(state.taskListAll, new Date(state.dateCurrent))
-//   if (moment(state.dateCurrent).isSame(state.dateSelectedInPlan, 'day'))
-//     state.taskListInPlan = getCurrTasks(state.taskListAll, new Date(state.dateSelectedInPlan))
-// },
+
+export const changeTask = (task: TaskCalendarItemType) => (dispatch: Dispatch) => {
+  dispatch(calendarActions.changeTask(task))
+  dispatch(calendarActions.getCurrTasks())
+  dispatch(calendarActions.getListInPlan())
+}

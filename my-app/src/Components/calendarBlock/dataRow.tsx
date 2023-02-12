@@ -1,15 +1,16 @@
 import { TableCell, TableRow, TextField } from '@mui/material'
+import { Moment } from 'moment'
 import { useEffect, useState } from 'react'
+import { TaskCalendarItemType } from '../../types/types'
 import styles from './datePlan.module.scss'
 
 type Props = {
-  hh: string
-  mm: string
-  task: string
+  time: Moment
+  task?: TaskCalendarItemType
   isEven: boolean
-  changeTask: (value: string) => void
+  changeTask: (task: TaskCalendarItemType) => void
 }
-const DataRow = ({ hh, mm, task, isEven, changeTask }: Props) => {
+const DataRow = ({ time, task, isEven, changeTask }: Props) => {
   const [isEdit, setIsEdit] = useState(false)
   const [taskSt, setTaskSt] = useState(task)
   useEffect(() => setTaskSt(task), [task])
@@ -18,21 +19,32 @@ const DataRow = ({ hh, mm, task, isEven, changeTask }: Props) => {
     setIsEdit(true)
   }
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setTaskSt(e.target.value)
+    if (!task) {
+      console.log(time)
+      setTaskSt({
+        id: +new Date(),
+        dateCreate: time.format('YYYY-MM-DD HH:mm'),
+        title: e.target.value,
+      })
+    } else {
+      setTaskSt((prevState) => {
+        if (prevState) return { ...prevState, title: e.target.value }
+      })
+    }
   }
   const handleBlur = (e: unknown) => {
     console.log(e)
 
     setIsEdit(false)
-    changeTask(taskSt)
+    if (taskSt) changeTask(taskSt)
   }
   return (
     <TableRow>
       <TableCell>
         {isEven ? (
           <>
-            <strong>{hh}</strong>
-            <sup>{mm}</sup>
+            <strong>{time.format('HH')}</strong>
+            <sup>{time.format('mm')}</sup>
           </>
         ) : (
           <p></p>
@@ -46,10 +58,10 @@ const DataRow = ({ hh, mm, task, isEven, changeTask }: Props) => {
             sx={{ width: '100%' }}
             onChange={handleChange}
             onBlur={handleBlur}
-            value={taskSt}
+            value={taskSt?.title || ''}
           />
         ) : (
-          <p className={styles.text}>{taskSt}</p>
+          <p className={styles.text}>{taskSt?.title}</p>
         )}
       </TableCell>
     </TableRow>

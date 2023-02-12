@@ -15,7 +15,7 @@ import { useAppDispatch, useAppSelector } from '../../store/hooks'
 import { useEffect, useState } from 'react'
 import { TaskCalendarItemType, TimeCalendar } from '../../types/types'
 import { DateBody } from './dateBody'
-import { setDateSelectedInPlan } from '../../store/actions/actionCalenda'
+import { changeTask, setDateSelectedInPlan } from '../../store/actions/actionCalenda'
 
 const generateTime = (date: string, tasks: TaskCalendarItemType[]): TimeCalendar[] => {
   const arr: TimeCalendar[] = []
@@ -28,10 +28,11 @@ const generateTime = (date: string, tasks: TaskCalendarItemType[]): TimeCalendar
     arr.push({ id: t + 30, time: moment(date).hour(t).minutes(30) })
   }
   const roundMin = (date: string) => moment(date).minute() % 30
+
   tasks.forEach((task) => {
-    const findTask = arr.find((elem) =>
-      elem.time.isSame(moment(task.dateCreate).add(roundMin(task.dateCreate), 'minutes')),
-    )
+    const findTask = arr.find((elem) => {
+      return elem.time.isSame(moment(task.dateCreate).add(roundMin(task.dateCreate), 'minutes'))
+    })
 
     if (findTask) findTask.task = task
   })
@@ -45,22 +46,22 @@ const DatePlan = () => {
   const dispatch = useAppDispatch()
   const handleLeft = () => {
     dispatch(
-      setDateSelectedInPlan(moment(dateSelectedInPlan).add(1, 'd').format('YYYY-MM-DD hh:mm')),
+      setDateSelectedInPlan(moment(dateSelectedInPlan).add(1, 'd').format('YYYY-MM-DD HH:mm')),
     )
   }
   useEffect(() => {
     const list = generateTime(dateSelectedInPlan, [...taskListInPlan])
-    console.log(taskListInPlan)
+
     setListTasks([...list])
   }, [taskListInPlan])
 
   const handleRight = () => {
     dispatch(
-      setDateSelectedInPlan(moment(dateSelectedInPlan).subtract(1, 'd').format('YYYY-MM-DD hh:mm')),
+      setDateSelectedInPlan(moment(dateSelectedInPlan).subtract(1, 'd').format('YYYY-MM-DD HH:mm')),
     )
   }
-  const handleChahgeTask = (value: string) => {
-    // dispatch(calendarActions.changeTask(value, id))
+  const handleChahgeTask = (task: TaskCalendarItemType) => {
+    dispatch(changeTask(task))
   }
 
   return (

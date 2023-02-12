@@ -1,13 +1,13 @@
 import { TableBody } from '@mui/material'
 import DataRow from './dataRow'
-import { TimeCalendar } from '../../types/types'
+import { TaskCalendarItemType, TimeCalendar } from '../../types/types'
 
 type Props = {
   listTasks: TimeCalendar[]
-  changeTask: (value: string, id?: number) => void
+  changeTask: (task: TaskCalendarItemType) => void
 }
 export const DateBody = ({ listTasks, changeTask }: Props) => {
-  const handleChahgeTask = (value: string) => {
+  const handleChahgeTask = (value: TaskCalendarItemType) => {
     changeTask(value)
   }
 
@@ -16,9 +16,8 @@ export const DateBody = ({ listTasks, changeTask }: Props) => {
       {listTasks.map((row, index) => (
         <DataRow
           key={row.id}
-          hh={row.time.format('HH')}
-          mm={row.time.format('mm')}
-          task={row.task?.title || ' '}
+          time={row.time}
+          task={row.task}
           isEven={index % 2 === 0}
           changeTask={handleChahgeTask}
         />
