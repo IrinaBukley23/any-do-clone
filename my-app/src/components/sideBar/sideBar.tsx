@@ -2,7 +2,14 @@ import styles from './sideBar.module.scss'
 import 'moment/locale/ru'
 
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment'
-import { Accordion, AccordionSummary, Typography, AccordionDetails, Paper } from '@mui/material'
+import {
+  Accordion,
+  AccordionSummary,
+  Typography,
+  AccordionDetails,
+  Paper,
+  Badge,
+} from '@mui/material'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import { NavLink } from 'react-router-dom'
 import { StaticDatePicker } from '@mui/x-date-pickers/StaticDatePicker'
@@ -12,6 +19,7 @@ import TextField from '@mui/material/TextField'
 
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
 import { setCurrDate } from '../../store/actions/actionCalenda'
+import { PickersDay } from '@mui/x-date-pickers'
 const CustomBar = () => {
   const { taskList } = useAppSelector((state) => state.calendar)
   return (
@@ -27,11 +35,11 @@ const CustomBar = () => {
 }
 const SideBar = () => {
   const { dateCurrent } = useAppSelector((state) => state.calendar)
-
+  const { taskListAll } = useAppSelector((state) => state.calendar)
   const dispatch = useAppDispatch()
   const changeDate = (date: string | null) => {
     if (date) {
-      dispatch(setCurrDate(moment(date).format('YYYY-MM-DD hh:mm')))
+      dispatch(setCurrDate(moment(date).format('YYYY-MM-DD HH:mm')))
     }
   }
 
@@ -46,6 +54,33 @@ const SideBar = () => {
             renderInput={(params) => <TextField {...params} />}
             components={{
               ActionBar: CustomBar,
+            }}
+            renderDay={(day, _value, DayComponentProps) => {
+              const isSelected = taskListAll
+                .map((task) => task.dateCreate)
+                .some((x) => moment(day).isSame(x, 'day'))
+
+              return (
+                <Badge
+                  key={day.toString()}
+                  overlap='circular'
+                  color='primary'
+                  badgeContent={isSelected ? '' : undefined}
+                  anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'right',
+                  }}
+                  sx={{
+                    '& .MuiBadge-badge': {
+                      right: '50%',
+                      height: '2px',
+                      width: '1px',
+                    },
+                  }}
+                >
+                  <PickersDay {...DayComponentProps} />
+                </Badge>
+              )
             }}
           />
         </LocalizationProvider>
