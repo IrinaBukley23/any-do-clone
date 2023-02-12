@@ -57,7 +57,8 @@ const Task = (props: IProps) => {
     };
 
     const handleRemove = () => {
-      dispatch(setRemoveTask(taskId))
+      dispatch(setRemoveTask(taskId));
+      setOpenConfirm(false);
     };
 
     const handleOpenConfirm = () => {

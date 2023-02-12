@@ -61,7 +61,8 @@ const Column = (props: IProps) => {
     };
 
     const handleRemove = () => {
-        dispatch(setRemoveColumn(columnId))
+        dispatch(setRemoveColumn(columnId));
+        setOpen(false);
     };
 
     return (
