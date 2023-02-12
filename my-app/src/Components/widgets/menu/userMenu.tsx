@@ -1,5 +1,4 @@
 import * as React from 'react';
-import Link from '@mui/material/Link';
 import Avatar from '@mui/material/Avatar';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
@@ -21,7 +20,7 @@ const UserMenu = () => {
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
-  const handleClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
+  const handleClick = (event: React.MouseEvent<HTMLImageElement>) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
@@ -30,17 +29,15 @@ const UserMenu = () => {
 
   return (
     <div>
-      <Link
-        sx={{width: '0px'}}
+      <Avatar 
+        sx={{ bgcolor: '#8158d3', cursor: 'pointer', marginLeft: '25px' }}
         id="user-avatar"
         aria-controls={open ? 'user-menu' : undefined}
         aria-haspopup="true"
         aria-expanded={open ? 'true' : undefined}
         onClick={handleClick}>
-        <Avatar sx={{ bgcolor: '#8158d3', cursor: 'pointer' }}>
-          {firstLetterOfName}
-        </Avatar>
-      </Link>
+        {firstLetterOfName}
+      </Avatar>
       <Menu
         id="user-menu"
         anchorEl={anchorEl}
@@ -54,7 +51,9 @@ const UserMenu = () => {
         <MenuItem onClick={() => {
           navigate('/');
           dispatch(logout());
-        }}>Выход</MenuItem>
+        }}>
+          Выход
+        </MenuItem>
       </Menu>
     </div>
   );

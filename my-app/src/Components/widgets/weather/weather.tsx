@@ -18,6 +18,8 @@ const Weather = () => {
 
   const [city, setCity] = useState(defaultCity)
 
+  const [error, setError] = useState('')
+
   useEffect(() => {
     if (isFirstLoad && city !== null) {
       isFirstLoad = false
@@ -35,7 +37,7 @@ const Weather = () => {
       const url = `https://api.openweathermap.org/data/2.5/weather?q=${cityValue}&lang=en&appid=f24a0e6c09481d6e6ccf0547c5467caf&units=metric`
       const res = await fetch(url)
       const data = await res.json()
-      console.log(data);
+      setError('')
       setData({
         temp: data.main.temp,
         description: data.weather[0].description,
@@ -44,12 +46,13 @@ const Weather = () => {
       })
     } catch(error) {
       console.log(error)
+      setError('City not found.')
     }
   }
 
   return (
     <Grid container spacing={1} className={styles.header__weather}>
-      <Grid item xs={4}>
+      <Grid item xs={5}>
         <TextField
           id="wether"
           size="small"
@@ -61,25 +64,30 @@ const Weather = () => {
           onChange={(event) => {
             getWeather(event.target.value)
           }}
-          sx={{marginLeft: '25px', fontSize: '0.8'}}
+          
         />
       </Grid>
+      <Grid item xs={3}>
+        { error !== '' &&
+          <div>
+            {error}
+          </div>
+        }
+        { weatherData !== null && error === '' &&
+          <div>
+            <div>{weatherData.temp}°C</div>
+            <div>{weatherData.description}</div>
+          </div>
+        }
+      </Grid>
       <Grid item xs={4}>
-          {weatherData !== null &&
-            <div>
-              <div>{weatherData.temp}°C</div>
-              <div>{weatherData.description}</div>
-            </div>
-          }
-        </Grid>
-        <Grid item xs={4}>
-          {weatherData !== null &&
-            <div>
-              <div>Wind: {weatherData.windSpeed} m/s</div>
-              <div>Humidity: {weatherData.humidity} %</div>
-            </div>
-          }
-        </Grid>
+        { weatherData !== null && error === '' &&
+          <div>
+            <div>Wind: {weatherData.windSpeed} m/s</div>
+            <div>Humidity: {weatherData.humidity} %</div>
+          </div>
+        }
+      </Grid>
     </Grid>
   )
 }

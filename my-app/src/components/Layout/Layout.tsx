@@ -10,16 +10,16 @@ import styles from './Layout.module.scss'
 const Layout = () => {
   return (
     <>
-      <header style={{ height: '70px', background: '#ffffff', display: 'flex', alignItems: 'center'}}>
-        <Grid container columnSpacing={{ xs: 1, sm: 2, md: 12 }} sx={{alignItems: 'center'}}>
-          <Grid item md={3}>
-            <Weather></Weather>
+      <header className={styles.header}>
+        <Grid container spacing={1} columnSpacing={{ xs: 1, sm: 2, md: 10 }} sx={{alignItems: 'center'}}>
+          <Grid item xs={12} sm={12} md={2} lg={3}>
+            <UserMenu></UserMenu>
           </Grid>
-          <Grid item md={5}>
+          <Grid item xs={12} sm={6} md={5} lg={5}>
             <Quotes></Quotes>
           </Grid>
-          <Grid item md={4} sx={{justifyContent: 'end'}}>
-            <UserMenu></UserMenu>
+          <Grid item xs={12} sm={6} md={5} lg={4}>
+            <Weather></Weather>
           </Grid>
         </Grid>
       </header>
