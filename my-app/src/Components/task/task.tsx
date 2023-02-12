@@ -27,16 +27,16 @@ const Task = (props: IProps) => {
       setIsEditTitle(true);
     };
     const handleEditDescr = () => {
-        setIsEditDescr(true);
-      };
+      setIsEditDescr(true);
+    };
   
     const handleCorrectTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
       setCorrectedTitle(e.target.value);
     };
 
     const handleCorrectDescr = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setCorrectedDescr(e.target.value);
-      };
+      setCorrectedDescr(e.target.value);
+    };
   
     const handleSaveTitle = () => {
       setIsEditTitle(false);
@@ -44,27 +44,28 @@ const Task = (props: IProps) => {
     };
 
     const handleSaveDescr = () => {
-        setIsEditDescr(false);
-        dispatch(editTaskDescr(taskId, correctedDescr));
-      };
+      setIsEditDescr(false);
+      dispatch(editTaskDescr(taskId, correctedDescr));
+    };
   
     const handleCancelTitle = () => {
       setIsEditTitle(false);
     };
 
     const handleCancelDescr = () => {
-        setIsEditDescr(false);
-      };
+      setIsEditDescr(false);
+    };
 
     const handleRemove = () => {
-        dispatch(setRemoveTask(taskId))
+      dispatch(setRemoveTask(taskId));
+      setOpenConfirm(false);
     };
 
     const handleOpenConfirm = () => {
-        setOpenConfirm(true);
+      setOpenConfirm(true);
       };
     const handleCloseConfirm = () => {
-        setOpenConfirm(false);
+      setOpenConfirm(false);
     };
 
     return (

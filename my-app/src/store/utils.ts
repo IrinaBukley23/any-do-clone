@@ -6,10 +6,12 @@ export const initialState = {
     columnTitle: '',
     columnList: [],
   },
+  currentId: '',
   task: {
     taskId: '',
     taskTitle: '',
     taskDescr: '',
     taskList: [],
+    currentColumnId: '',
   },
 }

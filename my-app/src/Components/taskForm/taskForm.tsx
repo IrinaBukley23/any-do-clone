@@ -5,25 +5,28 @@ import { AnyAction } from 'redux';
 import { setTaskDescr, setTaskList, setTaskTitle } from '../../store/actions/actionCreators';
 import { State } from '../../types/types';
 import { useState } from 'react';
+import nextId from 'react-id-generator';
 
-const TaskForm = () => {
-  const [, setOpen] = useState(false);
+interface IProps {
+  handleClose: () => void;
+}
+
+const TaskForm = ({ handleClose }: IProps) => {
   const { taskList, taskTitle, taskDescr } = useSelector((state: State) => state.task);
+  const { currentId } = useSelector((state: State) => state.currentId);
   const dispatch = useDispatch();
   const [isError, setIsError] = useState(false);
-  const [isErrorDescr, ] = useState(false);
+  const [isErrorDescr, setIsErrorDescr] = useState(false);
   const [isValidate, setIsValidate] = useState(true);
-
-  const handleClose = () => {
-    setOpen(false);
-};
+  const myId = nextId();
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement>,
     callback: (value: string) => AnyAction,
+    foo: (value: boolean) => void
   ) => {
-    (e.target.value.length < 3) ? setIsError(true) : setIsError(false);
-      (e.target.value.length >= 3 && e) ? setIsValidate(false) : setIsValidate(true);
+    (e.target.value.length < 3) ? foo(true) : foo(false);
+    (e.target.value.length >= 3 && e) ? setIsValidate(false) : setIsValidate(true);
     dispatch(callback(e.target.value));
   };
 
@@ -32,13 +35,14 @@ const TaskForm = () => {
       setTaskList([
         ...taskList,
         {
-          taskId: taskTitle,
+          taskId: myId,
           taskTitle: taskTitle,
           taskDescr: taskDescr,
+          currentColumnId: currentId,
         },
       ])
     );
-    setOpen(false);
+    handleClose();
   };
 
   return (
@@ -50,7 +54,8 @@ const TaskForm = () => {
             name='title'
             label='Title'
             fullWidth
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange(e, setTaskTitle)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange(e, setTaskTitle, setIsError)}
+            required
           />
           {isError && <Typography variant="h5" component="p" sx={{fontSize: '12px', textAlign: 'left', color: 'red'}}>Необходимо минимум три символа</Typography>}
         </Grid>
@@ -60,7 +65,8 @@ const TaskForm = () => {
             name='descr'
             label='Description'
             fullWidth
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange(e, setTaskDescr)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange(e, setTaskDescr, setIsErrorDescr)}
+            required
           />
           {isErrorDescr && <Typography variant="h5" component="p" sx={{fontSize: '12px', textAlign: 'left', color: 'red'}}>Необходимо минимум три символа</Typography>}
         </Grid>

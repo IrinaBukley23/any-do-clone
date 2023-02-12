@@ -26,6 +26,10 @@ export type Action =
       payload: string
     }
   | {
+    type: Actions.SET_CURRENTID
+    payload: string
+  }
+  | {
       type: Actions.SET_TASKID
       payload: string
     }
@@ -57,5 +61,9 @@ export type Action =
     }
   | {
       type: Actions.REMOVE_TASK
+      payload: string
+    }
+    | {
+      type: Actions.SET_CURRENTCOLUMNID
       payload: string
     }

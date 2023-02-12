@@ -6,7 +6,6 @@ import { initialState } from '../utils';
 export const columnReducer = (state: IColumn = initialState.column, action: Action) => {
     switch (action.type) {
         case Actions.SET_COLUMNTITLE: {
-            console.log(state);
             return {
                 ...state,
                 columnTitle: action.payload,
@@ -14,10 +13,11 @@ export const columnReducer = (state: IColumn = initialState.column, action: Acti
         }
         case Actions.SET_COLUMNLIST: {
             return {
-                ...state,
-                columnList: [...action.payload],
+              ...state,
+              columnList: [...action.payload],
             }
         }
+        
         case Actions.EDIT_COLUMNTITLE: {
             const newColumnList = state.columnList.map((item: ColumnItemType) => {
               if (item.columnId === action.payload.columnId) {
