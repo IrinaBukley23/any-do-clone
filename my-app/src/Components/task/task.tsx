@@ -1,6 +1,6 @@
 import styles from './task.module.scss'
 import React, { useState } from 'react';
-import { IconButton, TextField, Tooltip, Typography } from '@mui/material';
+import { FormControl, IconButton, InputLabel, MenuItem, Select, SelectChangeEvent, TextField, Tooltip, Typography } from '@mui/material';
 import { ITask } from '../../types/types';
 import { useDispatch } from 'react-redux';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -13,6 +13,21 @@ interface IProps {
     taskItem: ITask;
 }
 
+const users = [
+  {
+    name: 'Ирина',
+    email: 'irina@mail.ru'
+  },
+  {
+    name: 'Полина',
+    email: 'polina@mail.ru'
+  },
+  {
+    name: 'Владислава',
+    email: 'vlada@mail.ru'
+  }
+];
+
 const Task = (props: IProps) => {
     const [openConfirm, setOpenConfirm] = useState(false);
     const { taskTitle, taskId, taskDescr } = props.taskItem;
@@ -22,6 +37,12 @@ const Task = (props: IProps) => {
     const [isEditDescr, setIsEditDescr] = useState(false);
     const [correctedTitle, setCorrectedTitle] = useState(taskTitle);
     const [correctedDescr, setCorrectedDescr] = useState(taskDescr);
+
+    const [user, setUser] = React.useState('');
+
+  const handleChangeSelect = (event: SelectChangeEvent) => {
+    setUser(event.target.value as string);
+  };
   
     const handleEditTitle = () => {
       setIsEditTitle(true);
@@ -78,7 +99,7 @@ const Task = (props: IProps) => {
                     <CancelIcon onClick={handleCancelTitle} sx={{color: 'blue', ml: '10px'}}></CancelIcon>
                 </div>
             )}
-            {!isEditDescr && <Typography variant="h5" className={styles.task} onClick={handleEditDescr} sx={{fontSize: '14px', textAlign: 'left', pl: '10px', pb: '5px'}}>{taskDescr}</Typography>}
+            {!isEditDescr && <Typography variant="h5" paragraph={true} onClick={handleEditDescr} noWrap={true} sx={{fontSize: '14px', textAlign: 'left', pl: '10px', mb: '15px', mt: '15px'}}>{taskDescr}</Typography>}
             {isEditDescr && (
                 <div className={styles.task__edit}>
                     <TextField id="outlined-basic" label="Outlined" variant="outlined" value={correctedDescr} onChange={handleCorrectDescr} sx={{width: '160px', fontSize: '14px', textAlign: 'left',}} />
@@ -86,6 +107,21 @@ const Task = (props: IProps) => {
                     <CancelIcon onClick={handleCancelDescr} sx={{color: 'blue', ml: '10px'}}></CancelIcon>
                 </div>
             )}
+            <FormControl fullWidth>
+              <InputLabel id="demo-simple-select-label">User</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={user}
+                label="User"
+                onChange={handleChangeSelect}
+                sx={{width: '80%', fontSize: '14px', textAlign: 'left'}}
+              >
+                {users.map((user, i) => (
+                  <MenuItem key={i} value={user.name}>{user.name} ({user.email})</MenuItem>
+                ))}
+              </Select>
+            </FormControl>
             <div>
                 <Tooltip title="Delete task">
                     <IconButton 
