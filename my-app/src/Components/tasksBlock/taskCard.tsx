@@ -25,6 +25,7 @@ type Props = {
 
 const TaskCard = ({ task }: Props) => {
   const [isEdit, setIsEdit] = useState({ title: false, description: false })
+  const [dataValue, setDataValue] = useState(task.dateCreate)
 
   const [taskEdit, setTaskIsEdit] = useState(task)
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
@@ -44,6 +45,9 @@ const TaskCard = ({ task }: Props) => {
         dateCreate: moment(date).format('YYYY-MM-DD HH:mm'),
       }))
     // setIsEdit(!isEdit)
+  }
+  const handleDateChange = (date: string | null) => {
+    if (date) setDataValue(date)
   }
   const handleIsDone = () => {
     // onDelete(task.id)
@@ -125,8 +129,9 @@ const TaskCard = ({ task }: Props) => {
               <MobileDateTimePicker
                 renderInput={(props) => <TextField {...props} />}
                 label='Дата'
-                onChange={handleEdit}
-                value={taskEdit.dateCreate}
+                onAccept={handleEdit}
+                onChange={handleDateChange}
+                value={dataValue}
               />
             </LocalizationProvider>
             <TaskMenu open={open} anchorEl={anchorEl} closeMenu={closeMenu} />
