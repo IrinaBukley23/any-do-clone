@@ -1,4 +1,4 @@
-import { Card, Chip, Menu, TextField } from '@mui/material'
+import { Card, Chip, IconButton, TextField } from '@mui/material'
 import CardContent from '@mui/material/CardContent'
 import CardActions from '@mui/material/CardActions'
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment'
@@ -9,98 +9,132 @@ import { Stack } from '@mui/system'
 import Typography from '@mui/material/Typography'
 import styles from './tasksBlock.module.scss'
 import ControlPointIcon from '@mui/icons-material/ControlPoint'
-
-import { deleteTask } from '../../store/actions/actionCalenda'
+import { changeTask, deleteTask } from '../../store/actions/actionCalenda'
 import { useAppDispatch } from '../../store/hooks'
-import { useState } from 'react'
-import { DateTimePicker, LocalizationProvider } from '@mui/x-date-pickers'
+import { useEffect, useState } from 'react'
+import MenuIcon from '@mui/icons-material/Menu'
+import { DateTimePicker, LocalizationProvider, MobileDateTimePicker } from '@mui/x-date-pickers'
+import TextFieldEdit from '../UI/textFieldEdit/textFieldEdit'
+
+import TaskMenu from './taskMenu'
+import moment from 'moment'
 
 type Props = {
   task: TaskCalendarItemType
 }
 
 const TaskCard = ({ task }: Props) => {
-  const [isEdit, setIsEdit] = useState(false)
+  const [isEdit, setIsEdit] = useState({ title: false, description: false })
+
   const [taskEdit, setTaskIsEdit] = useState(task)
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+  const open = Boolean(anchorEl)
+  useEffect(() => {
+    dispatch(changeTask(taskEdit))
+  }, [taskEdit])
   const dispatch = useAppDispatch()
   // console.log(task.taskDate)
   const handleClick = () => {
     dispatch(deleteTask(task.id))
   }
-  const handleEdit = () => {
-    setIsEdit(!isEdit)
+  const handleEdit = (date: string | null) => {
+    if (date)
+      setTaskIsEdit((prevState) => ({
+        ...prevState,
+        dateCreate: moment(date).format('YYYY-MM-DD HH:mm'),
+      }))
+    // setIsEdit(!isEdit)
   }
   const handleIsDone = () => {
     // onDelete(task.id)
   }
-  const showMenu = () => {
-    // ggg
+  const showMenu = (e: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(e.currentTarget)
   }
-  if (isEdit)
-    return (
-      <Card className={styles.card}>
-        <CardContent>
-          <Stack direction='row'>
-            <Checkbox
-              inputProps={{ 'aria-label': 'task' }}
-              onChange={handleIsDone}
-              checked={taskEdit.isDone}
-            />
-            <TextField label='Заголовок задачи' value={taskEdit.title}></TextField>
-          </Stack>
-          <TextField label='Описание задачи' value={taskEdit.description}></TextField>
-          <LocalizationProvider dateAdapter={AdapterMoment} adapterLocale='ru'>
-            <DateTimePicker
-              renderInput={(props) => <TextField {...props} />}
-              label='Дата'
-              onChange={handleEdit}
-              value={taskEdit.dateCreate}
-            />
-          </LocalizationProvider>
-        </CardContent>
-        <CardActions>
-          <Button onClick={handleEdit}>Save</Button>
-          <Button onClick={handleClick}>Delete</Button>
-        </CardActions>
-      </Card>
-    )
+  const closeMenu = () => {
+    setAnchorEl(null)
+  }
+  const handleCancel = (type: string) => {
+    if (type) setIsEdit((prevState) => ({ ...prevState, [type]: false }))
+  }
+  const handleApprove = (type: string, value: string) => {
+    setTaskIsEdit((prevState) => ({ ...prevState, [type]: value }))
+    setIsEdit((prevState) => ({ ...prevState, [type]: false }))
+  }
+  const handleClickEdit = (
+    e: React.MouseEvent<HTMLDivElement> | React.MouseEvent<HTMLButtonElement>,
+  ) => {
+    const type = e.currentTarget.dataset.name
+    console.log(type)
+    if (type) setIsEdit((prevState) => ({ ...prevState, [type]: true }))
+  }
+
   return (
     <Card className={styles.card}>
       <CardContent>
-        <Stack direction='row'>
+        <Stack direction='row' spacing={2}>
           <Checkbox
+            sx={{ alignSelf: 'flex-start' }}
             inputProps={{ 'aria-label': 'task' }}
             onChange={handleIsDone}
-            checked={task.isDone}
+            checked={taskEdit.isDone}
           />
-          <Typography variant='h5'>{task.title}</Typography>
+          <Stack spacing={2} alignItems='flex-start' sx={{ width: '80%' }}>
+            {isEdit.title ? (
+              <TextFieldEdit
+                dataName='title'
+                label='Заголовок задачи'
+                value={task.title}
+                onAprove={handleApprove}
+                onCancel={handleCancel}
+              />
+            ) : (
+              <Typography data-name='title' onClick={handleClickEdit} variant='h5'>
+                {task.title}
+              </Typography>
+            )}
+            {isEdit.description ? (
+              <TextFieldEdit
+                align-self='stretch'
+                dataName='description'
+                label='Описание задачи'
+                value={task.description || ''}
+                onAprove={handleApprove}
+                onCancel={handleCancel}
+              />
+            ) : task.description ? (
+              <Typography data-name='description' onClick={handleClickEdit} alignSelf='flex-start'>
+                {task.description}
+              </Typography>
+            ) : (
+              <Chip
+                data-name='description'
+                variant='outlined'
+                label='описание'
+                onClick={handleClickEdit}
+                // onDelete={showMenu}
+                icon={<ControlPointIcon />}
+              />
+            )}
+          </Stack>
+          <Stack alignItems='flex-end'>
+            <IconButton onClick={showMenu}>
+              <MenuIcon />
+            </IconButton>
+            <LocalizationProvider dateAdapter={AdapterMoment} adapterLocale='ru'>
+              <MobileDateTimePicker
+                renderInput={(props) => <TextField {...props} />}
+                label='Дата'
+                onChange={handleEdit}
+                value={taskEdit.dateCreate}
+              />
+            </LocalizationProvider>
+            <TaskMenu open={open} anchorEl={anchorEl} closeMenu={closeMenu} />
+          </Stack>
         </Stack>
-        <Typography>{task.description}</Typography>
-        <p>{task.dateCreate}</p>
       </CardContent>
-      <Chip
-        variant='outlined'
-        label='проект'
-        onDelete={showMenu}
-        deleteIcon={<ControlPointIcon />}
-      />
-      <Menu
-        id='card-menu'
-        anchorEl={anchorEl}
-        open={open}
-        onClose={handleClose}
-        MenuListProps={{
-          'aria-labelledby': 'basic-button',
-        }}
-      >
-        <MenuItem onClick={handleClose}>Profile</MenuItem>
-        <MenuItem onClick={handleClose}>My account</MenuItem>
-        <MenuItem onClick={handleClose}>Logout</MenuItem>
-      </Menu>
-
       <CardActions>
-        <Button onClick={handleEdit}>Edit</Button>
-        <Button onClick={handleClick}>Delete</Button>
+        <Button onClick={handleClick}>Удалить</Button>
       </CardActions>
     </Card>
   )
