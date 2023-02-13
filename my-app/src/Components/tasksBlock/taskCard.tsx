@@ -12,8 +12,8 @@ import ControlPointIcon from '@mui/icons-material/ControlPoint'
 import { changeTask, deleteTask } from '../../store/actions/actionCalenda'
 import { useAppDispatch } from '../../store/hooks'
 import { useEffect, useState } from 'react'
-import MenuIcon from '@mui/icons-material/Menu'
-import { DateTimePicker, LocalizationProvider, MobileDateTimePicker } from '@mui/x-date-pickers'
+
+import { LocalizationProvider, MobileDateTimePicker } from '@mui/x-date-pickers'
 import TextFieldEdit from '../UI/textFieldEdit/textFieldEdit'
 
 import TaskMenu from './taskMenu'

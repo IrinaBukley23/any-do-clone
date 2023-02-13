@@ -24,17 +24,21 @@ const generateTime = (date: string, tasks: TaskCalendarItemType[]): TimeCalendar
     arr.push({
       id: t,
       time: moment(date).hour(t).minutes(0),
+      task: [],
     })
-    arr.push({ id: t + 30, time: moment(date).hour(t).minutes(30) })
+    arr.push({ id: t + 30, time: moment(date).hour(t).minutes(30), task: [] })
   }
-  const roundMin = (date: string) => moment(date).minute() % 30
+  const roundMin = (date: string) =>
+    moment(date).minute() >= 30
+      ? moment(date).minute(30).second(0)
+      : moment(date).minute(0).second(0)
 
   tasks.forEach((task) => {
     const findTask = arr.find((elem) => {
-      return elem.time.isSame(moment(task.dateCreate).add(roundMin(task.dateCreate), 'minutes'))
+      return elem.time.isSame(roundMin(task.dateCreate))
     })
 
-    if (findTask) findTask.task = task
+    if (findTask) findTask.task.push(task)
   })
 
   return arr
