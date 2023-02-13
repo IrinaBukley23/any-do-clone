@@ -121,10 +121,10 @@ const TaskCard = ({ task }: Props) => {
               />
             )}
           </Stack>
-          <Stack alignItems='flex-end'>
-            <IconButton onClick={showMenu}>
+          <Stack alignItems='flex-end' spacing={2}>
+            {/* <IconButton onClick={showMenu}>
               <MenuIcon />
-            </IconButton>
+            </IconButton> */}
             <LocalizationProvider dateAdapter={AdapterMoment} adapterLocale='ru'>
               <MobileDateTimePicker
                 renderInput={(props) => <TextField {...props} />}
@@ -135,11 +135,28 @@ const TaskCard = ({ task }: Props) => {
               />
             </LocalizationProvider>
             <TaskMenu open={open} anchorEl={anchorEl} closeMenu={closeMenu} />
+
+            <Chip
+              data-name='description'
+              variant='outlined'
+              label='проект'
+              onClick={handleClickEdit}
+              // onDelete={showMenu}
+              icon={<ControlPointIcon />}
+            />
           </Stack>
         </Stack>
       </CardContent>
-      <CardActions>
+      <CardActions sx={{ display: 'flex', justifyContent: 'space-between' }}>
         <Button onClick={handleClick}>Удалить</Button>
+        <Chip
+          data-name='description'
+          variant='outlined'
+          label='важность'
+          onClick={handleClickEdit}
+          // onDelete={showMenu}
+          icon={<ControlPointIcon />}
+        />
       </CardActions>
     </Card>
   )
