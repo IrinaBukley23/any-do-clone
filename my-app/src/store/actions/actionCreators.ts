@@ -34,6 +34,11 @@ export const setTaskId = (taskId: string) => ({
   payload: taskId,
 })
 
+export const setCurrentId = (currentId: string) => ({
+  type: Actions.SET_CURRENTID,
+  payload: currentId,
+})
+
 export const setTaskTitle = (taskTitle: string) => ({
   type: Actions.SET_TASKTITLE,
   payload: taskTitle,
@@ -47,6 +52,11 @@ export const setTaskDescr = (taskDescr: string) => ({
 export const setTaskList = (taskList: TaskItemType[]) => ({
   type: Actions.SET_TASKLIST,
   payload: taskList,
+})
+
+export const setCurrentColumnId = (currentColumnId: string) => ({
+  type: Actions.SET_CURRENTCOLUMNID,
+  payload: currentColumnId,
 })
 
 export const editTaskTitle = (taskId: string, taskTitle: string) => ({
@@ -65,7 +75,7 @@ export const editTaskDescr = (taskId: string, taskDescr: string) => ({
   },
 })
 
-export const setRemoveTask = (taskTitle: string) => ({
+export const setRemoveTask = (taskId: string) => ({
   type: Actions.REMOVE_TASK,
-  payload: taskTitle,
+  payload: taskId,
 })

@@ -1,10 +1,10 @@
 import styles from './column.module.scss';
 import React, { useState } from 'react';
 import { Button, IconButton, TextField, Tooltip, Typography } from '@mui/material';
-import { IColumn, State } from '../../types/types';
+import { ColumnItemType, State } from '../../types/types';
 import { useDispatch, useSelector } from 'react-redux';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { editColumnTitle, setRemoveColumn } from '../../store/actions/actionCreators';
+import { editColumnTitle, setCurrentId, setRemoveColumn } from '../../store/actions/actionCreators';
 import CancelIcon from '@mui/icons-material/Cancel';
 import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
 import Task from '../task/task';
@@ -12,7 +12,7 @@ import { DialogConfirm } from '../UI/DialogConfirm';
 import ResponsiveDialog from '../UI/OpenDialog';
 
 interface IProps {
-    columnItem: IColumn;
+    columnItem: ColumnItemType;
 }
 
 const Column = (props: IProps) => {
@@ -51,7 +51,9 @@ const Column = (props: IProps) => {
         setOpen(false);
     };
 
-    const handleTaskFormOpen = () => {
+    const handleTaskFormOpen = (e: React.SyntheticEvent) => {
+        const targetId = ((e.target as HTMLElement).closest('div') as HTMLElement).id;
+        dispatch(setCurrentId(targetId));
         setIsTaskModal(true);
     };
     const handleTaskFormClose = () => {
@@ -59,7 +61,8 @@ const Column = (props: IProps) => {
     };
 
     const handleRemove = () => {
-        dispatch(setRemoveColumn(columnId))
+        dispatch(setRemoveColumn(columnId));
+        setOpen(false);
     };
 
     return (
@@ -85,7 +88,7 @@ const Column = (props: IProps) => {
                 <DialogConfirm isOpen={open} handleClose={handleClose} handleRemove={handleRemove} />
             </div>
             <div className={styles.column__wrapper}>
-                {taskList?.map((task, i) => (
+                {taskList?.filter(task => task.currentColumnId === columnId).map((task, i) => (
                     <Task key={i} taskItem={task}/>
                 ) )}
             </div>

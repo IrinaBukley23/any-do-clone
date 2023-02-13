@@ -6,6 +6,7 @@ import Column from '../../components/column/column';
 import { AnyAction } from 'redux';
 import { useDispatch, useSelector } from 'react-redux';
 import { setColumnList, setColumnTitle } from '../../store/actions/actionCreators';
+import nextId from 'react-id-generator';
 
 const BoardPage = () => {
     const [isCreate, setIsCreate] = useState(false);
@@ -15,6 +16,7 @@ const BoardPage = () => {
     const [isError, setIsError] = useState(false);
     const dispatch = useDispatch();
     const [isValidate, setIsValidate] = useState(true);
+    const myId = nextId();
   
     const handleChangeTitle = (
       e: React.ChangeEvent<HTMLInputElement>,
@@ -24,7 +26,7 @@ const BoardPage = () => {
       (e.target.value.length >= 3 && e) ? setIsValidate(false) : setIsValidate(true);
       dispatch(callback(e.target.value));
     };
-  
+
     const handleSaveColumn = () => {
       setIsCreate(false);
       setCreated(true);
@@ -32,7 +34,7 @@ const BoardPage = () => {
         setColumnList([
           ...columnList,
           {
-            columnId: columnTitle,
+            columnId: myId,
             columnTitle: columnTitle,
           },
         ])

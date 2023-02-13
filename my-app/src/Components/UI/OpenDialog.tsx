@@ -28,7 +28,7 @@ interface PropsDialogModal {
           {'Создать задачу?'}
         </DialogTitle>
         <DialogContent>
-          <TaskForm />
+          <TaskForm handleClose={handleClose}/>
         </DialogContent>
       </Dialog>
     </div>

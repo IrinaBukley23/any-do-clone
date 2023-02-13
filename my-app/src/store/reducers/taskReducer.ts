@@ -23,6 +23,12 @@ export const taskReducer = (state: ITask = initialState.task, action: Action) =>
               taskList: [...action.payload],
           }
         }
+        case Actions.SET_CURRENTCOLUMNID: {
+          return {
+              ...state,
+              currentColumnId: action.payload,
+          }
+        }
         case Actions.EDIT_TASKTITLE: {
           const newTaskList = state.taskList.map((item: TaskItemType) => {
             if (item.taskId === action.payload.taskId) {
@@ -56,7 +62,7 @@ export const taskReducer = (state: ITask = initialState.task, action: Action) =>
         case Actions.REMOVE_TASK: {
           return {
             ...state,
-            taskList: state.taskList.filter((task) => task.taskTitle !== action.payload),
+            taskList: state.taskList.filter((task) => task.taskId !== action.payload),
           };
           }
         default: 
