@@ -1,5 +1,5 @@
 import styles from './column.module.scss';
-import React, { useState } from 'react';
+import React, { FC, useRef, useState } from 'react';
 import { Button, IconButton, TextField, Tooltip, Typography } from '@mui/material';
 import { ColumnItemType, State } from '../../types/types';
 import { useDispatch, useSelector } from 'react-redux';
@@ -13,19 +13,20 @@ import ResponsiveDialog from '../UI/OpenDialog';
 
 interface IProps {
     columnItem: ColumnItemType;
-}
+  }
 
 const Column = (props: IProps) => {
     const [open, setOpen] = useState(false);
     const [isTaskModal, setIsTaskModal] = useState(false);
-    const { columnTitle, columnId } = props.columnItem;
+    const { columnTitle, columnId, columnOrder } = props.columnItem;
     const dispatch = useDispatch();
     const { taskList } = useSelector((state: State) => state.task);
     const taskQuantity = taskList.length;
   
     const [isEdit, setIsEdit] = useState(false);
     const [correctedTitle, setCorrectedTitle] = useState(columnTitle);
-  
+
+
     const handleEdit = () => {
       setIsEdit(true);
     };
@@ -66,7 +67,9 @@ const Column = (props: IProps) => {
     };
 
     return (
-        <div id={columnId} key={columnId} className={styles.column}>
+        <div
+            id={columnId} 
+            className={styles.column}>
             {!isEdit && <Typography variant="h5" onClick={handleEdit}>{columnTitle}</Typography>
             }
             {isEdit && (

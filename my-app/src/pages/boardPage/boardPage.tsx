@@ -1,7 +1,7 @@
 import styles from './boardPage.module.scss';
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Button, TextField, Typography } from '@mui/material';
-import { State } from '../../types/types';
+import { ColumnItemType, IColumn, State } from '../../types/types';
 import Column from '../../components/column/column';
 import { AnyAction } from 'redux';
 import { useDispatch, useSelector } from 'react-redux';
@@ -17,6 +17,8 @@ const BoardPage = () => {
     const dispatch = useDispatch();
     const [isValidate, setIsValidate] = useState(true);
     const myId = nextId();
+    const [currentColumn, setCurrentColumn] = useState({});
+    const [currentList, setCurrentList] = useState(columnList);
   
     const handleChangeTitle = (
       e: React.ChangeEvent<HTMLInputElement>,
@@ -45,11 +47,48 @@ const BoardPage = () => {
         setIsCreate(true);
     }
 
+    function dragStartHandler(e: React.DragEvent<HTMLDivElement>, column: ColumnItemType): void {
+        console.log('drag', column)
+        setCurrentColumn(column);
+    }
+
+    function dragOverHandler(e: React.DragEvent<HTMLDivElement>): void {
+      console.log(e.target)
+        e.preventDefault();
+        (e.target as HTMLDivElement).style.background = '#ece6e6'
+    }
+
+    function dragEndHandler(e: React.DragEvent<HTMLDivElement>): void {
+      (e.target as HTMLDivElement).style.background = '#b8b6b6'
+    }
+
+    function dropHandler(e: React.DragEvent<HTMLDivElement>, column: ColumnItemType): void {
+        e.preventDefault();
+        setCurrentList(currentList.map((c: IColumn) => {
+          // if(c.columnId === column.columnId) {
+          //   return {...c, columnOrder: currentColumn};
+          // }
+          return c;
+        }));
+        (e.target as HTMLDivElement).style.background = '#ece6e6'
+    }
+
+
     return (
         <div className={styles.container}>
             <>
               {columnList?.map((column, i) => (
-                <Column key={i} columnItem={column} />
+                <section 
+                  key={i} 
+                  onDragStart={(e: React.DragEvent<HTMLDivElement>) => dragStartHandler(e, column)}
+                  onDragLeave={(e: React.DragEvent<HTMLDivElement>) => dragEndHandler(e)}
+                  onDragEnd={(e: React.DragEvent<HTMLDivElement>) => dragEndHandler(e)}
+                  onDragOver={(e: React.DragEvent<HTMLDivElement>) => dragOverHandler(e)}
+                  onDrop={(e: React.DragEvent<HTMLDivElement>) => dropHandler(e, column)}
+                  draggable={true}
+                >
+                  <Column key={i} columnItem={column} />
+                </section>
              ) )}
               {isCreate && (
                 <>

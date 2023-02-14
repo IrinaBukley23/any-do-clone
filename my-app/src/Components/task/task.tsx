@@ -30,7 +30,7 @@ const users = [
 
 const Task = (props: IProps) => {
     const [openConfirm, setOpenConfirm] = useState(false);
-    const { taskTitle, taskId, taskDescr } = props.taskItem;
+    const { taskTitle, taskId, taskDescr, taskOrder } = props.taskItem;
     const dispatch = useDispatch();
   
     const [isEditTitle, setIsEditTitle] = useState(false);
