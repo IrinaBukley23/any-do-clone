@@ -1,3 +1,5 @@
+import { createTask } from './../actions/actionCalenda'
+import { getCurrTasks } from './../utils'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { ICalendar, TaskCalendarItemType } from './../../types/types'
 import moment from 'moment'
@@ -28,10 +30,6 @@ const tasks: TaskCalendarItemType[] = [
   },
 ]
 
-const getCurrTasks = (tasks: TaskCalendarItemType[], date: Date | null) => {
-  if (!date) return []
-  return [...tasks].filter((task) => moment(task.dateCreate).isSame(date, 'day'))
-}
 const today = new Date()
 export const initialState: ICalendar = {
   dateCurrent: today.toDateString(),
@@ -48,42 +46,31 @@ export const calendarSlice = createSlice({
   reducers: {
     setCurrentDate: (state, action: PayloadAction<string>) => {
       state.dateCurrent = action.payload
-      state.taskList = getCurrTasks(state.taskListAll, moment(action.payload).toDate())
-      state.searchString = ''
+    },
+    getCurrTasks: (state) => {
+      state.taskList = getCurrTasks(state.taskListAll, new Date(state.dateCurrent))
+    },
+    filterCurrTasks: (state, action: PayloadAction<string>) => {
+      state.taskList = state.taskList.filter((task) =>
+        task.title.toLowerCase().includes(action.payload.toLowerCase()),
+      )
     },
     setDateSelectedInPlan: (state, action: PayloadAction<string>) => {
       state.dateSelectedInPlan = action.payload
-      state.taskListInPlan = getCurrTasks(tasks, new Date(state.dateSelectedInPlan))
     },
-    setSearchString: (state, action: PayloadAction<string>) => {
-      const findText = action.payload
-      state.searchString = findText
-      if (!findText)
-        state.taskList = getCurrTasks(state.taskListAll, moment(action.payload).toDate())
-      else {
-        state.taskList = state.taskList.filter((task) =>
-          task.title.toLowerCase().includes(state.searchString.toLowerCase()),
-        )
-      }
-    },
-    createTask: (state, action: PayloadAction<string>) => {
-      const newTask: TaskCalendarItemType = {
-        dateCreate: state.dateCurrent,
-        title: action.payload,
-        id: Number(new Date()),
-      }
-
-      state.taskListAll.push(newTask)
-
-      state.taskList = getCurrTasks(state.taskListAll, new Date(state.dateCurrent))
-
+    getListInPlan: (state) => {
       state.taskListInPlan = getCurrTasks(state.taskListAll, new Date(state.dateSelectedInPlan))
+    },
+    createTask: (state, action: PayloadAction<TaskCalendarItemType>) => {
+      state.taskListAll.push(action.payload)
     },
     deleteTask: (state, action: PayloadAction<number>) => {
       state.taskListAll = state.taskListAll.filter((task) => task.id !== action.payload)
-      state.taskList = getCurrTasks(state.taskListAll, new Date(state.dateCurrent))
-      if (moment(state.dateCurrent).isSame(state.dateSelectedInPlan, 'day'))
-        state.taskListInPlan = getCurrTasks(state.taskListAll, new Date(state.dateSelectedInPlan))
+    },
+    changeTask: (state, action: PayloadAction<TaskCalendarItemType>) => {
+      const searchTask = state.taskListAll.find((task) => task.id === action.payload.id)
+      if (searchTask) Object.assign(searchTask, action.payload)
+      else state.taskListAll.push(action.payload)
     },
   },
 })

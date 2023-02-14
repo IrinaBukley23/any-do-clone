@@ -8,7 +8,7 @@ export interface IColumn {
 export type ColumnItemType = Omit<IColumn, 'columnList'>
 export type CurrentId = {
   currentId: string
-};
+}
 
 export interface ITask {
   taskId: string
@@ -50,9 +50,9 @@ export interface IError {
 }
 
 export interface ISession {
-  key: string,
-  userId: number,
-  name: string,
+  key: string
+  userId: number
+  name: string
   email: string
 }
 
@@ -80,5 +80,5 @@ export type TaskCalendarItemType = Omit<ITaskCalendar, 'taskList'>
 export type TimeCalendar = {
   id: number
   time: Moment
-  task?: TaskCalendarItemType
+  task: TaskCalendarItemType[]
 }
