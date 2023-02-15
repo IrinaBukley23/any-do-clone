@@ -28,6 +28,17 @@ const users = [
   }
 ];
 
+// const regUsers = async function getRandomQuote() {
+//   try {
+//     const url = 'http://143.42.31.53:8080/users'
+//     const res = await fetch(url);
+//     const data = await res.json();
+//     console.log(data);
+//   } catch(error) {
+//     console.log(error);
+//   }
+// }
+
 const Task = (props: IProps) => {
     const [openConfirm, setOpenConfirm] = useState(false);
     const { taskTitle, taskId, taskDescr, taskOrder } = props.taskItem;
