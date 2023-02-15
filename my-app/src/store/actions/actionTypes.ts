@@ -26,6 +26,14 @@ export type Action =
       payload: string
     }
   | {
+    type: Actions.SORT_COLUMN_LIST
+    payload: {
+      columnList: ColumnItemType[],
+      columnDrag: ColumnItemType,
+      columnDrop: ColumnItemType,
+    }
+  }
+  | {
     type: Actions.SET_CURRENTID
     payload: string
   }

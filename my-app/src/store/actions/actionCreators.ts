@@ -29,6 +29,15 @@ export const setRemoveColumn = (columnTitle: string) => ({
   payload: columnTitle,
 })
 
+export const sortColumnList = (columnList: ColumnItemType[], columnDrop: ColumnItemType, columnDrag: ColumnItemType) => ({
+  type: Actions.SORT_COLUMN_LIST,
+  payload: {
+    columnList,
+    columnDrop,
+    columnDrag
+  },
+})
+
 export const setTaskId = (taskId: string) => ({
   type: Actions.SET_TASKID,
   payload: taskId,

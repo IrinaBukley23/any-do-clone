@@ -39,6 +39,22 @@ export const columnReducer = (state: IColumn = initialState.column, action: Acti
               columnList: state.columnList.filter((column) => column.columnId !== action.payload),
             };
           }
+          case Actions.SORT_COLUMN_LIST: {
+            console.log(action.payload)
+            const sortedList = state.columnList.map((c: ColumnItemType) => {
+              if(c.columnId === action.payload.columnDrop.columnId) {
+                return {...c, columnOrder: action.payload.columnDrag.columnOrder};
+              }
+              if(c.columnId === action.payload.columnDrag.columnId) {
+                return {...c, columnOrder: action.payload.columnDrop.columnOrder};
+              }
+              return c;
+            })
+              return {
+                ...state,
+                columnList: sortedList,
+              }
+          }
         default: 
             return state;
     }

@@ -2,7 +2,7 @@ import { Moment } from 'moment'
 export interface IColumn {
   columnId: string
   columnTitle: string
-  columnOrder?: number
+  columnOrder: number
   columnList: IColumn[]
 }
 

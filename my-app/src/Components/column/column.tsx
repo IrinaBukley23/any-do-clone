@@ -1,5 +1,5 @@
 import styles from './column.module.scss';
-import React, { FC, useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { Button, IconButton, TextField, Tooltip, Typography } from '@mui/material';
 import { ColumnItemType, State } from '../../types/types';
 import { useDispatch, useSelector } from 'react-redux';
@@ -18,7 +18,7 @@ interface IProps {
 const Column = (props: IProps) => {
     const [open, setOpen] = useState(false);
     const [isTaskModal, setIsTaskModal] = useState(false);
-    const { columnTitle, columnId, columnOrder } = props.columnItem;
+    const { columnTitle, columnId } = props.columnItem;
     const dispatch = useDispatch();
     const { taskList } = useSelector((state: State) => state.task);
     const taskQuantity = taskList.length;
