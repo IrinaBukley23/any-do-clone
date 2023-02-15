@@ -28,3 +28,23 @@ export enum ActionsCalendar {
   REMOVE_TASK = 'REMOVE_TASK',
   ADD_TASK = 'ADD_TASK',
 }
+
+export enum Projects {
+  health = 'Здоровье',
+  buiseness = 'Бизнес',
+  family = 'Семья',
+  journey = 'Путешествия',
+  hobby = 'Хобби',
+}
+export enum Importance {
+  immediat = 'Срочно',
+  important = 'Важно',
+  notImediat = 'Не срочно',
+}
+
+export enum TypeChip {
+  important = 'important',
+  project = 'project',
+  description = 'description',
+  title = 'title',
+}

@@ -9,8 +9,6 @@ import { Stack } from '@mui/system'
 import Typography from '@mui/material/Typography'
 import styles from './tasksBlock.module.scss'
 import ControlPointIcon from '@mui/icons-material/ControlPoint'
-import { changeTask, deleteTask } from '../../store/actions/actionCalenda'
-import { useAppDispatch } from '../../store/hooks'
 import React, { useEffect, useState } from 'react'
 
 import { LocalizationProvider, MobileDateTimePicker } from '@mui/x-date-pickers'
@@ -18,9 +16,22 @@ import TextFieldEdit from '../UI/textFieldEdit/textFieldEdit'
 
 import TaskMenu from './taskMenu'
 import moment from 'moment'
+import { Importance, Projects, TypeChip } from '../../types/enum'
 
-const typesProj = ['Здоровье', 'Бизнес', 'Семья', 'Путешествия', 'Хобби']
-const typesImportant = ['Срочно', 'Важно', 'Не срочно']
+const setColor = (project: Projects) => {
+  switch (project) {
+    case Projects.health:
+      return 'success'
+    case Projects.buiseness:
+      return 'error'
+    case Projects.family:
+      return 'warning'
+    case Projects.journey:
+      return 'secondary'
+    case Projects.hobby:
+      return 'primary'
+  }
+}
 
 type Props = {
   task: TaskCalendarItemType
@@ -29,6 +40,8 @@ type Props = {
 }
 
 const TaskCard = ({ task, onDelete, onChange }: Props) => {
+  const typesProj = Object.values(Projects)
+  const typesImportant = Object.values(Importance)
   const [isEdit, setIsEdit] = useState({ title: false, description: false })
   const [dataValue, setDataValue] = useState<string>('')
   const [menuItems, setMenuItems] = useState<string[]>([])
@@ -68,7 +81,7 @@ const TaskCard = ({ task, onDelete, onChange }: Props) => {
     // onDelete(task.id)
   }
   const showMenu = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (e.currentTarget.dataset.name == 'project') {
+    if (e.currentTarget.dataset.name == TypeChip.project) {
       setMenuItems(typesProj)
     } else {
       setMenuItems(typesImportant)
@@ -121,33 +134,37 @@ const TaskCard = ({ task, onDelete, onChange }: Props) => {
           <Stack spacing={2} alignItems='flex-start' sx={{ width: '80%' }}>
             {isEdit.title ? (
               <TextFieldEdit
-                dataName='title'
+                dataName={TypeChip.title}
                 label='Заголовок задачи'
                 value={task.title}
                 onAprove={handleApprove}
                 onCancel={handleCancel}
               />
             ) : (
-              <Typography data-name='title' onClick={handleClickEdit} variant='h5'>
+              <Typography data-name={TypeChip.title} onClick={handleClickEdit} variant='h5'>
                 {task.title}
               </Typography>
             )}
             {isEdit.description ? (
               <TextFieldEdit
                 align-self='stretch'
-                dataName='description'
+                dataName={TypeChip.description}
                 label='Описание задачи'
                 value={task.description || ''}
                 onAprove={handleApprove}
                 onCancel={handleCancel}
               />
             ) : task.description ? (
-              <Typography data-name='description' onClick={handleClickEdit} alignSelf='flex-start'>
+              <Typography
+                data-name={TypeChip.description}
+                onClick={handleClickEdit}
+                alignSelf='flex-start'
+              >
                 {task.description}
               </Typography>
             ) : (
               <Chip
-                data-name='description'
+                data-name={TypeChip.description}
                 variant='outlined'
                 label='описание'
                 onClick={handleClickEdit}
@@ -168,15 +185,16 @@ const TaskCard = ({ task, onDelete, onChange }: Props) => {
             </LocalizationProvider>
             {taskEdit.project ? (
               <Chip
-                data-name='project'
+                data-name={TypeChip.project}
                 variant='outlined'
                 label={taskEdit.project}
                 onClick={showMenu}
-                onDelete={() => deleteChip('project')}
+                color={setColor(taskEdit.project as Projects)}
+                onDelete={() => deleteChip(TypeChip.project)}
               />
             ) : (
               <Chip
-                data-name='project'
+                data-name={TypeChip.project}
                 variant='outlined'
                 label='проект'
                 onClick={showMenu}
@@ -190,15 +208,22 @@ const TaskCard = ({ task, onDelete, onChange }: Props) => {
         <Button onClick={handleDelete}>Удалить</Button>
         {taskEdit.important ? (
           <Chip
-            data-name='important'
-            variant='outlined'
+            data-name={TypeChip.important}
+            // variant='outlined'
             label={taskEdit.important}
             onClick={showMenu}
-            onDelete={() => deleteChip('important')}
+            color={
+              taskEdit.important == Importance.immediat
+                ? 'error'
+                : taskEdit.important == Importance.important
+                ? 'warning'
+                : 'success'
+            }
+            onDelete={() => deleteChip(TypeChip.important)}
           />
         ) : (
           <Chip
-            data-name='important'
+            data-name={TypeChip.important}
             variant='outlined'
             label='важность'
             onClick={showMenu}
