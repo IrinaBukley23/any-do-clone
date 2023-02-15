@@ -5,20 +5,20 @@ import { initialState } from '../utils';
 
 export const columnReducer = (state: IColumn = initialState.column, action: Action) => {
     switch (action.type) {
-        case Actions.SET_COLUMNTITLE: {
+        case Actions.SET_COLUMN_TITLE: {
             return {
                 ...state,
                 columnTitle: action.payload,
             }
         }
-        case Actions.SET_COLUMNLIST: {
+        case Actions.SET_COLUMN_LIST: {
             return {
               ...state,
               columnList: [...action.payload],
             }
         }
         
-        case Actions.EDIT_COLUMNTITLE: {
+        case Actions.EDIT_COLUMN_TITLE: {
             const newColumnList = state.columnList.map((item: ColumnItemType) => {
               if (item.columnId === action.payload.columnId) {
                 return {

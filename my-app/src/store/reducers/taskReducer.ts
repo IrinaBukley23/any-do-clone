@@ -5,31 +5,31 @@ import { initialState } from '../utils';
 
 export const taskReducer = (state: ITask = initialState.task, action: Action) => {
     switch (action.type) {
-        case Actions.SET_TASKTITLE: {
+        case Actions.SET_TASK_TITLE: {
           return {
               ...state,
               taskTitle: action.payload,
           }
         }
-        case Actions.SET_TASKDESCR: {
+        case Actions.SET_TASK_DESCR: {
           return {
               ...state,
               taskDescr: action.payload,
           }
         }
-        case Actions.SET_TASKLIST: {
+        case Actions.SET_TASK_LIST: {
           return {
               ...state,
               taskList: [...action.payload],
           }
         }
-        case Actions.SET_CURRENTCOLUMNID: {
+        case Actions.SET_CURRENT_COLUMN_ID: {
           return {
               ...state,
               currentColumnId: action.payload,
           }
         }
-        case Actions.EDIT_TASKTITLE: {
+        case Actions.EDIT_TASK_TITLE: {
           const newTaskList = state.taskList.map((item: TaskItemType) => {
             if (item.taskId === action.payload.taskId) {
               return {
@@ -44,7 +44,7 @@ export const taskReducer = (state: ITask = initialState.task, action: Action) =>
             taskList: newTaskList,
           };
         }
-        case Actions.EDIT_TASKDESCR: {
+        case Actions.EDIT_TASK_DESCR: {
           const newTaskList = state.taskList.map((item: TaskItemType) => {
             if (item.taskId === action.payload.taskId) {
               return {
