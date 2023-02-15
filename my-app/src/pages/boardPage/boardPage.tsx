@@ -7,8 +7,9 @@ import { AnyAction } from 'redux';
 import { useDispatch, useSelector } from 'react-redux';
 import { setColumnList, setColumnTitle, sortColumnList } from '../../store/actions/actionCreators';
 import nextId from 'react-id-generator';
+import { minNumberOfLetters } from '../../types/constants';
 
-export let startOrder = 0;
+let startOrder = 0;
 
 const BoardPage = () => {
     const [isCreate, setIsCreate] = useState(false);
@@ -29,8 +30,8 @@ const BoardPage = () => {
       e: React.ChangeEvent<HTMLInputElement>,
       callback: (value: string) => AnyAction
     ) => {
-      (e.target.value.length < 3) ? setIsError(true) : setIsError(false);
-      (e.target.value.length >= 3 && e) ? setIsValidate(false) : setIsValidate(true);
+      (e.target.value.length < minNumberOfLetters) ? setIsError(true) : setIsError(false);
+      (e && e.target.value.length >= minNumberOfLetters) ? setIsValidate(false) : setIsValidate(true);
       dispatch(callback(e.target.value));
     };
 
