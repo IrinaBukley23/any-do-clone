@@ -1,5 +1,5 @@
 import { TaskCalendarItemType } from './../../types/types'
-import { RootState } from './../store'
+
 import { Dispatch } from '@reduxjs/toolkit'
 import { calendarActions } from '../reducers/calendarReducer'
 

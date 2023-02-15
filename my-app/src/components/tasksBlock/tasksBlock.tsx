@@ -6,7 +6,13 @@ import TaskCard from './taskCard'
 import { InputAdornment, TextField } from '@mui/material'
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
 import { useEffect, useState } from 'react'
-import { createTask, deleteTask, getSearchedList } from '../../store/actions/actionCalenda'
+import {
+  changeTask,
+  createTask,
+  deleteTask,
+  getSearchedList,
+} from '../../store/actions/actionCalenda'
+import { TaskCalendarItemType } from '../../types/types'
 
 const TasksBlock = () => {
   const { taskList, dateCurrent } = useAppSelector((state) => state.calendar)
@@ -28,6 +34,13 @@ const TasksBlock = () => {
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const findText = e.target.value.trim()
     setSearchString(findText)
+  }
+
+  const handleDeleteCard = (id: number) => {
+    dispatch(deleteTask(id))
+  }
+  const handleChangeCard = (task: TaskCalendarItemType) => {
+    dispatch(changeTask(task))
   }
 
   return (
@@ -52,7 +65,12 @@ const TasksBlock = () => {
       />
       <div className={styles.wrapper}>
         {taskList.map((task) => (
-          <TaskCard key={task.id} task={task} />
+          <TaskCard
+            key={task.id}
+            task={task}
+            onDelete={handleDeleteCard}
+            onChange={handleChangeCard}
+          />
         ))}
       </div>
     </Stack>

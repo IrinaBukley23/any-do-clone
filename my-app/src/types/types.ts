@@ -74,6 +74,8 @@ export interface ITaskCalendar {
   description?: string
   idPersons?: number[]
   isDone?: boolean
+  important?: string
+  project?: string
   taskList: ITaskCalendar[]
 }
 export type TaskCalendarItemType = Omit<ITaskCalendar, 'taskList'>
