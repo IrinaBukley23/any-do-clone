@@ -16,9 +16,10 @@ export const DateBody = ({ listTasks, changeTask }: Props) => {
       {listTasks.map((row, index) => (
         <DataRow
           key={row.id}
+          idRow={row.id}
           time={row.time}
           task={row.task}
-          isEven={index % 2 === 0}
+          isEven={index % 2 !== 0}
           changeTask={handleChahgeTask}
         />
       ))}

@@ -1,6 +1,7 @@
-import { TableCell, TableRow, TextField } from '@mui/material'
+import { Card, TableCell, TableRow, TextField } from '@mui/material'
 import { Moment } from 'moment'
 import { useEffect, useState } from 'react'
+import { Draggable, Droppable } from 'react-beautiful-dnd'
 import { TypeStatusTask } from '../../types/enum'
 import { TaskCalendarItemType } from '../../types/types'
 import styles from './datePlan.module.scss'
@@ -8,12 +9,13 @@ interface IIsEdit {
   [id: string]: boolean
 }
 type Props = {
+  idRow: number
   time: Moment
   task: TaskCalendarItemType[]
   isEven: boolean
   changeTask: (task: TaskCalendarItemType) => void
 }
-const DataRow = ({ time, task, isEven, changeTask }: Props) => {
+const DataRow = ({ idRow, time, task, isEven, changeTask }: Props) => {
   const [isEdit, setIsEdit] = useState<IIsEdit>({})
   const [taskSt, setTaskSt] = useState(task)
   const [id, setId] = useState(0)
@@ -56,7 +58,6 @@ const DataRow = ({ time, task, isEven, changeTask }: Props) => {
     )
 
     if (currTask) {
-      console.log(currTask)
       currTask.title = e.target.value
       setTaskSt(newStateTask)
     } else {
@@ -93,25 +94,44 @@ const DataRow = ({ time, task, isEven, changeTask }: Props) => {
           <p></p>
         )}
       </TableCell>
-      <TableCell onDoubleClick={handleClick}>
-        {taskSt.map((t) =>
-          isEdit[t.id] ? (
-            <TextField
-              key={`${t.id}t`}
-              autoFocus
-              sx={{ width: '100%' }}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              value={t.title || ''}
-              data-id={t.id}
-            />
-          ) : (
-            <p data-id={t.id} key={t.id} className={styles.text}>
-              {t.title}
-            </p>
-          ),
+      <Droppable droppableId={idRow.toString()}>
+        {(droppableProvided, droppableSnapshot) => (
+          <TableCell
+            onDoubleClick={handleClick}
+            ref={droppableProvided.innerRef}
+            {...droppableProvided.droppableProps}
+          >
+            {taskSt.map((t, index) =>
+              isEdit[t.id] ? (
+                <TextField
+                  key={`${t.id}t`}
+                  autoFocus
+                  sx={{ width: '100%' }}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  value={t.title || ''}
+                  data-id={t.id}
+                />
+              ) : (
+                <Draggable draggableId={t.id.toString()} index={index} key={t.id}>
+                  {(draggableProvided, draggableSnapshot) => (
+                    <Card
+                      {...draggableProvided.draggableProps}
+                      {...draggableProvided.dragHandleProps}
+                      ref={draggableProvided.innerRef}
+                      data-id={t.id}
+                      key={t.id}
+                      className={styles.text}
+                    >
+                      {t.title}
+                    </Card>
+                  )}
+                </Draggable>
+              ),
+            )}
+          </TableCell>
         )}
-      </TableCell>
+      </Droppable>
     </TableRow>
   )
 }

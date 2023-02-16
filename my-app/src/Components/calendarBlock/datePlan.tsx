@@ -16,10 +16,15 @@ import { useEffect, useState } from 'react'
 import { TaskCalendarItemType, TimeCalendar } from '../../types/types'
 import { DateBody } from './dateBody'
 import { changeTask, setDateSelectedInPlan } from '../../store/actions/actionCalendar'
+import { DragDropContext, DropResult } from 'react-beautiful-dnd'
 
 const generateTime = (date: string, tasks: TaskCalendarItemType[]): TimeCalendar[] => {
   const arr: TimeCalendar[] = []
-
+  arr.push({
+    id: 0,
+    time: moment(date).hour(0).minutes(0),
+    task: [],
+  })
   for (let t = 7; t <= 20; t++) {
     arr.push({
       id: t,
@@ -67,6 +72,32 @@ const DatePlan = () => {
   const handleChahgeTask = (task: TaskCalendarItemType) => {
     dispatch(changeTask(task))
   }
+  const handleDragEnd = (result: DropResult) => {
+    const { destination, source } = result
+    if (
+      !destination ||
+      (destination.droppableId === source.droppableId && destination.index === source.index)
+    )
+      return
+    const destinationTimeCell: TimeCalendar = listTasks.find(
+      (task) => task.id == +destination.droppableId,
+    ) as TimeCalendar
+
+    const sourseTask = JSON.parse(JSON.stringify(listTasks))
+
+    const timeCell: TimeCalendar = sourseTask.find(
+      (task: TimeCalendar) => task.id == +source.droppableId,
+    ) as TimeCalendar
+    console.log(timeCell)
+
+    if (timeCell?.task) {
+      const taskChange = timeCell.task[source.index]
+      taskChange.dateCreate = destinationTimeCell.time.format('YYYY-MM-DD HH:mm')
+      // setListTasks(sourseTask)
+      // console.log(sourseTask)
+      handleChahgeTask(taskChange)
+    }
+  }
 
   return (
     <Paper className={styles.aside}>
@@ -81,16 +112,18 @@ const DatePlan = () => {
             <ArrowRightIcon />
           </IconButton>
         </Stack>
-        <TableContainer component={Paper} className={styles.table}>
-          <Table size='small'>
-            <colgroup>
-              <col style={{ width: '10%' }} />
-              <col style={{ width: '90%' }} />
-            </colgroup>
-            <TableHead></TableHead>
-            <DateBody listTasks={listTasks} changeTask={handleChahgeTask} />
-          </Table>
-        </TableContainer>
+        <DragDropContext onDragEnd={handleDragEnd}>
+          <TableContainer component={Paper} className={styles.table}>
+            <Table size='small'>
+              <colgroup>
+                <col style={{ width: '10%' }} />
+                <col style={{ width: '90%' }} />
+              </colgroup>
+              <TableHead></TableHead>
+              <DateBody listTasks={listTasks} changeTask={handleChahgeTask} />
+            </Table>
+          </TableContainer>
+        </DragDropContext>
       </Stack>
     </Paper>
   )
