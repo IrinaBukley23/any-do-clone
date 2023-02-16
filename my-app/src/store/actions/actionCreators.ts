@@ -2,22 +2,22 @@ import { Actions } from '../../types/enum'
 import { ColumnItemType, TaskItemType } from '../../types/types'
 
 export const setColumnId = (columnId: string) => ({
-  type: Actions.SET_COLUMNID,
+  type: Actions.SET_COLUMN_ID,
   payload: columnId,
 })
 
 export const setColumnTitle = (columnTitle: string) => ({
-  type: Actions.SET_COLUMNTITLE,
+  type: Actions.SET_COLUMN_TITLE,
   payload: columnTitle,
 })
 
 export const setColumnList = (columnList: ColumnItemType[]) => ({
-  type: Actions.SET_COLUMNLIST,
+  type: Actions.SET_COLUMN_LIST,
   payload: columnList,
 })
 
 export const editColumnTitle = (columnId: string, columnTitle: string) => ({
-  type: Actions.EDIT_COLUMNTITLE,
+  type: Actions.EDIT_COLUMN_TITLE,
   payload: {
     columnId,
     columnTitle,
@@ -29,38 +29,47 @@ export const setRemoveColumn = (columnTitle: string) => ({
   payload: columnTitle,
 })
 
+export const sortColumnList = (columnList: ColumnItemType[], columnDrop: ColumnItemType, columnDrag: ColumnItemType) => ({
+  type: Actions.SORT_COLUMN_LIST,
+  payload: {
+    columnList,
+    columnDrop,
+    columnDrag
+  },
+})
+
 export const setTaskId = (taskId: string) => ({
-  type: Actions.SET_TASKID,
+  type: Actions.SET_TASK_ID,
   payload: taskId,
 })
 
 export const setCurrentId = (currentId: string) => ({
-  type: Actions.SET_CURRENTID,
+  type: Actions.SET_CURRENT_ID,
   payload: currentId,
 })
 
 export const setTaskTitle = (taskTitle: string) => ({
-  type: Actions.SET_TASKTITLE,
+  type: Actions.SET_TASK_TITLE,
   payload: taskTitle,
 })
 
 export const setTaskDescr = (taskDescr: string) => ({
-  type: Actions.SET_TASKDESCR,
+  type: Actions.SET_TASK_DESCR,
   payload: taskDescr,
 })
 
 export const setTaskList = (taskList: TaskItemType[]) => ({
-  type: Actions.SET_TASKLIST,
+  type: Actions.SET_TASK_LIST,
   payload: taskList,
 })
 
 export const setCurrentColumnId = (currentColumnId: string) => ({
-  type: Actions.SET_CURRENTCOLUMNID,
+  type: Actions.SET_CURRENT_COLUMN_ID,
   payload: currentColumnId,
 })
 
 export const editTaskTitle = (taskId: string, taskTitle: string) => ({
-  type: Actions.EDIT_TASKTITLE,
+  type: Actions.EDIT_TASK_TITLE,
   payload: {
     taskId,
     taskTitle,
@@ -68,7 +77,7 @@ export const editTaskTitle = (taskId: string, taskTitle: string) => ({
 })
 
 export const editTaskDescr = (taskId: string, taskDescr: string) => ({
-  type: Actions.EDIT_TASKDESCR,
+  type: Actions.EDIT_TASK_DESCR,
   payload: {
     taskId,
     taskDescr,

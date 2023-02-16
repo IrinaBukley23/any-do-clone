@@ -12,7 +12,7 @@ const Quotes = () => {
 
   async function getRandomQuote() {
     try {
-      const url = 'http://localhost:8080/api/quotes/random'
+      const url = 'http://143.42.31.53:8080/api/quotes/random'
       const res = await fetch(url);
       const data = await res.json();
       console.log(data);

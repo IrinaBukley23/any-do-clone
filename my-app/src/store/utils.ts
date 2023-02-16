@@ -6,6 +6,7 @@ export const initialState = {
   column: {
     columnId: '',
     columnTitle: '',
+    columnOrder: 0,
     columnList: [],
   },
   currentId: '',

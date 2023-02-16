@@ -3,19 +3,19 @@ import { ColumnItemType, TaskItemType } from '../../types/types'
 
 export type Action =
   | {
-      type: Actions.SET_COLUMNID
+      type: Actions.SET_COLUMN_ID
       payload: string
     }
   | {
-      type: Actions.SET_COLUMNTITLE
+      type: Actions.SET_COLUMN_TITLE
       payload: string
     }
   | {
-      type: Actions.SET_COLUMNLIST
+      type: Actions.SET_COLUMN_LIST
       payload: ColumnItemType[]
     }
   | {
-      type: Actions.EDIT_COLUMNTITLE
+      type: Actions.EDIT_COLUMN_TITLE
       payload: {
         columnId: string
         columnTitle: string
@@ -26,34 +26,42 @@ export type Action =
       payload: string
     }
   | {
-    type: Actions.SET_CURRENTID
+    type: Actions.SORT_COLUMN_LIST
+    payload: {
+      columnList: ColumnItemType[],
+      columnDrag: ColumnItemType,
+      columnDrop: ColumnItemType,
+    }
+  }
+  | {
+    type: Actions.SET_CURRENT_ID
     payload: string
   }
   | {
-      type: Actions.SET_TASKID
+      type: Actions.SET_TASK_ID
       payload: string
     }
   | {
-      type: Actions.SET_TASKTITLE
+      type: Actions.SET_TASK_TITLE
       payload: string
     }
   | {
-      type: Actions.SET_TASKDESCR
+      type: Actions.SET_TASK_DESCR
       payload: string
     }
   | {
-      type: Actions.SET_TASKLIST
+      type: Actions.SET_TASK_LIST
       payload: TaskItemType[]
     }
   | {
-      type: Actions.EDIT_TASKTITLE
+      type: Actions.EDIT_TASK_TITLE
       payload: {
         taskId: string
         taskTitle: string
       }
     }
   | {
-      type: Actions.EDIT_TASKDESCR
+      type: Actions.EDIT_TASK_DESCR
       payload: {
         taskId: string
         taskDescr: string
@@ -64,6 +72,6 @@ export type Action =
       payload: string
     }
     | {
-      type: Actions.SET_CURRENTCOLUMNID
+      type: Actions.SET_CURRENT_COLUMN_ID
       payload: string
     }

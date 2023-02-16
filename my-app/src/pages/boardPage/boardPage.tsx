@@ -1,12 +1,15 @@
 import styles from './boardPage.module.scss';
 import React, { useState } from 'react';
 import { Button, TextField, Typography } from '@mui/material';
-import { State } from '../../types/types';
+import { ColumnItemType, State } from '../../types/types';
 import Column from '../../components/column/column';
 import { AnyAction } from 'redux';
 import { useDispatch, useSelector } from 'react-redux';
-import { setColumnList, setColumnTitle } from '../../store/actions/actionCreators';
+import { setColumnList, setColumnTitle, sortColumnList } from '../../store/actions/actionCreators';
 import nextId from 'react-id-generator';
+import { minNumberOfLetters } from '../../types/constants';
+
+let startOrder = 0;
 
 const BoardPage = () => {
     const [isCreate, setIsCreate] = useState(false);
@@ -17,23 +20,30 @@ const BoardPage = () => {
     const dispatch = useDispatch();
     const [isValidate, setIsValidate] = useState(true);
     const myId = nextId();
+    const [currentColumn, setCurrentColumn] = useState<ColumnItemType>({
+      columnId: '',
+      columnTitle: '',
+      columnOrder: 0
+    });
   
     const handleChangeTitle = (
       e: React.ChangeEvent<HTMLInputElement>,
       callback: (value: string) => AnyAction
     ) => {
-      (e.target.value.length < 3) ? setIsError(true) : setIsError(false);
-      (e.target.value.length >= 3 && e) ? setIsValidate(false) : setIsValidate(true);
+      (e.target.value.length < minNumberOfLetters) ? setIsError(true) : setIsError(false);
+      (e && e.target.value.length >= minNumberOfLetters) ? setIsValidate(false) : setIsValidate(true);
       dispatch(callback(e.target.value));
     };
 
     const handleSaveColumn = () => {
+      startOrder++;
       setIsCreate(false);
       setCreated(true);
       dispatch(
         setColumnList([
           ...columnList,
           {
+            columnOrder: startOrder,
             columnId: myId,
             columnTitle: columnTitle,
           },
@@ -45,11 +55,44 @@ const BoardPage = () => {
         setIsCreate(true);
     }
 
+    function dragStartHandler(e: React.DragEvent<HTMLDivElement>, column: ColumnItemType): void {
+        setCurrentColumn(column);
+    }
+
+    function dragOverHandler(e: React.DragEvent<HTMLDivElement>): void {
+        e.preventDefault();
+       (e.target as HTMLDivElement).style.background = '#ece6e6'
+    }
+
+    function dragEndHandler(e: React.DragEvent<HTMLDivElement>): void {
+     (e.target as HTMLDivElement).style.background = ''
+    }
+
+    function dropHandler(e: React.DragEvent<HTMLDivElement>, column: ColumnItemType): void {
+        e.preventDefault();
+       dispatch(
+        sortColumnList([...columnList], column, currentColumn)
+       );
+      (e.target as HTMLDivElement).style.background = ''
+    }
+
+    const sortColumns = (column1: ColumnItemType, column2: ColumnItemType) => column1.columnOrder - column2.columnOrder;
+
     return (
         <div className={styles.container}>
             <>
-              {columnList?.map((column, i) => (
-                <Column key={i} columnItem={column} />
+              {[...columnList]?.sort(sortColumns).map((column, i) => (
+                <section 
+                  key={i} 
+                  onDragStart={(e: React.DragEvent<HTMLDivElement>) => dragStartHandler(e, column)}
+                  onDragLeave={(e: React.DragEvent<HTMLDivElement>) => dragEndHandler(e)}
+                  onDragEnd={(e: React.DragEvent<HTMLDivElement>) => dragEndHandler(e)}
+                  onDragOver={(e: React.DragEvent<HTMLDivElement>) => dragOverHandler(e)}
+                  onDrop={(e: React.DragEvent<HTMLDivElement>) => dropHandler(e, column)}
+                  draggable={true}
+                >
+                  <Column key={i} columnItem={column} />
+                </section>
              ) )}
               {isCreate && (
                 <>
