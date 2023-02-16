@@ -47,4 +47,13 @@ export enum TypeChip {
   project = 'project',
   description = 'description',
   title = 'title',
+  status = 'status',
+}
+
+export enum TypeStatusTask {
+  notStart = 'не начиналось',
+  start = 'в работе',
+  pause = 'отложено',
+  cancel = 'отменено',
+  done = 'сделано',
 }

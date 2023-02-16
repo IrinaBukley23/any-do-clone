@@ -18,7 +18,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import TextField from '@mui/material/TextField'
 
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
-import { setCurrDate } from '../../store/actions/actionCalenda'
+import { setCurrDate } from '../../store/actions/actionCalendar'
 import { PickersDay } from '@mui/x-date-pickers'
 const CustomBar = () => {
   const { taskList } = useAppSelector((state) => state.calendar)

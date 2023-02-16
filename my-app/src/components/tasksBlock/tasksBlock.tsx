@@ -11,7 +11,7 @@ import {
   createTask,
   deleteTask,
   getSearchedList,
-} from '../../store/actions/actionCalenda'
+} from '../../store/actions/actionCalendar'
 import { TaskCalendarItemType } from '../../types/types'
 
 const TasksBlock = () => {

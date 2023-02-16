@@ -1,22 +1,25 @@
-import { Card, Chip, TextField } from '@mui/material'
+import { Card, Chip, IconButton, TextField } from '@mui/material'
 import CardContent from '@mui/material/CardContent'
 import CardActions from '@mui/material/CardActions'
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment'
 import Button from '@mui/material/Button'
-import Checkbox from '@mui/material/Checkbox'
+
 import { TaskCalendarItemType } from '../../types/types'
 import { Stack } from '@mui/system'
 import Typography from '@mui/material/Typography'
 import styles from './tasksBlock.module.scss'
 import ControlPointIcon from '@mui/icons-material/ControlPoint'
 import React, { useEffect, useState } from 'react'
-
+import CheckBoxOutlinedIcon from '@mui/icons-material/CheckBoxOutlined'
 import { LocalizationProvider, MobileDateTimePicker } from '@mui/x-date-pickers'
 import TextFieldEdit from '../UI/textFieldEdit/textFieldEdit'
-
+import PausePresentationIcon from '@mui/icons-material/PausePresentation'
+import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank'
+import SlideshowOutlinedIcon from '@mui/icons-material/SlideshowOutlined'
+import DisabledByDefaultOutlinedIcon from '@mui/icons-material/DisabledByDefaultOutlined'
 import TaskMenu from './taskMenu'
 import moment from 'moment'
-import { Importance, Projects, TypeChip } from '../../types/enum'
+import { Importance, Projects, TypeChip, TypeStatusTask } from '../../types/enum'
 
 const setColor = (project: Projects) => {
   switch (project) {
@@ -32,6 +35,21 @@ const setColor = (project: Projects) => {
       return 'primary'
   }
 }
+const GetIcon = ({ status }: { status: TypeStatusTask }) => {
+  switch (status) {
+    case TypeStatusTask.notStart:
+      return <CheckBoxOutlineBlankIcon />
+    case TypeStatusTask.start:
+      return <SlideshowOutlinedIcon />
+    case TypeStatusTask.pause:
+      return <PausePresentationIcon />
+
+    case TypeStatusTask.cancel:
+      return <DisabledByDefaultOutlinedIcon />
+    case TypeStatusTask.done:
+      return <CheckBoxOutlinedIcon />
+  }
+}
 
 type Props = {
   task: TaskCalendarItemType
@@ -42,6 +60,7 @@ type Props = {
 const TaskCard = ({ task, onDelete, onChange }: Props) => {
   const typesProj = Object.values(Projects)
   const typesImportant = Object.values(Importance)
+  const typesStartTask = Object.values(TypeStatusTask)
   const [isEdit, setIsEdit] = useState({ title: false, description: false })
   const [dataValue, setDataValue] = useState<string>('')
   const [menuItems, setMenuItems] = useState<string[]>([])
@@ -77,15 +96,16 @@ const TaskCard = ({ task, onDelete, onChange }: Props) => {
       setDataValue(date)
     }
   }
-  const handleIsDone = () => {
-    // onDelete(task.id)
-  }
-  const showMenu = (e: React.MouseEvent<HTMLDivElement>) => {
+
+  const showMenu = (e: React.MouseEvent<HTMLDivElement | HTMLButtonElement>) => {
     if (e.currentTarget.dataset.name == TypeChip.project) {
       setMenuItems(typesProj)
-    } else {
+    } else if (e.currentTarget.dataset.name == TypeChip.important) {
       setMenuItems(typesImportant)
+    } else {
+      setMenuItems(typesStartTask)
     }
+
     setAnchorEl(e.currentTarget)
   }
   const aceptMenu = (value?: string) => {
@@ -125,12 +145,13 @@ const TaskCard = ({ task, onDelete, onChange }: Props) => {
     <Card className={styles.card}>
       <CardContent>
         <Stack direction='row' spacing={2}>
-          <Checkbox
+          <IconButton
             sx={{ alignSelf: 'flex-start' }}
-            inputProps={{ 'aria-label': 'task' }}
-            onChange={handleIsDone}
-            checked={taskEdit.isDone}
-          />
+            onClick={showMenu}
+            data-name={TypeChip.status}
+          >
+            <GetIcon status={taskEdit.status} />
+          </IconButton>
           <Stack spacing={2} alignItems='flex-start' sx={{ width: '80%' }}>
             {isEdit.title ? (
               <TextFieldEdit
