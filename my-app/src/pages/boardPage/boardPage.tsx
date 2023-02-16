@@ -76,18 +76,12 @@ const BoardPage = () => {
       (e.target as HTMLDivElement).style.background = ''
     }
 
-    const sortColumns = (a: ColumnItemType, b: ColumnItemType) => {
-      if(a.columnOrder > b.columnOrder) {
-        return 1;
-       } else {
-        return -1;
-       }
-      };
+    const sortColumns = (column1: ColumnItemType, column2: ColumnItemType) => column1.columnOrder - column2.columnOrder;
 
     return (
         <div className={styles.container}>
             <>
-              {columnList?.sort(sortColumns).map((column, i) => (
+              {[...columnList]?.sort(sortColumns).map((column, i) => (
                 <section 
                   key={i} 
                   onDragStart={(e: React.DragEvent<HTMLDivElement>) => dragStartHandler(e, column)}
