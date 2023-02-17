@@ -2,10 +2,10 @@ import { Tab, Tabs } from '@mui/material'
 // import { useDispatch } from 'react-redux';
 // import { loginSlice } from '../../store/reducers/loginSlice';
 import { DialogForm } from '../../types/enum'
-import { DialogModal } from '../ui/DialogModal'
+import { DialogModal } from '../ui/dialogModal'
 import { LoginView } from './LoginView'
 import { SyntheticEvent } from 'react'
-import { RegistrationView } from './RegistrationView'
+import { RegistrationView } from './registrationView'
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
 import { hideDialog, selectDialogForm } from '../../store/reducers/authorization'
 

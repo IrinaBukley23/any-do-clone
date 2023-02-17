@@ -6,7 +6,7 @@ import irina from '../../assets/team/irina.jpg'
 import vlada from '../../assets/team/vlada.jpg'
 import polina from '../../assets/team/polina.jpg'
 import styles from './startPage.module.scss';
-import { LoginForm } from '../../components/loginForm/LoginForm';
+import { LoginForm } from '../../components/loginForm/loginForm';
 import { useAppDispatch } from '../../store/hooks';
 import { loginStart, registrationStart } from '../../store/reducers/authorization';
 

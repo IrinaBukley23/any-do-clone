@@ -7,7 +7,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { editTaskDescr, editTaskTitle, setRemoveTask } from '../../store/actions/actionCreators';
 import CancelIcon from '@mui/icons-material/Cancel';
 import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
-import { DialogConfirm } from '../ui/DialogConfirm';
+import { DialogConfirm } from '../ui/dialogConfirm';
 
 interface IProps {
     taskItem: ITask;

@@ -8,8 +8,8 @@ import { editColumnTitle, setCurrentId, setRemoveColumn } from '../../store/acti
 import CancelIcon from '@mui/icons-material/Cancel';
 import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
 import Task from '../task/task';
-import { DialogConfirm } from '../ui/DialogConfirm';
-import ResponsiveDialog from '../ui/OpenDialog';
+import { DialogConfirm } from '../ui/dialogConfirm';
+import ResponsiveDialog from '../ui/openDialog';
 
 interface IProps {
     columnItem: ColumnItemType;

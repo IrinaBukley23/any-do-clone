@@ -17,7 +17,7 @@ import TextFieldEdit from '../ui/textFieldEdit/textFieldEdit'
 import TaskMenu from './taskMenu'
 import moment from 'moment'
 import { Importance, Projects, TypeChip, TypeStatusTask } from '../../types/enum'
-import GetIcon from './GetIcon'
+import GetIcon from './getIcon'
 import { setColor } from './utils'
 
 type Props = {
