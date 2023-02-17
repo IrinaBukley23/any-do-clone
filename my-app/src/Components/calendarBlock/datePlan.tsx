@@ -18,33 +18,31 @@ import { DateBody } from './dateBody'
 import { changeTask, setDateSelectedInPlan } from '../../store/actions/actionCalendar'
 import { DragDropContext, DropResult } from 'react-beautiful-dnd'
 
-const generateTime = (date: string, tasks: TaskCalendarItemType[]): TimeCalendar[] => {
+const generateTime = (date: string): TimeCalendar[] => {
   const arr: TimeCalendar[] = []
   arr.push({
     id: 0,
     time: moment(date).hour(0).minutes(0),
-    task: [],
   })
   for (let t = 7; t <= 20; t++) {
     arr.push({
       id: t,
       time: moment(date).hour(t).minutes(0),
-      task: [],
     })
-    arr.push({ id: t + 30, time: moment(date).hour(t).minutes(30), task: [] })
+    arr.push({ id: t + 30, time: moment(date).hour(t).minutes(30) })
   }
-  const roundMin = (date: string) =>
-    moment(date).minute() >= 30
-      ? moment(date).minute(30).second(0)
-      : moment(date).minute(0).second(0)
+  // const roundMin = (date: string) =>
+  //   moment(date).minute() >= 30
+  //     ? moment(date).minute(30).second(0)
+  //     : moment(date).minute(0).second(0)
 
-  tasks.forEach((task) => {
-    const findTask = arr.find((elem) => {
-      return elem.time.isSame(roundMin(task.dateCreate))
-    })
+  // tasks.forEach((task) => {
+  //   const findTask = arr.find((elem) => {
+  //     return elem.time.isSame(roundMin(task.dateCreate))
+  //   })
 
-    if (findTask) findTask.task.push(task)
-  })
+  //   if (findTask) findTask.task.push(task)
+  // })
 
   return arr
 }
@@ -59,10 +57,10 @@ const DatePlan = () => {
     )
   }
   useEffect(() => {
-    const list = generateTime(dateSelectedInPlan, [...taskListInPlan])
+    const list = generateTime(dateSelectedInPlan)
 
     setListTasks([...list])
-  }, [taskListInPlan])
+  }, [dateSelectedInPlan])
 
   const handleRight = () => {
     dispatch(
@@ -73,7 +71,8 @@ const DatePlan = () => {
     dispatch(changeTask(task))
   }
   const handleDragEnd = (result: DropResult) => {
-    const { destination, source } = result
+    const { destination, source, draggableId } = result
+
     if (
       !destination ||
       (destination.droppableId === source.droppableId && destination.index === source.index)
@@ -83,19 +82,12 @@ const DatePlan = () => {
       (task) => task.id == +destination.droppableId,
     ) as TimeCalendar
 
-    const sourseTask = JSON.parse(JSON.stringify(listTasks))
-
-    const timeCell: TimeCalendar = sourseTask.find(
-      (task: TimeCalendar) => task.id == +source.droppableId,
-    ) as TimeCalendar
-    console.log(timeCell)
-
-    if (timeCell?.task) {
-      const taskChange = timeCell.task[source.index]
-      taskChange.dateCreate = destinationTimeCell.time.format('YYYY-MM-DD HH:mm')
-      // setListTasks(sourseTask)
-      // console.log(sourseTask)
-      handleChahgeTask(taskChange)
+    const taskList = taskListInPlan.find((task: TaskCalendarItemType) => +draggableId === task.id)
+    if (taskList) {
+      handleChahgeTask({
+        ...taskList,
+        dateCreate: destinationTimeCell.time.format('YYYY-MM-DD HH:mm'),
+      })
     }
   }
 
@@ -120,7 +112,11 @@ const DatePlan = () => {
                 <col style={{ width: '90%' }} />
               </colgroup>
               <TableHead></TableHead>
-              <DateBody listTasks={listTasks} changeTask={handleChahgeTask} />
+              <DateBody
+                listTasks={listTasks}
+                taskListInPlan={taskListInPlan}
+                changeTask={handleChahgeTask}
+              />
             </Table>
           </TableContainer>
         </DragDropContext>
