@@ -1,11 +1,12 @@
 import { Button, Grid, TextField, Typography } from '@mui/material'
-import styles from '../LoginForm/form.module.scss';
+import styles from '../loginForm/form.module.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { AnyAction } from 'redux';
 import { setTaskDescr, setTaskList, setTaskTitle } from '../../store/actions/actionCreators';
 import { State } from '../../types/types';
 import { useState } from 'react';
 import nextId from 'react-id-generator';
+import { minNumberOfLetters } from '../../types/constants';
 
 interface IProps {
   handleClose: () => void;
@@ -23,10 +24,10 @@ const TaskForm = ({ handleClose }: IProps) => {
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement>,
     callback: (value: string) => AnyAction,
-    foo: (value: boolean) => void
+    showError: (value: boolean) => void
   ) => {
-    (e.target.value.length < 3) ? foo(true) : foo(false);
-    (e.target.value.length >= 3 && e) ? setIsValidate(false) : setIsValidate(true);
+    (e.target.value.length < minNumberOfLetters) ? showError(true) : showError(false);
+    (e && e.target.value.length >= minNumberOfLetters) ? setIsValidate(false) : setIsValidate(true);
     dispatch(callback(e.target.value));
   };
 

@@ -1,6 +1,6 @@
 import { IAuthorization, IError, ISession, IUser } from '../types/types';
 
-const BACKEND_BASE_URL = 'http://localhost:8080';
+const BACKEND_BASE_URL = 'http://143.42.31.53:8080';
 
 export default class AuthorizationApi {
   async register(user: IUser): Promise<IUser> {

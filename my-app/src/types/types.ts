@@ -3,6 +3,7 @@ import { Moment } from 'moment'
 export interface IColumn {
   columnId: string
   columnTitle: string
+  columnOrder: number
   columnList: IColumn[]
 }
 
@@ -15,6 +16,7 @@ export interface ITask {
   taskId: string
   taskTitle: string
   taskDescr: string
+  taskOrder?: string
   taskList: ITask[]
   currentColumnId: string
 }

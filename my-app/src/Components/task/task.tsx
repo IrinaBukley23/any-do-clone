@@ -7,7 +7,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { editTaskDescr, editTaskTitle, setRemoveTask } from '../../store/actions/actionCreators';
 import CancelIcon from '@mui/icons-material/Cancel';
 import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
-import { DialogConfirm } from '../UI/DialogConfirm';
+import { DialogConfirm } from '../UI/dialogConfirm';
 
 interface IProps {
     taskItem: ITask;
@@ -28,9 +28,20 @@ const users = [
   }
 ];
 
+const regUsers = async function getRandomQuote() {
+  try {
+    const url = 'http://143.42.31.53:8080/users'
+    const res = await fetch(url);
+    const data = await res.json();
+    console.log(data);
+  } catch(error) {
+    console.log(error);
+  }
+}
+
 const Task = (props: IProps) => {
     const [openConfirm, setOpenConfirm] = useState(false);
-    const { taskTitle, taskId, taskDescr } = props.taskItem;
+    const { taskTitle, taskId, taskDescr, taskOrder } = props.taskItem;
     const dispatch = useDispatch();
   
     const [isEditTitle, setIsEditTitle] = useState(false);
