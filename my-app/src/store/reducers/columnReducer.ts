@@ -5,20 +5,20 @@ import { initialState } from '../utils';
 
 export const columnReducer = (state: IColumn = initialState.column, action: Action) => {
     switch (action.type) {
-        case Actions.SET_COLUMNTITLE: {
+        case Actions.SET_COLUMN_TITLE: {
             return {
                 ...state,
                 columnTitle: action.payload,
             }
         }
-        case Actions.SET_COLUMNLIST: {
+        case Actions.SET_COLUMN_LIST: {
             return {
               ...state,
               columnList: [...action.payload],
             }
         }
         
-        case Actions.EDIT_COLUMNTITLE: {
+        case Actions.EDIT_COLUMN_TITLE: {
             const newColumnList = state.columnList.map((item: ColumnItemType) => {
               if (item.columnId === action.payload.columnId) {
                 return {
@@ -38,6 +38,22 @@ export const columnReducer = (state: IColumn = initialState.column, action: Acti
               ...state,
               columnList: state.columnList.filter((column) => column.columnId !== action.payload),
             };
+          }
+          case Actions.SORT_COLUMN_LIST: {
+            console.log(action.payload)
+            const sortedList = state.columnList.map((column: ColumnItemType) => {
+              if(column.columnId === action.payload.columnDrop.columnId) {
+                return {...column, columnOrder: action.payload.columnDrag.columnOrder};
+              }
+              if(column.columnId === action.payload.columnDrag.columnId) {
+                return {...column, columnOrder: action.payload.columnDrop.columnOrder};
+              }
+              return column;
+            })
+              return {
+                ...state,
+                columnList: sortedList,
+              }
           }
         default: 
             return state;

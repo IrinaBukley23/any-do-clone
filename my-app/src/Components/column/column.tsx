@@ -8,12 +8,12 @@ import { editColumnTitle, setCurrentId, setRemoveColumn } from '../../store/acti
 import CancelIcon from '@mui/icons-material/Cancel';
 import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
 import Task from '../task/task';
-import { DialogConfirm } from '../UI/DialogConfirm';
-import ResponsiveDialog from '../UI/OpenDialog';
+import { DialogConfirm } from '../UI/dialogConfirm';
+import ResponsiveDialog from '../UI/openDialog';
 
 interface IProps {
     columnItem: ColumnItemType;
-}
+  }
 
 const Column = (props: IProps) => {
     const [open, setOpen] = useState(false);
@@ -25,7 +25,8 @@ const Column = (props: IProps) => {
   
     const [isEdit, setIsEdit] = useState(false);
     const [correctedTitle, setCorrectedTitle] = useState(columnTitle);
-  
+
+
     const handleEdit = () => {
       setIsEdit(true);
     };
@@ -66,7 +67,9 @@ const Column = (props: IProps) => {
     };
 
     return (
-        <div id={columnId} key={columnId} className={styles.column}>
+        <div
+            id={columnId} 
+            className={styles.column}>
             {!isEdit && <Typography variant="h5" onClick={handleEdit}>{columnTitle}</Typography>
             }
             {isEdit && (

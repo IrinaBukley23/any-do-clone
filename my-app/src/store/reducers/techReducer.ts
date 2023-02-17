@@ -5,7 +5,7 @@ import { initialState } from '../utils';
 
 export const techReducer = (state: CurrentId = initialState, action: Action) => {
     switch (action.type) {
-        case Actions.SET_CURRENTID: {
+        case Actions.SET_CURRENT_ID: {
           return {
             currentId: action.payload,
           }
