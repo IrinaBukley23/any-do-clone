@@ -10,46 +10,15 @@ import Typography from '@mui/material/Typography'
 import styles from './tasksBlock.module.scss'
 import ControlPointIcon from '@mui/icons-material/ControlPoint'
 import React, { useEffect, useState } from 'react'
-import CheckBoxOutlinedIcon from '@mui/icons-material/CheckBoxOutlined'
+
 import { LocalizationProvider, MobileDateTimePicker } from '@mui/x-date-pickers'
 import TextFieldEdit from '../UI/textFieldEdit/textFieldEdit'
-import PausePresentationIcon from '@mui/icons-material/PausePresentation'
-import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank'
-import SlideshowOutlinedIcon from '@mui/icons-material/SlideshowOutlined'
-import DisabledByDefaultOutlinedIcon from '@mui/icons-material/DisabledByDefaultOutlined'
+
 import TaskMenu from './taskMenu'
 import moment from 'moment'
 import { Importance, Projects, TypeChip, TypeStatusTask } from '../../types/enum'
-
-const setColor = (project: Projects) => {
-  switch (project) {
-    case Projects.health:
-      return 'success'
-    case Projects.buiseness:
-      return 'error'
-    case Projects.family:
-      return 'warning'
-    case Projects.journey:
-      return 'secondary'
-    case Projects.hobby:
-      return 'primary'
-  }
-}
-const GetIcon = ({ status }: { status: TypeStatusTask }) => {
-  switch (status) {
-    case TypeStatusTask.notStart:
-      return <CheckBoxOutlineBlankIcon />
-    case TypeStatusTask.start:
-      return <SlideshowOutlinedIcon />
-    case TypeStatusTask.pause:
-      return <PausePresentationIcon />
-
-    case TypeStatusTask.cancel:
-      return <DisabledByDefaultOutlinedIcon />
-    case TypeStatusTask.done:
-      return <CheckBoxOutlinedIcon />
-  }
-}
+import GetIcon from './GetIcon'
+import { setColor } from './utils'
 
 type Props = {
   task: TaskCalendarItemType
