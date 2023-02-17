@@ -1,4 +1,5 @@
-import { createTask } from './../actions/actionCalenda'
+import { TypeStatusTask } from './../../types/enum'
+import { createTask } from '../actions/actionCalendar'
 import { getCurrTasks } from './../utils'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { ICalendar, TaskCalendarItemType } from './../../types/types'
@@ -12,6 +13,7 @@ const tasks: TaskCalendarItemType[] = [
     // people: [],
     // date: moment('2023-03-06 15:30').toDate(),
     dateCreate: '2023-02-06 11:20',
+    status: TypeStatusTask.notStart,
   },
   {
     id: 2,
@@ -20,6 +22,7 @@ const tasks: TaskCalendarItemType[] = [
     // people: [],
     // date: moment('2023-03-06 12:30').toDate(),
     dateCreate: '2023-02-07 17:00',
+    status: TypeStatusTask.notStart,
   },
   {
     id: 3,
@@ -27,6 +30,7 @@ const tasks: TaskCalendarItemType[] = [
     // description: 'Description3',
     // people: [],
     dateCreate: '2023-02-09 15:30',
+    status: TypeStatusTask.notStart,
   },
 ]
 

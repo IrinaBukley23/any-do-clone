@@ -15,7 +15,7 @@ import { useAppDispatch, useAppSelector } from '../../store/hooks'
 import { useEffect, useState } from 'react'
 import { TaskCalendarItemType, TimeCalendar } from '../../types/types'
 import { DateBody } from './dateBody'
-import { changeTask, setDateSelectedInPlan } from '../../store/actions/actionCalenda'
+import { changeTask, setDateSelectedInPlan } from '../../store/actions/actionCalendar'
 
 const generateTime = (date: string, tasks: TaskCalendarItemType[]): TimeCalendar[] => {
   const arr: TimeCalendar[] = []

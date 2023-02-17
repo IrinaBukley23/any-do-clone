@@ -1,3 +1,4 @@
+import { TypeStatusTask, Projects, Importance } from './enum'
 import { Moment } from 'moment'
 export interface IColumn {
   columnId: string
@@ -70,12 +71,15 @@ export type ICalendar = {
 export interface ITaskCalendar {
   id: number
   dateCreate: string
+  status: TypeStatusTask
   dateStart?: string
   dateEnd?: string
   title: string
   description?: string
   idPersons?: number[]
-  isDone?: boolean
+
+  important?: Importance
+  project?: Projects
   taskList: ITaskCalendar[]
 }
 export type TaskCalendarItemType = Omit<ITaskCalendar, 'taskList'>
