@@ -12,7 +12,7 @@ import ControlPointIcon from '@mui/icons-material/ControlPoint'
 import React, { useEffect, useState } from 'react'
 
 import { LocalizationProvider, MobileDateTimePicker } from '@mui/x-date-pickers'
-import TextFieldEdit from '../UI/textFieldEdit/textFieldEdit'
+import TextFieldEdit from '../ui/textFieldEdit/textFieldEdit'
 
 import TaskMenu from './taskMenu'
 import moment from 'moment'
