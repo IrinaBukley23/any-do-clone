@@ -30,8 +30,9 @@ const BoardPage = () => {
       e: React.ChangeEvent<HTMLInputElement>,
       callback: (value: string) => AnyAction
     ) => {
+      console.log(e.target.value.length);
       (e.target.value.length < minNumberOfLetters) ? setIsError(true) : setIsError(false);
-      (e && e.target.value.length >= minNumberOfLetters) ? setIsValidate(false) : setIsValidate(true);
+      (e.target.value.length >= minNumberOfLetters) ? setIsValidate(false) : setIsValidate(true);
       dispatch(callback(e.target.value));
     };
 
@@ -49,9 +50,11 @@ const BoardPage = () => {
           },
         ])
       );
+      dispatch(setColumnTitle(''));
     };
 
     const handleCreateColumn = (): void => {
+      setIsValidate(true)
       setIsCreate(true);
     }
 
@@ -102,15 +105,15 @@ const BoardPage = () => {
                       id="filled-basic" 
                       label="Filled" 
                       variant="filled" 
-                      sx={{height: '40px', mt: '30px', ml: '15px', minWidth: '210px'}} 
+                      sx={{height: '40px', ml: '15px', minWidth: '210px'}} 
                   />
                   {isError && <Typography variant="h5" component="p" sx={{fontSize: '12px', textAlign: 'left', color: 'red', mt: '15px', ml: '15px'}}>Необходимо минимум три символа</Typography>}
-                  </div>
+                </div>
                 <Button 
                   onClick={handleSaveColumn} 
                   color='primary' 
                   variant='contained'
-                  sx={{height: '40px', mt: '30px', ml: '15px', minWidth: '160px'}} disabled={isValidate}>
+                  sx={{height: '40px', ml: '15px', minWidth: '160px'}} disabled={isValidate}>
                     Сохранить
                 </Button>
                 </>
@@ -119,7 +122,7 @@ const BoardPage = () => {
                 onClick={handleCreateColumn} 
                 color='primary' 
                 variant='contained'
-                sx={{height: '40px', mt: '30px', ml: '15px', minWidth: '160px'}}>
+                sx={{height: '40px', ml: '15px', minWidth: '160px'}}>
                   Добавить колонку
               </Button>
             </>

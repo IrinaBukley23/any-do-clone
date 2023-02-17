@@ -109,7 +109,7 @@ const Task = (props: IProps) => {
                 </div>
             )}
             <FormControl fullWidth>
-              <InputLabel id="demo-simple-select-label">User</InputLabel>
+              <InputLabel id="demo-simple-select-label">Исполнитель</InputLabel>
               <Select
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
