@@ -1,0 +1,17 @@
+.aside {
+  width: 30rem;
+  height: 90vh;
+}
+.content {
+  height: 100%;
+  //
+}
+.table {
+  flex-shrink: 1;
+  overflow: auto;
+}
+
+.text {
+  cursor: pointer;
+  margin: 0.5rem 0;
+}
