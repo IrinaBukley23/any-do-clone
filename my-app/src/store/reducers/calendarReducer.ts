@@ -1,47 +1,17 @@
-import { TypeStatusTask } from './../../types/enum'
-import { createTask } from '../actions/actionCalendar'
 import { getCurrTasks } from './../utils'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { ICalendar, TaskCalendarItemType } from './../../types/types'
-import moment from 'moment'
-
-const tasks: TaskCalendarItemType[] = [
-  {
-    id: 1,
-    title: 'Task1',
-    // description: 'Description1',
-    // people: [],
-    // date: moment('2023-03-06 15:30').toDate(),
-    dateCreate: '2023-02-06 11:20',
-    status: TypeStatusTask.notStart,
-  },
-  {
-    id: 2,
-    title: 'Task2',
-    // description: 'Description2',
-    // people: [],
-    // date: moment('2023-03-06 12:30').toDate(),
-    dateCreate: '2023-02-07 17:00',
-    status: TypeStatusTask.notStart,
-  },
-  {
-    id: 3,
-    title: 'Task3',
-    // description: 'Description3',
-    // people: [],
-    dateCreate: '2023-02-09 15:30',
-    status: TypeStatusTask.notStart,
-  },
-]
+import CalendarTasksApi from '../../api/calendarTasksApi'
 
 const today = new Date()
+
 export const initialState: ICalendar = {
   dateCurrent: today.toDateString(),
-  taskListAll: tasks,
+  taskListAll: [],
   searchString: '',
-  taskList: getCurrTasks(tasks, today),
+  taskList: [],
   dateSelectedInPlan: today.toDateString(),
-  taskListInPlan: getCurrTasks(tasks, today),
+  taskListInPlan: [],
 }
 
 export const calendarSlice = createSlice({
@@ -76,11 +46,16 @@ export const calendarSlice = createSlice({
       if (searchTask) Object.assign(searchTask, action.payload)
       else state.taskListAll.push(action.payload)
     },
+    loadTasks: (state, action: PayloadAction<TaskCalendarItemType[]>) => {
+      state.taskListAll = action.payload
+    },
   },
 })
 export const { setCurrentDate } = calendarSlice.actions
 export const calendarActions = calendarSlice.actions
-// export const dateCurrent=(state:RootState)
+
 const calendarReducer = calendarSlice.reducer
+
+export const calendarTasksApi = new CalendarTasksApi()
 
 export default calendarReducer

@@ -36,10 +36,11 @@ const CustomBar = () => {
 const SideBar = () => {
   const { dateCurrent } = useAppSelector((state) => state.calendar)
   const { taskListAll } = useAppSelector((state) => state.calendar)
+  const { key } = useAppSelector((state) => state.authorization)
   const dispatch = useAppDispatch()
   const changeDate = (date: string | null) => {
     if (date) {
-      dispatch(setCurrDate(moment(date).format('YYYY-MM-DD HH:mm')))
+      dispatch(setCurrDate(moment(date).format('YYYY-MM-DD HH:mm'), key))
     }
   }
 
@@ -57,7 +58,7 @@ const SideBar = () => {
             }}
             renderDay={(day, _value, DayComponentProps) => {
               const isSelected = taskListAll
-                .map((task) => task.dateCreate)
+                .map((task) => task.performDate)
                 .some((x) => moment(day).isSame(x, 'day'))
 
               return (
