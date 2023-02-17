@@ -1,0 +1,21 @@
+.column {
+    position: relative;
+    width: 280px;
+    margin: 30px 15px 10px;
+    border-radius: 10px;
+    background-color: #b8b6b6;
+    overflow: hidden;
+    padding: 5px 10px 15px;
+    cursor: grab;
+    &__edit {
+        width: 200px;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+    }
+    &__wrapper {
+        overflow-y: auto;
+        overflow-x: hidden;
+        max-height: 70vh;
+    }
+}
