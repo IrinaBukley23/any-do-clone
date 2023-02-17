@@ -25,6 +25,11 @@ const Column = (props: IProps) => {
   
     const [isEdit, setIsEdit] = useState(false);
     const [correctedTitle, setCorrectedTitle] = useState(columnTitle);
+    const [currentColumn, setCurrentColumn] = useState<ColumnItemType>({
+        columnId: '',
+        columnTitle: '',
+        columnOrder: 0
+      });
     const [currentTask, setCurrentTask] = useState<TaskItemType>({
         taskId: '',
         taskTitle: '',
@@ -73,25 +78,26 @@ const Column = (props: IProps) => {
         setOpen(false);
     };
 
-    function dragStartHandler(e: React.DragEvent<HTMLDivElement>, task: TaskItemType): void {
+    function dragStartHandler(e: React.DragEvent<HTMLDivElement>, task: TaskItemType, column?: ColumnItemType): void {
        setCurrentTask(task);
+      // setCurrentColumn(column);
     }
 
     function dragOverHandler(e: React.DragEvent<HTMLDivElement>): void {
         e.preventDefault();
-       (e.target as HTMLDivElement).style.background = '#eccc55'
+       (e.target as HTMLDivElement).style.boxShadow = '0 2 px 3px gray'
     }
 
     function dragEndHandler(e: React.DragEvent<HTMLDivElement>): void {
-     (e.target as HTMLDivElement).style.background = ''
+     (e.target as HTMLDivElement).style.boxShadow = 'none'
     }
 
-    function dropHandler(e: React.DragEvent<HTMLDivElement>, task: TaskItemType): void {
+    function dropHandler(e: React.DragEvent<HTMLDivElement>, task: TaskItemType, column?: ColumnItemType): void {
         e.preventDefault();
        dispatch(
         sortTaskList([...taskList], task, currentTask)
        );
-      (e.target as HTMLDivElement).style.background = ''
+      (e.target as HTMLDivElement).style.boxShadow = 'none'
     }
 
     const sortTasks = (task1: TaskItemType, task2: TaskItemType) => task1.taskOrder - task2.taskOrder;

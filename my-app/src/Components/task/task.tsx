@@ -1,5 +1,5 @@
 import styles from './task.module.scss'
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { FormControl, IconButton, InputLabel, MenuItem, Select, SelectChangeEvent, TextField, Tooltip, Typography } from '@mui/material';
 import { ITask } from '../../types/types';
 import { useDispatch } from 'react-redux';
@@ -30,7 +30,7 @@ const users = [
 
 const Task = (props: IProps) => {
     const [openConfirm, setOpenConfirm] = useState(false);
-    const { taskTitle, taskId, taskDescr, taskOrder } = props.taskItem;
+    const { taskTitle, taskId, taskDescr } = props.taskItem;
     const dispatch = useDispatch();
     // const [userList, setUserList] = useState([]);
     const [isEditTitle, setIsEditTitle] = useState(false);
@@ -92,7 +92,7 @@ const Task = (props: IProps) => {
 
     return (
         <div id={taskId} key={taskId} className={styles.task}>
-            {!isEditTitle && <Typography variant="h5" className={styles.task} onClick={handleEditTitle}>{taskTitle}</Typography>}
+            {!isEditTitle && <Typography variant="h5" className={styles.task__title} onClick={handleEditTitle}>{taskTitle}</Typography>}
             {isEditTitle && (
                 <div className={styles.task__edit}>
                     <TextField id="outlined-basic" label="Outlined" variant="outlined" value={correctedTitle} onChange={handleCorrectTitle} sx={{width: '160px'}} />
@@ -100,7 +100,9 @@ const Task = (props: IProps) => {
                     <CancelIcon onClick={handleCancelTitle} sx={{color: 'blue', ml: '10px'}}></CancelIcon>
                 </div>
             )}
-            {!isEditDescr && <Typography variant="h5" paragraph={true} onClick={handleEditDescr} noWrap={true} sx={{fontSize: '14px', textAlign: 'left', pl: '10px', mb: '15px', mt: '15px'}}>{taskDescr}</Typography>}
+            {!isEditDescr && <Typography variant="h5" onClick={handleEditDescr}
+            sx={{fontSize: '14px', textAlign: 'left', pl: '10px', mb: '15px', mt: '15px'}}
+            >{taskDescr}</Typography>}
             {isEditDescr && (
                 <div className={styles.task__edit}>
                     <TextField id="outlined-basic" label="Outlined" variant="outlined" value={correctedDescr} onChange={handleCorrectDescr} sx={{width: '160px', fontSize: '14px', textAlign: 'left',}} />

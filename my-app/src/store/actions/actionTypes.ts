@@ -81,5 +81,6 @@ export type Action =
         taskList: TaskItemType[],
         taskDrag: TaskItemType,
         taskDrop: TaskItemType,
+        currentColumn: ColumnItemType,
       }
     }
