@@ -1,10 +1,10 @@
 import styles from './column.module.scss';
 import React, { useState } from 'react';
 import { Button, IconButton, TextField, Tooltip, Typography } from '@mui/material';
-import { ColumnItemType, State } from '../../types/types';
+import { ColumnItemType, State, TaskItemType } from '../../types/types';
 import { useDispatch, useSelector } from 'react-redux';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { editColumnTitle, setCurrentId, setRemoveColumn } from '../../store/actions/actionCreators';
+import { editColumnTitle, setCurrentId, setRemoveColumn, sortTaskList } from '../../store/actions/actionCreators';
 import CancelIcon from '@mui/icons-material/Cancel';
 import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
 import Task from '../task/task';
@@ -25,6 +25,13 @@ const Column = (props: IProps) => {
   
     const [isEdit, setIsEdit] = useState(false);
     const [correctedTitle, setCorrectedTitle] = useState(columnTitle);
+    const [currentTask, setCurrentTask] = useState<TaskItemType>({
+        taskId: '',
+        taskTitle: '',
+        taskDescr: '',
+        taskOrder: 0,
+        currentColumnId: ''
+      });
 
 
     const handleEdit = () => {
@@ -66,6 +73,29 @@ const Column = (props: IProps) => {
         setOpen(false);
     };
 
+    function dragStartHandler(e: React.DragEvent<HTMLDivElement>, task: TaskItemType): void {
+       setCurrentTask(task);
+    }
+
+    function dragOverHandler(e: React.DragEvent<HTMLDivElement>): void {
+        e.preventDefault();
+       (e.target as HTMLDivElement).style.background = '#eccc55'
+    }
+
+    function dragEndHandler(e: React.DragEvent<HTMLDivElement>): void {
+     (e.target as HTMLDivElement).style.background = ''
+    }
+
+    function dropHandler(e: React.DragEvent<HTMLDivElement>, task: TaskItemType): void {
+        e.preventDefault();
+       dispatch(
+        sortTaskList([...taskList], task, currentTask)
+       );
+      (e.target as HTMLDivElement).style.background = ''
+    }
+
+    const sortTasks = (task1: TaskItemType, task2: TaskItemType) => task1.taskOrder - task2.taskOrder;
+
     return (
         <div
             id={columnId} 
@@ -90,9 +120,20 @@ const Column = (props: IProps) => {
                 </Tooltip>
                 <DialogConfirm isOpen={open} handleClose={handleClose} handleRemove={handleRemove} />
             </div>
-            <div className={styles.column__wrapper}>
-                {taskList?.filter(task => task.currentColumnId === columnId).map((task, i) => (
-                    <Task key={i} taskItem={task}/>
+            <div className={styles.column__wrapper}
+                >
+                {[...taskList]?.sort(sortTasks).filter(task => task.currentColumnId === columnId).map((task, i) => (
+                    <div
+                        key={i} 
+                        onDragStart={(e: React.DragEvent<HTMLDivElement>) => dragStartHandler(e, task)}
+                        onDragLeave={(e: React.DragEvent<HTMLDivElement>) => dragEndHandler(e)}
+                        onDragEnd={(e: React.DragEvent<HTMLDivElement>) => dragEndHandler(e)}
+                        onDragOver={(e: React.DragEvent<HTMLDivElement>) => dragOverHandler(e)}
+                        onDrop={(e: React.DragEvent<HTMLDivElement>) => dropHandler(e, task)}
+                        draggable={true}
+                    >
+                        <Task key={i} taskItem={task}/>
+                    </div>
                 ) )}
             </div>
             <Button onClick={handleTaskFormOpen} color='primary' variant='contained' sx={{ height: '40px', mt: '30px'}}>

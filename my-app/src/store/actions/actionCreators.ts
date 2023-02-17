@@ -88,3 +88,12 @@ export const setRemoveTask = (taskId: string) => ({
   type: Actions.REMOVE_TASK,
   payload: taskId,
 })
+
+export const sortTaskList = (taskList: TaskItemType[], taskDrop: TaskItemType, taskDrag: TaskItemType) => ({
+  type: Actions.SORT_TASK_LIST,
+  payload: {
+    taskList,
+    taskDrop,
+    taskDrag
+  },
+})

@@ -7,3 +7,7 @@
     white-space: nowrap;
     width: 80%;
 }
+section {
+    position: relative;
+    z-index: 1;
+}

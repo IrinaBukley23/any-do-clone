@@ -5,7 +5,7 @@ import { DialogForm } from '../../types/enum'
 import { DialogModal } from '../UI/dialogModal'
 import { LoginView } from './loginView'
 import { SyntheticEvent } from 'react'
-import { RegistrationView } from './registrationView'
+import { RegistrationView } from './RegistrationView'
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
 import { hideDialog, selectDialogForm } from '../../store/reducers/authorization'
 

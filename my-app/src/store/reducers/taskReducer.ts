@@ -64,7 +64,22 @@ export const taskReducer = (state: ITask = initialState.task, action: Action) =>
             ...state,
             taskList: state.taskList.filter((task) => task.taskId !== action.payload),
           };
-          }
+        }
+        case Actions.SORT_TASK_LIST: {
+          const sortedList = state.taskList.map((task: TaskItemType) => {
+            if(task.taskId === action.payload.taskDrop.taskId) {
+              return {...task, taskOrder: action.payload.taskDrag.taskOrder};
+            }
+            if(task.taskId === action.payload.taskDrag.taskId) {
+              return {...task, taskOrder: action.payload.taskDrop.taskOrder};
+            }
+            return task;
+          })
+            return {
+              ...state,
+              taskList: sortedList,
+            }
+        }
         default: 
           return state;
     }

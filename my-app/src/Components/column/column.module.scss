@@ -6,6 +6,7 @@
     background-color: #b8b6b6;
     overflow: hidden;
     padding: 5px 10px 15px;
+    z-index: 3;
     cursor: grab;
     &__edit {
         width: 200px;

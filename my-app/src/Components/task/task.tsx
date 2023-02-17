@@ -1,5 +1,5 @@
 import styles from './task.module.scss'
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FormControl, IconButton, InputLabel, MenuItem, Select, SelectChangeEvent, TextField, Tooltip, Typography } from '@mui/material';
 import { ITask } from '../../types/types';
 import { useDispatch } from 'react-redux';
@@ -28,22 +28,11 @@ const users = [
   }
 ];
 
-const regUsers = async function getRandomQuote() {
-  try {
-    const url = 'http://143.42.31.53:8080/users'
-    const res = await fetch(url);
-    const data = await res.json();
-    console.log(data);
-  } catch(error) {
-    console.log(error);
-  }
-}
-
 const Task = (props: IProps) => {
     const [openConfirm, setOpenConfirm] = useState(false);
     const { taskTitle, taskId, taskDescr, taskOrder } = props.taskItem;
     const dispatch = useDispatch();
-  
+    // const [userList, setUserList] = useState([]);
     const [isEditTitle, setIsEditTitle] = useState(false);
     const [isEditDescr, setIsEditDescr] = useState(false);
     const [correctedTitle, setCorrectedTitle] = useState(taskTitle);
@@ -53,6 +42,7 @@ const Task = (props: IProps) => {
 
   const handleChangeSelect = (event: SelectChangeEvent) => {
     setUser(event.target.value as string);
+
   };
   
     const handleEditTitle = () => {

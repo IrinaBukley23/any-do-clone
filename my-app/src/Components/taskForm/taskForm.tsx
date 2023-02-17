@@ -12,6 +12,8 @@ interface IProps {
   handleClose: () => void;
 }
 
+let startOrderTask = 0;
+
 const TaskForm = ({ handleClose }: IProps) => {
   const { taskList, taskTitle, taskDescr } = useSelector((state: State) => state.task);
   const { currentId } = useSelector((state: State) => state.currentId);
@@ -32,6 +34,7 @@ const TaskForm = ({ handleClose }: IProps) => {
   };
 
   const handleTaskSubmit = () => {
+    startOrderTask++;
     dispatch(
       setTaskList([
         ...taskList,
@@ -39,6 +42,7 @@ const TaskForm = ({ handleClose }: IProps) => {
           taskId: myId,
           taskTitle: taskTitle,
           taskDescr: taskDescr,
+          taskOrder: startOrderTask,
           currentColumnId: currentId,
         },
       ])

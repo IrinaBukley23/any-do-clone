@@ -52,20 +52,20 @@ const BoardPage = () => {
     };
 
     const handleCreateColumn = (): void => {
-        setIsCreate(true);
+      setIsCreate(true);
     }
 
     function dragStartHandler(e: React.DragEvent<HTMLDivElement>, column: ColumnItemType): void {
-        setCurrentColumn(column);
+      setCurrentColumn(column);
     }
 
     function dragOverHandler(e: React.DragEvent<HTMLDivElement>): void {
-        e.preventDefault();
-       (e.target as HTMLDivElement).style.background = '#ece6e6'
+      e.preventDefault();
+      (e.target as HTMLDivElement).style.background = '#ece6e6'
     }
 
     function dragEndHandler(e: React.DragEvent<HTMLDivElement>): void {
-     (e.target as HTMLDivElement).style.background = ''
+      (e.target as HTMLDivElement).style.background = ''
     }
 
     function dropHandler(e: React.DragEvent<HTMLDivElement>, column: ColumnItemType): void {

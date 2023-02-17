@@ -75,3 +75,11 @@ export type Action =
       type: Actions.SET_CURRENT_COLUMN_ID
       payload: string
     }
+    | {
+      type: Actions.SORT_TASK_LIST
+      payload: {
+        taskList: TaskItemType[],
+        taskDrag: TaskItemType,
+        taskDrop: TaskItemType,
+      }
+    }

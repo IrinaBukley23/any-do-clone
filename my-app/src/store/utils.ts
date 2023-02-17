@@ -14,6 +14,7 @@ export const initialState = {
     taskId: '',
     taskTitle: '',
     taskDescr: '',
+    taskOrder: 0,
     taskList: [],
     currentColumnId: '',
   },
