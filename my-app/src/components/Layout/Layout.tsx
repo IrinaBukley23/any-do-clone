@@ -4,7 +4,6 @@ import SideBar from '../sideBar/sideBar'
 import UserMenu from '../widgets/menu/userMenu'
 import Quotes from '../widgets/quotes/quotes'
 import Weather from '../widgets/weather/weather'
-
 import styles from './Layout.module.scss'
 
 const Layout = () => {
