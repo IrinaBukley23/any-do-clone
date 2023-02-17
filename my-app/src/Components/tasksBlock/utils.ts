@@ -1,4 +1,4 @@
-import { Projects } from './../../types/enum'
+import { Projects } from '../../types/enum'
 export const setColor = (project: Projects) => {
   switch (project) {
     case Projects.health:

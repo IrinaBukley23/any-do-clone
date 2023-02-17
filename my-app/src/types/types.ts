@@ -86,5 +86,4 @@ export type TaskCalendarItemType = Omit<ITaskCalendar, 'taskList'>
 export type TimeCalendar = {
   id: number
   time: Moment
-  task: TaskCalendarItemType[]
 }

@@ -6,7 +6,6 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
 import TaskForm from '../taskForm/taskForm';
 
-
 interface PropsDialogModal {
     isOpen: boolean;
     handleClose: () => void;

@@ -25,7 +25,6 @@ export const LoginView = ({ formId }: ViewProps) => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const error = useAppSelector((state) => state.authorization.serverError)
-
   const formik = useFormik({
     initialValues: { email: '', password: '' },
     validationSchema: validationSchem,

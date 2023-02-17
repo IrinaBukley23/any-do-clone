@@ -2,8 +2,8 @@ import { Tab, Tabs } from '@mui/material'
 // import { useDispatch } from 'react-redux';
 // import { loginSlice } from '../../store/reducers/loginSlice';
 import { DialogForm } from '../../types/enum'
-import { DialogModal } from '../UI/dialogModal'
-import { LoginView } from './loginView'
+import { DialogModal } from '../UI/DialogModal'
+import { LoginView } from './LoginView'
 import { SyntheticEvent } from 'react'
 import { RegistrationView } from './RegistrationView'
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
@@ -23,11 +23,9 @@ const formsParams = {
 export const LoginForm = () => {
   const dispatch = useAppDispatch();
   const {isDialogShown, dialogForm: currentDialogForm} = useAppSelector(state => state.authorization);
-
   const dialogForm: DialogForm = currentDialogForm ?? DialogForm.login;
   const formParams = formsParams[dialogForm];
   const formId = formParams.formId;
-
   const handleChange = (e: SyntheticEvent, newValue: DialogForm) => {
     dispatch(selectDialogForm(newValue))
   }
@@ -42,7 +40,7 @@ export const LoginForm = () => {
         <Tab label='Войти' value={DialogForm.login} />
         <Tab label='Зарегистрироваться' value={DialogForm.register} />
       </Tabs>
-
+      
       {dialogForm === DialogForm.login ? (
         <LoginView formId={formId} />
       ) : (

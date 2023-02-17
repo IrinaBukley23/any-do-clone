@@ -24,9 +24,7 @@ export const DialogConfirm = ({ isOpen, handleClose, handleRemove }: PropsDialog
             </DialogContent>
             <DialogActions>
                 <Button onClick={handleClose}>Нет</Button>
-                <Button onClick={handleRemove} autoFocus>
-                    Да
-                </Button>
+                <Button onClick={handleRemove} autoFocus>Да</Button>
             </DialogActions>
         </Dialog>
     )

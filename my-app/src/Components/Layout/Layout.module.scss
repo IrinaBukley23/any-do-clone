@@ -8,13 +8,11 @@
   background-color: #ffffff;
   align-items: center;
 }
-
 @media (max-width: 900px) {
   .header {
     height: 120px;
   }
 }
-
 @media (max-width: 600px) {
   .header {
     height: 150px;

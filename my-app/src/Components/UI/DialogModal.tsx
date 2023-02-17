@@ -1,9 +1,10 @@
-import { Button, Dialog, DialogActions, DialogContent, IconButton, Paper } from '@mui/material'
+import { Button, Dialog, DialogActions, DialogContent, IconButton } from '@mui/material'
 import { Box } from '@mui/system'
 import { ReactNode } from 'react'
 import CloseIcon from '@mui/icons-material/Close'
 import styles from './dialogModal.module.scss'
 import { FormParam } from '../../types/types'
+
 interface PropsDialogModal {
   onClose?: () => void
   isOpen: boolean
