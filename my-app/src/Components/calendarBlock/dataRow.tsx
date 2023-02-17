@@ -1,6 +1,7 @@
 import { TableCell, TableRow, TextField } from '@mui/material'
 import { Moment } from 'moment'
 import { useEffect, useState } from 'react'
+import { TypeStatusTask } from '../../types/enum'
 import { TaskCalendarItemType } from '../../types/types'
 import styles from './datePlan.module.scss'
 interface IIsEdit {
@@ -29,6 +30,7 @@ const DataRow = ({ time, task, isEven, changeTask }: Props) => {
           id: newId,
           dateCreate: time.format('YYYY-MM-DD HH:mm'),
           title: '',
+          status: TypeStatusTask.notStart,
         },
       ])
     }
@@ -64,6 +66,7 @@ const DataRow = ({ time, task, isEven, changeTask }: Props) => {
           id: id,
           dateCreate: time.format('YYYY-MM-DD HH:mm'),
           title: e.target.value,
+          status: TypeStatusTask.notStart,
         },
       ])
     }

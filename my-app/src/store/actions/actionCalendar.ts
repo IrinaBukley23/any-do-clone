@@ -1,7 +1,8 @@
-import { TaskCalendarItemType } from './../../types/types'
-import { RootState } from './../store'
+import { TaskCalendarItemType } from '../../types/types'
+
 import { Dispatch } from '@reduxjs/toolkit'
 import { calendarActions } from '../reducers/calendarReducer'
+import { TypeStatusTask } from '../../types/enum'
 
 export const setCurrDate = (date: string) => (dispatch: Dispatch) => {
   dispatch(calendarActions.setCurrentDate(date))
@@ -26,6 +27,7 @@ export const createTask = (taskTitle: string, date: string) => (dispatch: Dispat
     dateCreate: date,
     title: taskTitle,
     id: Number(new Date()),
+    status: TypeStatusTask.notStart,
   }
   dispatch(calendarActions.createTask(newTask))
   dispatch(calendarActions.getCurrTasks())
