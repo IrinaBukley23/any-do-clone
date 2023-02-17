@@ -2,7 +2,7 @@ import { Tab, Tabs } from '@mui/material'
 // import { useDispatch } from 'react-redux';
 // import { loginSlice } from '../../store/reducers/loginSlice';
 import { DialogForm } from '../../types/enum'
-import { DialogModal } from '../UI/DialogModal'
+import { DialogModal } from '../ui/DialogModal'
 import { LoginView } from './LoginView'
 import { SyntheticEvent } from 'react'
 import { RegistrationView } from './RegistrationView'
