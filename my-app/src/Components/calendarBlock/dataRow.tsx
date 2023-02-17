@@ -31,7 +31,7 @@ const DataRow = ({ idRow, time, task, isEven, changeTask }: Props) => {
     } else {
       setchangedTask({
         id: newId,
-        dateCreate: time.format('YYYY-MM-DD HH:mm'),
+        performDate: time.format('YYYY-MM-DD HH:mm'),
         title: '',
         status: TypeStatusTask.notStart,
       })

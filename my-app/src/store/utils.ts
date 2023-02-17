@@ -21,5 +21,5 @@ export const initialState = {
 
 export const getCurrTasks = (tasks: TaskCalendarItemType[], date: Date | null) => {
   if (!date) return []
-  return [...tasks].filter((task) => moment(task.dateCreate).isSame(date, 'day'))
+  return [...tasks].filter((task) => moment(task.performDate).isSame(date, 'day'))
 }

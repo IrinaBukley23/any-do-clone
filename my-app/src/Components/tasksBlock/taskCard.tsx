@@ -42,7 +42,7 @@ const TaskCard = ({ task, onDelete, onChange }: Props) => {
 
   useEffect(() => {
     setTaskIsEdit(task)
-    setDataValue(task.dateCreate)
+    setDataValue(task.performDate)
   }, [task])
   useEffect(() => {
     setMenuItems(typesProj)
@@ -57,7 +57,7 @@ const TaskCard = ({ task, onDelete, onChange }: Props) => {
     if (date)
       setTaskIsEdit((prevState) => ({
         ...prevState,
-        dateCreate: moment(date).format('YYYY-MM-DD HH:mm'),
+        performDate: moment(date).format('YYYY-MM-DD HH:mm'),
       }))
   }
   const handleDateChange = (date: string | null) => {
@@ -196,16 +196,16 @@ const TaskCard = ({ task, onDelete, onChange }: Props) => {
       </CardContent>
       <CardActions sx={{ display: 'flex', justifyContent: 'space-between' }}>
         <Button onClick={handleDelete}>Удалить</Button>
-        {taskEdit.important ? (
+        {taskEdit.tag ? (
           <Chip
             data-name={TypeChip.important}
             // variant='outlined'
-            label={taskEdit.important}
+            label={taskEdit.tag}
             onClick={showMenu}
             color={
-              taskEdit.important == Importance.immediat
+              taskEdit.tag == Importance.immediat
                 ? 'error'
-                : taskEdit.important == Importance.important
+                : taskEdit.tag == Importance.important
                 ? 'warning'
                 : 'success'
             }

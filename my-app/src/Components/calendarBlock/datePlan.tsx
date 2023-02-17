@@ -86,7 +86,7 @@ const DatePlan = () => {
     if (taskList) {
       handleChahgeTask({
         ...taskList,
-        dateCreate: destinationTimeCell.time.format('YYYY-MM-DD HH:mm'),
+        performDate: destinationTimeCell.time.format('YYYY-MM-DD HH:mm'),
       })
     }
   }
