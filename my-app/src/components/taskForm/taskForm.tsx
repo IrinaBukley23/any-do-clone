@@ -1,5 +1,5 @@
 import { Button, Grid, TextField, Typography } from '@mui/material'
-import styles from '../LoginForm/form.module.scss';
+import styles from '../loginForm/form.module.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { AnyAction } from 'redux';
 import { setTaskDescr, setTaskList, setTaskTitle } from '../../store/actions/actionCreators';
