@@ -1,6 +1,8 @@
-import { TableCell, TableRow, TextField } from '@mui/material'
+import { Card, TableCell, TableRow, TextField } from '@mui/material'
 import { Moment } from 'moment'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
+import { Draggable, Droppable } from 'react-beautiful-dnd'
+
 import { TypeStatusTask } from '../../types/enum'
 import { TaskCalendarItemType } from '../../types/types'
 import styles from './datePlan.module.scss'
@@ -8,31 +10,31 @@ interface IIsEdit {
   [id: string]: boolean
 }
 type Props = {
+  idRow: number
   time: Moment
   task: TaskCalendarItemType[]
   isEven: boolean
   changeTask: (task: TaskCalendarItemType) => void
 }
-const DataRow = ({ time, task, isEven, changeTask }: Props) => {
+const DataRow = ({ idRow, time, task, isEven, changeTask }: Props) => {
   const [isEdit, setIsEdit] = useState<IIsEdit>({})
-  const [taskSt, setTaskSt] = useState(task)
   const [id, setId] = useState(0)
-  useEffect(() => setTaskSt(task), [task])
+  const [changedTask, setchangedTask] = useState<TaskCalendarItemType | null>()
 
-  const handleClick = (e: React.MouseEvent<HTMLParagraphElement>) => {
+  const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
     let newId = +new Date()
-    if (e.target instanceof HTMLParagraphElement && e.target.dataset.id) {
+
+    if (e.target instanceof HTMLDivElement && e.target.dataset.id) {
       newId = +e.target.dataset.id
+      const findTask = task.find((currTask) => currTask.id == newId)
+      if (findTask) setchangedTask({ ...findTask })
     } else {
-      setTaskSt((prevState) => [
-        ...prevState,
-        {
-          id: newId,
-          dateCreate: time.format('YYYY-MM-DD HH:mm'),
-          title: '',
-          status: TypeStatusTask.notStart,
-        },
-      ])
+      setchangedTask({
+        id: newId,
+        dateCreate: time.format('YYYY-MM-DD HH:mm'),
+        title: '',
+        status: TypeStatusTask.notStart,
+      })
     }
 
     setIsEdit((prevState) => ({ ...prevState, [newId]: true }))
@@ -40,49 +42,19 @@ const DataRow = ({ time, task, isEven, changeTask }: Props) => {
     setId(newId)
   }
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // if (!taskSt) {
-    //   setId(+new Date())
-    //   setTaskSt([
-    //     {
-    //       id: id,
-    //       dateCreate: time.format('YYYY-MM-DD HH:mm'),
-    //       title: e.target.value,
-    //     },
-    //   ])
-    // } else {
-    const newStateTask = JSON.parse(JSON.stringify(taskSt))
-    const currTask: TaskCalendarItemType = newStateTask.find(
-      (t: TaskCalendarItemType) => t.id == id,
-    )
-
-    if (currTask) {
-      console.log(currTask)
-      currTask.title = e.target.value
-      setTaskSt(newStateTask)
-    } else {
-      setTaskSt((prevState) => [
-        ...prevState,
-        {
-          id: id,
-          dateCreate: time.format('YYYY-MM-DD HH:mm'),
-          title: e.target.value,
-          status: TypeStatusTask.notStart,
-        },
-      ])
+    if (changedTask) {
+      const currTask = { ...changedTask, title: e.target.value }
+      setchangedTask(currTask)
     }
   }
   const handleBlur = () => {
     setIsEdit((prevState) => ({ ...prevState, [id]: false }))
-    const newStateTask = JSON.parse(JSON.stringify(taskSt))
-    const currTask: TaskCalendarItemType = newStateTask.find(
-      (t: TaskCalendarItemType) => t.id == id,
-    )
-
-    if (currTask?.title) changeTask(currTask)
+    if (changedTask && changedTask.title.trim()) changeTask(changedTask)
+    setchangedTask(null)
     setId(0)
   }
   return (
-    <TableRow>
+    <TableRow sx={{ height: '2rem' }}>
       <TableCell>
         {isEven ? (
           <>
@@ -93,25 +65,45 @@ const DataRow = ({ time, task, isEven, changeTask }: Props) => {
           <p></p>
         )}
       </TableCell>
-      <TableCell onDoubleClick={handleClick}>
-        {taskSt.map((t) =>
-          isEdit[t.id] ? (
-            <TextField
-              key={`${t.id}t`}
-              autoFocus
-              sx={{ width: '100%' }}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              value={t.title || ''}
-              data-id={t.id}
-            />
-          ) : (
-            <p data-id={t.id} key={t.id} className={styles.text}>
-              {t.title}
-            </p>
-          ),
+      <Droppable droppableId={idRow.toString()}>
+        {(droppableProvided, droppableSnapshot) => (
+          <TableCell
+            onDoubleClick={handleClick}
+            ref={droppableProvided.innerRef}
+            {...droppableProvided.droppableProps}
+          >
+            {task.map((t, index) =>
+              isEdit[t.id] ? (
+                <TextField
+                  key={`${t.id}t`}
+                  autoFocus
+                  sx={{ width: '100%' }}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  value={changedTask?.title}
+                  data-id={t.id}
+                />
+              ) : (
+                <Draggable draggableId={t.id.toString()} index={index} key={t.id}>
+                  {(draggableProvided) => (
+                    <Card
+                      {...draggableProvided.draggableProps}
+                      {...draggableProvided.dragHandleProps}
+                      ref={draggableProvided.innerRef}
+                      data-id={t.id}
+                      // key={t.id}
+                      className={styles.text}
+                    >
+                      {t.title}
+                    </Card>
+                  )}
+                </Draggable>
+              ),
+            )}
+            {droppableProvided.placeholder}
+          </TableCell>
         )}
-      </TableCell>
+      </Droppable>
     </TableRow>
   )
 }
