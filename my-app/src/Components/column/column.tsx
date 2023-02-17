@@ -8,8 +8,9 @@ import { editColumnTitle, setCurrentId, setRemoveColumn, sortTaskList } from '..
 import CancelIcon from '@mui/icons-material/Cancel';
 import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
 import Task from '../task/task';
-import { DialogConfirm } from '../UI/DialogConfirm';
-import ResponsiveDialog from '../UI/OpenDialog';
+import { DialogConfirm } from '../UI/dialogConfirm';
+import ResponsiveDialog from '../UI/openDialog';
+import DownloadDoneIcon from '@mui/icons-material/DownloadDone'
 
 interface IProps {
     columnItem: ColumnItemType;
@@ -111,8 +112,11 @@ const Column = (props: IProps) => {
             {isEdit && (
                 <div className={styles.column__edit}>
                     <TextField id="outlined-basic" label="Outlined" variant="outlined" value={correctedTitle} onChange={handleCorrect} sx={{width: '160px'}} />
-                    <ThumbUpAltIcon onClick={handleSave} sx={{color: 'green', ml: '10px'}}></ThumbUpAltIcon>
-                    <CancelIcon onClick={handleCancel} sx={{color: 'blue', ml: '10px'}}></CancelIcon>
+                    {/* <ThumbUpAltIcon onClick={handleSave} sx={{color: 'green', ml: '10px'}}></ThumbUpAltIcon> */}
+                    <IconButton color='success' onClick={handleSave}>
+                        <DownloadDoneIcon />
+                    </IconButton>
+                    <CancelIcon onClick={handleCancel} sx={{color: '#d3586c', ml: '10px'}}></CancelIcon>
                 </div>
             )}
             <Typography variant="h5" component="p" sx={{fontSize: '14px', textAlign: 'left'}}>Карточек - {taskQuantity}</Typography>

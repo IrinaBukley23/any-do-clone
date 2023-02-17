@@ -7,7 +7,8 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { editTaskDescr, editTaskTitle, setRemoveTask } from '../../store/actions/actionCreators';
 import CancelIcon from '@mui/icons-material/Cancel';
 import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
-import { DialogConfirm } from '../UI/DialogConfirm';
+import { DialogConfirm } from '../UI/dialogConfirm';
+import DownloadDoneIcon from '@mui/icons-material/DownloadDone'
 
 interface IProps {
     taskItem: ITask;
@@ -96,8 +97,11 @@ const Task = (props: IProps) => {
             {isEditTitle && (
                 <div className={styles.task__edit}>
                     <TextField id="outlined-basic" label="Outlined" variant="outlined" value={correctedTitle} onChange={handleCorrectTitle} sx={{width: '160px'}} />
-                    <ThumbUpAltIcon onClick={handleSaveTitle} sx={{color: 'green', ml: '10px'}}></ThumbUpAltIcon>
-                    <CancelIcon onClick={handleCancelTitle} sx={{color: 'blue', ml: '10px'}}></CancelIcon>
+                    {/* <ThumbUpAltIcon onClick={handleSaveTitle} sx={{color: 'green', ml: '10px'}}></ThumbUpAltIcon> */}
+                    <IconButton color='success' onClick={handleSaveTitle}>
+                        <DownloadDoneIcon />
+                    </IconButton>
+                    <CancelIcon onClick={handleCancelTitle} sx={{color: '#d3586c', ml: '10px'}}></CancelIcon>
                 </div>
             )}
             {!isEditDescr && <Typography variant="h5" onClick={handleEditDescr}
@@ -106,8 +110,11 @@ const Task = (props: IProps) => {
             {isEditDescr && (
                 <div className={styles.task__edit}>
                     <TextField id="outlined-basic" label="Outlined" variant="outlined" value={correctedDescr} onChange={handleCorrectDescr} sx={{width: '160px', fontSize: '14px', textAlign: 'left',}} />
-                    <ThumbUpAltIcon onClick={handleSaveDescr} sx={{color: 'green', ml: '10px'}}></ThumbUpAltIcon>
-                    <CancelIcon onClick={handleCancelDescr} sx={{color: 'blue', ml: '10px'}}></CancelIcon>
+                    {/* <ThumbUpAltIcon onClick={handleSaveDescr} sx={{color: 'green', ml: '10px'}}></ThumbUpAltIcon> */}
+                    <IconButton color='success' onClick={handleSaveDescr}>
+                        <DownloadDoneIcon />
+                    </IconButton>
+                    <CancelIcon onClick={handleCancelDescr} sx={{color: '#d3586c', ml: '10px'}}></CancelIcon>
                 </div>
             )}
             <FormControl fullWidth>
