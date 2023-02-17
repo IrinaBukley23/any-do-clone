@@ -1,17 +1,17 @@
- import { Box, Button, Card, CardContent, Typography } from '@mui/material'
+import { Box, Button, Card, CardContent, Typography } from '@mui/material'
 import GitHubIcon from '@mui/icons-material/GitHub'
 import TelegramIcon from '@mui/icons-material/Telegram'
 import LinkedInIcon from '@mui/icons-material/LinkedIn'
 import irina from '../../assets/team/irina.jpg'
 import vlada from '../../assets/team/vlada.jpg'
 import polina from '../../assets/team/polina.jpg'
-import styles from './startPage.module.scss';
-import { LoginForm } from '../../components/loginForm/loginForm';
-import { useAppDispatch } from '../../store/hooks';
-import { loginStart, registrationStart } from '../../store/reducers/authorization';
+import styles from './startPage.module.scss'
+import { LoginForm } from '../../components/loginForm/LoginForm'
+import { useAppDispatch } from '../../store/hooks'
+import { loginStart, registrationStart } from '../../store/reducers/authorization'
 
 const StartPage = () => {
-  const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch()
   return (
     <div className={styles.wrapper}>
       <Typography variant='h1' component='h6' sx={{ fontSize: 52 }}>
@@ -25,7 +25,12 @@ const StartPage = () => {
           С этого дня ваша личная продуктивность и эффективность сотрудников будут непрерывно расти.
           Вам станет просто и легко управлять делами.
         </Typography>
-        <Button onClick={() => dispatch(loginStart())} color='primary' variant='contained' sx={{ mr: 5 }}>
+        <Button
+          onClick={() => dispatch(loginStart())}
+          color='primary'
+          variant='contained'
+          sx={{ mr: 5 }}
+        >
           Войти
         </Button>
         <Button onClick={() => dispatch(registrationStart())} color='primary' variant='contained'>
@@ -156,4 +161,4 @@ const StartPage = () => {
   )
 }
 
-export default StartPage;
+export default StartPage

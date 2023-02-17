@@ -5,7 +5,7 @@ import { IError } from '../types/types'
 export default class CalendarTasksApi {
   async getTasks(key: string) {
     // const tasks: TaskCalendarItemType[] = []
-    const res = await fetch(`${BACKEND_BASE_URL}/api/tasks`, {
+    const res = await fetch(`${BACKEND_BASE_URL}/api/users`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -17,7 +17,7 @@ export default class CalendarTasksApi {
       throw new Error(data.message)
     }
     const data = await res.json()
-    console.log(data)
+    console.log(11111, data)
 
     return data as TaskCalendarItemType[]
   }

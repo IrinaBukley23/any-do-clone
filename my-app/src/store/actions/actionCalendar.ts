@@ -7,6 +7,7 @@ import { TypeStatusTask } from '../../types/enum'
 
 export const setCurrDate = (date: string, key: string | null) => (dispatch: Dispatch) => {
   if (!key) return
+
   dispatch(calendarActions.setCurrentDate(date))
   dispatch(calendarActions.setDateSelectedInPlan(date))
   getCurrTasks(key)
@@ -52,6 +53,7 @@ export const changeTask = (task: TaskCalendarItemType) => (dispatch: Dispatch) =
 export const getCurrTasks = (key: string) => async (dispatch: Dispatch) => {
   try {
     const tasks = await calendarTasksApi.getTasks(key)
+    console.log(tasks)
     dispatch(calendarActions.loadTasks(tasks))
   } catch (err) {
     console.log(err)
