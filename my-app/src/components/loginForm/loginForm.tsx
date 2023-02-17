@@ -3,7 +3,7 @@ import { Tab, Tabs } from '@mui/material'
 // import { loginSlice } from '../../store/reducers/loginSlice';
 import { DialogForm } from '../../types/enum'
 import { DialogModal } from '../ui/dialogModal'
-import { LoginView } from './LoginView'
+import { LoginView } from './loginView'
 import { SyntheticEvent } from 'react'
 import { RegistrationView } from './registrationView'
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
