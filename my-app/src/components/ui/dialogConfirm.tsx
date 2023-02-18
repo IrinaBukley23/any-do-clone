@@ -1,4 +1,5 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material'
+import { useTranslation } from 'react-i18next';
 
 interface PropsDialogModal {
     handleRemove: () => void;
@@ -7,6 +8,8 @@ interface PropsDialogModal {
   }
 
 export const DialogConfirm = ({ isOpen, handleClose, handleRemove }: PropsDialogModal) => {  
+    const { t, } = useTranslation();
+
     return (
         <Dialog
             open={isOpen}
@@ -15,17 +18,17 @@ export const DialogConfirm = ({ isOpen, handleClose, handleRemove }: PropsDialog
             aria-describedby="alert-dialog-description"
         >
             <DialogTitle id="alert-dialog-title">
-            {'Удаление'}
+            { `${t('modalDeleteTitle')}` }
             </DialogTitle>
             <DialogContent>
             <DialogContentText id="alert-dialog-description">
-                Вы действительно хотите удалить?
+                {t('modalDeleteText')}
             </DialogContentText>
             </DialogContent>
             <DialogActions>
-                <Button onClick={handleClose}>Нет</Button>
+                <Button onClick={handleClose}>{t('modalDeleteNo')}</Button>
                 <Button onClick={handleRemove} autoFocus>
-                    Да
+                    {t('modalDeleteYes')}
                 </Button>
             </DialogActions>
         </Dialog>

@@ -16,7 +16,7 @@ import TextFieldEdit from '../ui/textFieldEdit/textFieldEdit'
 
 import TaskMenu from './taskMenu'
 import moment from 'moment'
-import { Importance, Projects, TypeChip, TypeStatusTask } from '../../types/enum'
+import { Importance, ImportanceEn, Projects, ProjectsEn, TypeChip, TypeStatusTask, TypeStatusTaskEn } from '../../types/enum'
 import GetIcon from './getIcon'
 import { setColor } from './utils'
 import { useTranslation } from 'react-i18next';
@@ -29,8 +29,11 @@ type Props = {
 
 const TaskCard = ({ task, onDelete, onChange }: Props) => {
   const typesProj = Object.values(Projects)
+  const typesProjEn = Object.values(ProjectsEn)
   const typesImportant = Object.values(Importance)
+  const typesImportantEn = Object.values(ImportanceEn)
   const typesStartTask = Object.values(TypeStatusTask)
+  const typesStartTaskEn = Object.values(TypeStatusTaskEn)
   const [isEdit, setIsEdit] = useState({ title: false, description: false })
   const [dataValue, setDataValue] = useState<string>('')
   const [menuItems, setMenuItems] = useState<string[]>([])
@@ -67,14 +70,14 @@ const TaskCard = ({ task, onDelete, onChange }: Props) => {
       setDataValue(date)
     }
   }
-
+  const lang = localStorage.getItem('i18nextLng');
   const showMenu = (e: React.MouseEvent<HTMLDivElement | HTMLButtonElement>) => {
     if (e.currentTarget.dataset.name == TypeChip.project) {
-      setMenuItems(typesProj)
+      (lang === 'ru') ? setMenuItems(typesProj) : setMenuItems(typesProjEn)
     } else if (e.currentTarget.dataset.name == TypeChip.important) {
-      setMenuItems(typesImportant)
+      (lang === 'ru') ? setMenuItems(typesImportant) : setMenuItems(typesImportantEn)
     } else {
-      setMenuItems(typesStartTask)
+      (lang === 'ru') ? setMenuItems(typesStartTask) : setMenuItems(typesStartTaskEn)
     }
 
     setAnchorEl(e.currentTarget)

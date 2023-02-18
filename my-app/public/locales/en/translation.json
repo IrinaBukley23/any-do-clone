@@ -70,5 +70,10 @@
     "taskDate": "Date",
     "taskProj": "project",
     "taskDelele": "Delete",
-    "taskImportance": "importance"
+    "taskImportance": "importance",
+    "modalDeleteTitle": "Removal",
+    "modalDeleteText": "Are you sure you want to delete?",
+    "modalDeleteNo": "No",
+    "modalDeleteYes": "Yes",
+    "modalCreateTask": "Create task?"
 }

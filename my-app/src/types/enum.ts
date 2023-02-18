@@ -1,3 +1,5 @@
+import { withTranslation } from 'react-i18next';
+
 export enum Actions {
   SET_COLUMN_ID = 'SET_COLUMN_ID',
   SET_COLUMN_TITLE = 'SET_COLUMN_TITLE',
@@ -39,10 +41,23 @@ export enum Projects {
   journey = 'Путешествия',
   hobby = 'Хобби',
 }
+
+export enum ProjectsEn {
+  health = 'Health',
+  buiseness = 'Business',
+  family = 'Family',
+  journey = 'Travel',
+  hobby = 'Hobby',
+}
 export enum Importance {
   immediat = 'Срочно',
   important = 'Важно',
   notImediat = 'Не срочно',
+}
+export enum ImportanceEn {
+  immediat = 'Urgently',
+  important = 'Important',
+  notImediat = 'Not urgently',
 }
 
 export enum TypeChip {
@@ -59,4 +74,12 @@ export enum TypeStatusTask {
   pause = 'отложено',
   cancel = 'отменено',
   done = 'сделано',
+}
+
+export enum TypeStatusTaskEn {
+  notStart = 'did not start',
+  start = 'in work',
+  pause = 'postponed',
+  cancel = 'canceled',
+  done = 'done',
 }
