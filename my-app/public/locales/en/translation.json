@@ -58,5 +58,17 @@
     "columnCards": "Cards",
     "columnAddTask": "Add task",
     "taskDel": "Delete task",
-    "taskUser": "User"
+    "taskUser": "User",
+    "taskTitle": "Title",
+    "taskDescr": "Description",
+    "taskTitleError": "Minimum three characters required",
+    "taskCancel": "Cancel",
+    "taskCreate": "Create",
+    "taskSearch": "Start typing to search...",
+    "taskCreatePlaceholder": "Enter task",
+    "taskDescription": "description",
+    "taskDate": "Date",
+    "taskProj": "project",
+    "taskDelele": "Delete",
+    "taskImportance": "importance"
 }

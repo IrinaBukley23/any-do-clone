@@ -58,5 +58,17 @@
     "columnCards": "Карточек",
     "columnAddTask": "Добавить задачу",
     "taskDel": "Удалить задачу",
-    "taskUser": "Исполнитель"
+    "taskUser": "Исполнитель",
+    "taskTitle": "Заголовок задачи",
+    "taskDescr": "Описание задачи",
+    "taskTitleError": "Необходимо минимум три символа",
+    "taskCancel": "Отмена",
+    "taskCreate": "Создать",
+    "taskSearch": "Начните вводить для поиска...",
+    "taskCreatePlaceholder": "Введите задачу",
+    "taskDescription": "описание",
+    "taskDate": "Дата",
+    "taskProj": "проект",
+    "taskDelele": "Удалить",
+    "taskImportance": "важность"
 }

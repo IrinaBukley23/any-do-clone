@@ -19,6 +19,7 @@ import moment from 'moment'
 import { Importance, Projects, TypeChip, TypeStatusTask } from '../../types/enum'
 import GetIcon from './getIcon'
 import { setColor } from './utils'
+import { useTranslation } from 'react-i18next';
 
 type Props = {
   task: TaskCalendarItemType
@@ -36,6 +37,7 @@ const TaskCard = ({ task, onDelete, onChange }: Props) => {
   const [taskEdit, setTaskIsEdit] = useState<TaskCalendarItemType>(task)
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
+  const { t, } = useTranslation();
   useEffect(() => {
     onChange(taskEdit)
   }, [taskEdit])
@@ -125,7 +127,7 @@ const TaskCard = ({ task, onDelete, onChange }: Props) => {
             {isEdit.title ? (
               <TextFieldEdit
                 dataName={TypeChip.title}
-                label='Заголовок задачи'
+                label={t('taskTitle')}
                 value={task.title}
                 onAprove={handleApprove}
                 onCancel={handleCancel}
@@ -139,7 +141,7 @@ const TaskCard = ({ task, onDelete, onChange }: Props) => {
               <TextFieldEdit
                 align-self='stretch'
                 dataName={TypeChip.description}
-                label='Описание задачи'
+                label={t('taskDescr')}
                 value={task.description || ''}
                 onAprove={handleApprove}
                 onCancel={handleCancel}
@@ -156,7 +158,7 @@ const TaskCard = ({ task, onDelete, onChange }: Props) => {
               <Chip
                 data-name={TypeChip.description}
                 variant='outlined'
-                label='описание'
+                label={t('taskDescription')}
                 onClick={handleClickEdit}
                 // onDelete={showMenu}
                 icon={<ControlPointIcon />}
@@ -167,7 +169,7 @@ const TaskCard = ({ task, onDelete, onChange }: Props) => {
             <LocalizationProvider dateAdapter={AdapterMoment} adapterLocale='ru'>
               <MobileDateTimePicker
                 renderInput={(props) => <TextField {...props} />}
-                label='Дата'
+                label={t('taskDate')}
                 onAccept={handleEdit}
                 onChange={handleDateChange}
                 value={dataValue}
@@ -186,7 +188,7 @@ const TaskCard = ({ task, onDelete, onChange }: Props) => {
               <Chip
                 data-name={TypeChip.project}
                 variant='outlined'
-                label='проект'
+                label={t('taskProj')}
                 onClick={showMenu}
                 icon={<ControlPointIcon />}
               />
@@ -195,7 +197,7 @@ const TaskCard = ({ task, onDelete, onChange }: Props) => {
         </Stack>
       </CardContent>
       <CardActions sx={{ display: 'flex', justifyContent: 'space-between' }}>
-        <Button onClick={handleDelete}>Удалить</Button>
+        <Button onClick={handleDelete}>{t('taskDelele')}</Button>
         {taskEdit.important ? (
           <Chip
             data-name={TypeChip.important}
@@ -215,7 +217,7 @@ const TaskCard = ({ task, onDelete, onChange }: Props) => {
           <Chip
             data-name={TypeChip.important}
             variant='outlined'
-            label='важность'
+            label={t('taskImportance')}
             onClick={showMenu}
             // onDelete={showMenu}
             icon={<ControlPointIcon />}
