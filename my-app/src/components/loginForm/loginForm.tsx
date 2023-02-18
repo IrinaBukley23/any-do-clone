@@ -8,6 +8,7 @@ import { SyntheticEvent } from 'react'
 import { RegistrationView } from './registrationView'
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
 import { hideDialog, selectDialogForm } from '../../store/reducers/authorization'
+import { useTranslation } from 'react-i18next';
 
 const formsParams = {
   [DialogForm.login]: {
@@ -23,7 +24,7 @@ const formsParams = {
 export const LoginForm = () => {
   const dispatch = useAppDispatch();
   const {isDialogShown, dialogForm: currentDialogForm} = useAppSelector(state => state.authorization);
-
+  const { t, } = useTranslation();
   const dialogForm: DialogForm = currentDialogForm ?? DialogForm.login;
   const formParams = formsParams[dialogForm];
   const formId = formParams.formId;
@@ -39,8 +40,8 @@ export const LoginForm = () => {
       formsParams={formParams}
     >
       <Tabs onChange={handleChange} value={dialogForm}>
-        <Tab label='Войти' value={DialogForm.login} />
-        <Tab label='Зарегистрироваться' value={DialogForm.register} />
+        <Tab label={t('loginFormEnterText')} value={DialogForm.login} />
+        <Tab label={t('loginFormRegText')} value={DialogForm.register} />
       </Tabs>
 
       {dialogForm === DialogForm.login ? (

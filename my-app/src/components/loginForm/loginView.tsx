@@ -5,17 +5,7 @@ import * as yup from 'yup'
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
 import { login } from '../../store/reducers/authorization'
 import styles from './form.module.scss'
-
-const validationSchem = yup.object({
-  email: yup
-    .string()
-    .email('В качестве логина используется email. Введите корректый email')
-    .required('Поле обязательно для заполнения'), // Enter a valid email Email is required
-  password: yup
-    .string()
-    .min(8, 'Длина пароля должна быть минимум 8 символов ') // Password should be of minimum 8 characters length
-    .required('Пароль обязателен для заполнения'), // Password is required
-})
+import { useTranslation } from 'react-i18next';
 
 interface ViewProps {
   formId: string
@@ -24,7 +14,19 @@ interface ViewProps {
 export const LoginView = ({ formId }: ViewProps) => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
+  const { t, } = useTranslation();
   const error = useAppSelector((state) => state.authorization.serverError)
+
+  const validationSchem = yup.object({
+    email: yup
+      .string()
+      .email(`${t('loginFormEmailError')}`)
+      .required(`${t('loginFormEmailErrorReq')}`), // Enter a valid email Email is required
+    password: yup
+      .string()
+      .min(8, `${t('loginFormPasswordError')}`) // Password should be of minimum 8 characters length
+      .required(`${t('loginFormPasswordErrorReq')}`), // Password is required
+  })
 
   const formik = useFormik({
     initialValues: { email: '', password: '' },
@@ -53,7 +55,7 @@ export const LoginView = ({ formId }: ViewProps) => {
           <TextField
             id='email'
             name='email'
-            label='Email'
+            label={t('loginFormEmail')}
             fullWidth
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
@@ -66,7 +68,7 @@ export const LoginView = ({ formId }: ViewProps) => {
           <TextField
             id='password'
             name='password'
-            label='Пароль'
+            label={t('loginFormPassword')}
             type='password'
             fullWidth
             value={formik.values.password}

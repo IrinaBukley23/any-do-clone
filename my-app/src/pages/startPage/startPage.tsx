@@ -19,11 +19,12 @@ const StartPage = () => {
     i18n.changeLanguage(language);
   };
   return (
-    <div className={styles.wrapper}>
-      <div className={styles.localization}>
+    <>
+    <div className={styles.localization}>
         <Button color='primary' variant='contained' onClick={() => changeLanguage('en')} sx={{ mr: 5 }}>EN</Button>
         <Button color='primary' variant='contained' onClick={() => changeLanguage('ru')}>RU</Button>
       </div>
+    <div className={styles.wrapper}>
       <Typography variant='h1' component='h6' sx={{ fontSize: 52 }}>
         {t('startPageTitle')}
       </Typography>
@@ -162,6 +163,7 @@ const StartPage = () => {
         </div>
       </div>
     </div>
+    </>
   )
 }
 
