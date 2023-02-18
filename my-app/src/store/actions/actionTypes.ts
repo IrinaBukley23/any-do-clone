@@ -1,5 +1,5 @@
 import { Actions } from '../../types/enum'
-import { ColumnItemType, TaskItemType } from '../../types/types'
+import { ColumnItemType, ITask, TaskItemType } from '../../types/types'
 
 export type Action =
   | {
@@ -81,6 +81,5 @@ export type Action =
         taskList: TaskItemType[],
         taskDrag: TaskItemType,
         taskDrop: TaskItemType,
-        currentColumn: ColumnItemType,
       }
     }

@@ -94,6 +94,6 @@ export const sortTaskList = (taskList: TaskItemType[], taskDrop: TaskItemType, t
   payload: {
     taskList,
     taskDrop,
-    taskDrag
+    taskDrag,
   },
 })

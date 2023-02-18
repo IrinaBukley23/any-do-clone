@@ -1,10 +1,10 @@
 import styles from './column.module.scss';
 import React, { useState } from 'react';
 import { Button, IconButton, TextField, Tooltip, Typography } from '@mui/material';
-import { ColumnItemType, State, TaskItemType } from '../../types/types';
+import { ColumnItemType, IColumn, ITask, State, TaskItemType } from '../../types/types';
 import { useDispatch, useSelector } from 'react-redux';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { editColumnTitle, setCurrentId, setRemoveColumn, sortTaskList } from '../../store/actions/actionCreators';
+import { editColumnTitle, setCurrentColumnId, setCurrentId, setRemoveColumn, sortTaskList } from '../../store/actions/actionCreators';
 import CancelIcon from '@mui/icons-material/Cancel';
 import Task from '../task/task';
 import { DialogConfirm } from '../ui/dialogConfirm';
@@ -26,17 +26,13 @@ const Column = (props: IProps) => {
     const [isEdit, setIsEdit] = useState(false);
     const [correctedTitle, setCorrectedTitle] = useState(columnTitle);
 
-    const [currentColumn, setCurrentColumn] = useState<ColumnItemType>({
-        columnId: '',
-        columnTitle: '',
-        columnOrder: 0
-      });
-    const [currentTask, setCurrentTask] = useState<TaskItemType>({
+    const [currentTask, setCurrentTask] = useState<ITask>({
         taskId: '',
         taskTitle: '',
         taskDescr: '',
         taskOrder: 0,
-        currentColumnId: ''
+        currentColumnId: '',
+        taskList: []
       });
 
     const handleEdit = () => {
@@ -78,9 +74,8 @@ const Column = (props: IProps) => {
         setOpen(false);
     };
 
-    function dragStartHandler(e: React.DragEvent<HTMLDivElement>, task: TaskItemType, column?: ColumnItemType): void {
+    function dragStartHandler(e: React.DragEvent<HTMLDivElement>, task: ITask): void {
         setCurrentTask(task);
-       // setCurrentColumn(column);
      }
  
      function dragOverHandler(e: React.DragEvent<HTMLDivElement>): void {
@@ -92,11 +87,21 @@ const Column = (props: IProps) => {
       (e.target as HTMLDivElement).style.boxShadow = 'none'
      }
  
-     function dropHandler(e: React.DragEvent<HTMLDivElement>, task: TaskItemType, column?: ColumnItemType): void {
+     function dropHandler(e: React.DragEvent<HTMLDivElement>, task: TaskItemType): void {
          e.preventDefault();
-        dispatch(
-         sortTaskList([...taskList], task, currentTask)
-        );
+         if(task.currentColumnId === currentTask.currentColumnId) {
+            dispatch(
+                sortTaskList([...taskList], task, currentTask)
+            );
+         } else {
+            dispatch(
+                setCurrentColumnId(task.currentColumnId)
+            );
+            dispatch(
+                sortTaskList([...taskList], task, currentTask)
+            );
+         }
+        
        (e.target as HTMLDivElement).style.boxShadow = 'none'
      }
  
@@ -131,7 +136,7 @@ const Column = (props: IProps) => {
             </div>
             <div className={styles.column__wrapper}
                 >
-                {[...taskList]?.sort(sortTasks).filter(task => task.currentColumnId === columnId).map((task, i) => (
+                {[...taskList]?.filter(task => task.currentColumnId === columnId).sort(sortTasks).map((task, i) => (
                     <div
                         key={i} 
                         onDragStart={(e: React.DragEvent<HTMLDivElement>) => dragStartHandler(e, task)}

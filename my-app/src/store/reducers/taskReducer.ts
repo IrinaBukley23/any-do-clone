@@ -1,3 +1,4 @@
+import { current } from '@reduxjs/toolkit';
 import { Actions } from '../../types/enum';
 import { ITask, TaskItemType } from '../../types/types';
 import { Action } from '../actions/actionTypes';
@@ -66,20 +67,27 @@ export const taskReducer = (state: ITask = initialState.task, action: Action) =>
           };
         }
         case Actions.SORT_TASK_LIST: {
-          const sortedList = state.taskList.map((task: TaskItemType) => {
-            const currentIndex = 0;
+          const sortedList = state.taskList.map((task: ITask) => {
             if(task.taskId === action.payload.taskDrop.taskId) {
-              return {...task, taskOrder: action.payload.taskDrag.taskOrder};
+              return {
+                ...task, 
+                taskOrder: action.payload.taskDrag.taskOrder,
+                currentColumnId: action.payload.taskDrop.currentColumnId
+              };
             }
             if(task.taskId === action.payload.taskDrag.taskId) {
-              return {...task, taskOrder: action.payload.taskDrop.taskOrder};
+              return {
+                ...task, 
+                taskOrder: action.payload.taskDrop.taskOrder,
+                currentColumnId: action.payload.taskDrop.currentColumnId
+              };
             }
             return task;
           })
-            return {
-              ...state,
-              taskList: sortedList,
-            }
+          return {
+            ...state,
+            taskList: sortedList,
+          }
         }
         default: 
           return state;

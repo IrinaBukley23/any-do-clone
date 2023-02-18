@@ -5,6 +5,7 @@ export interface IColumn {
   columnTitle: string
   columnOrder: number
   columnList: IColumn[]
+  taskList?: ITask[]
 }
 
 export type ColumnItemType = Omit<IColumn, 'columnList'>

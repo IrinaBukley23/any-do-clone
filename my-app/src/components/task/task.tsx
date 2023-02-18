@@ -113,7 +113,7 @@ const Task = (props: IProps) => {
                     <CancelIcon onClick={handleCancelTitle} sx={{color: '#d3586c', ml: '10px'}}></CancelIcon>
                 </div>
             )}
-            {!isEditDescr && <Typography variant="h5" paragraph={true} onClick={handleEditDescr} noWrap={true} sx={{fontSize: '14px', textAlign: 'left', pl: '10px', mb: '15px', mt: '15px'}}>{taskDescr}</Typography>}
+            {!isEditDescr && <Typography variant="h5" onClick={handleEditDescr}  sx={{fontSize: '14px', textAlign: 'left', pl: '10px', mb: '15px', mt: '15px'}}>{taskDescr}</Typography>}
             {isEditDescr && (
                 <div className={styles.task__edit}>
                     <TextField id="outlined-basic" label="Outlined" variant="outlined" value={correctedDescr} onChange={handleCorrectDescr} sx={{width: '160px', fontSize: '14px', textAlign: 'left',}} />
@@ -124,7 +124,7 @@ const Task = (props: IProps) => {
                 </div>
             )}
             <FormControl fullWidth>
-              <InputLabel id="demo-simple-select-label">Исполнитель</InputLabel>
+              <InputLabel sx={{border: 'none'}}>Исполнитель</InputLabel>
               <Select
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
