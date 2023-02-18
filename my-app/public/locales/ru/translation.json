@@ -30,5 +30,16 @@
     "loginFormEmailError": "В качестве логина используется email. Введите корректый email",
     "loginFormEmailErrorReq": "Поле обязательно для заполнения",
     "loginFormPasswordError": "Длина пароля должна быть минимум 8 символов ",
-    "loginFormPasswordErrorReq": "Пароль обязателен для заполнения"
+    "loginFormPasswordErrorReq": "Пароль обязателен для заполнения",
+    "sideBarAccordeonProj": "Мои проекты",
+    "sideBarProjAll": "Все проекты",
+    "sideBarProjHealth": "Здоровье",
+    "sideBarProjBusines": "Бизнес",
+    "sideBarProjFamily": "Семья",
+    "sideBarProjTravel": "Путешествия",
+    "sideBarProjHobby": "Хобби",
+    "sideBarAccordeonBoards": "Мои доски",
+    "sideBarBoard": "Моя доска",
+    "sideBarDate": "Выбранная дата: ",
+    "sideBarTasksAmount": "Количество задач: "
 }

@@ -30,5 +30,16 @@
     "loginFormEmailError": "Enter a valid email ",
     "loginFormEmailErrorReq": "Email is required",
     "loginFormPasswordError": "Password should be of minimum 8 characters length",
-    "loginFormPasswordErrorReq": "Password is required"
+    "loginFormPasswordErrorReq": "Password is required",
+    "sideBarAccordeonProj": "My projects",
+    "sideBarProjAll": "All projects",
+    "sideBarProjHealth": "Health",
+    "sideBarProjBusines": "Business",
+    "sideBarProjFamily": "Family",
+    "sideBarProjTravel": "Travel",
+    "sideBarProjHobby": "Hobby",
+    "sideBarAccordeonBoards": "My boards",
+    "sideBarBoard": "My boards",
+    "sideBarDate": "Selected date: ",
+    "sideBarTasksAmount": "Number of tasks: "
 }
