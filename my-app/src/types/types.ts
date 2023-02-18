@@ -16,7 +16,7 @@ export interface ITask {
   taskId: string
   taskTitle: string
   taskDescr: string
-  taskOrder?: string
+  taskOrder: number
   taskList: ITask[]
   currentColumnId: string
 }

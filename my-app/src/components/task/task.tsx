@@ -8,6 +8,7 @@ import { editTaskDescr, editTaskTitle, setRemoveTask } from '../../store/actions
 import CancelIcon from '@mui/icons-material/Cancel';
 import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
 import { DialogConfirm } from '../ui/dialogConfirm';
+import DownloadDoneIcon from '@mui/icons-material/DownloadDone'
 
 interface IProps {
     taskItem: ITask;
@@ -30,7 +31,7 @@ const users = [
 
 const regUsers = async function getRandomQuote() {
   try {
-    const url = 'http://143.42.31.53:8080/users'
+    const url = 'http://143.42.31.53:8080/api/users'
     const res = await fetch(url);
     const data = await res.json();
     console.log(data);
@@ -41,7 +42,7 @@ const regUsers = async function getRandomQuote() {
 
 const Task = (props: IProps) => {
     const [openConfirm, setOpenConfirm] = useState(false);
-    const { taskTitle, taskId, taskDescr, taskOrder } = props.taskItem;
+    const { taskTitle, taskId, taskDescr } = props.taskItem;
     const dispatch = useDispatch();
   
     const [isEditTitle, setIsEditTitle] = useState(false);
@@ -102,24 +103,28 @@ const Task = (props: IProps) => {
 
     return (
         <div id={taskId} key={taskId} className={styles.task}>
-            {!isEditTitle && <Typography variant="h5" className={styles.task} onClick={handleEditTitle}>{taskTitle}</Typography>}
+            {!isEditTitle && <Typography variant="h5" className={styles.task__title} onClick={handleEditTitle}>{taskTitle}</Typography>}
             {isEditTitle && (
                 <div className={styles.task__edit}>
                     <TextField id="outlined-basic" label="Outlined" variant="outlined" value={correctedTitle} onChange={handleCorrectTitle} sx={{width: '160px'}} />
-                    <ThumbUpAltIcon onClick={handleSaveTitle} sx={{color: 'green', ml: '10px'}}></ThumbUpAltIcon>
-                    <CancelIcon onClick={handleCancelTitle} sx={{color: 'blue', ml: '10px'}}></CancelIcon>
+                    <IconButton color='success' onClick={handleSaveTitle}>
+                        <DownloadDoneIcon />
+                    </IconButton>
+                    <CancelIcon onClick={handleCancelTitle} sx={{color: '#d3586c', ml: '10px'}}></CancelIcon>
                 </div>
             )}
             {!isEditDescr && <Typography variant="h5" paragraph={true} onClick={handleEditDescr} noWrap={true} sx={{fontSize: '14px', textAlign: 'left', pl: '10px', mb: '15px', mt: '15px'}}>{taskDescr}</Typography>}
             {isEditDescr && (
                 <div className={styles.task__edit}>
                     <TextField id="outlined-basic" label="Outlined" variant="outlined" value={correctedDescr} onChange={handleCorrectDescr} sx={{width: '160px', fontSize: '14px', textAlign: 'left',}} />
-                    <ThumbUpAltIcon onClick={handleSaveDescr} sx={{color: 'green', ml: '10px'}}></ThumbUpAltIcon>
-                    <CancelIcon onClick={handleCancelDescr} sx={{color: 'blue', ml: '10px'}}></CancelIcon>
+                    <IconButton color='success' onClick={handleSaveDescr}>
+                        <DownloadDoneIcon />
+                    </IconButton>
+                    <CancelIcon onClick={handleCancelDescr} sx={{color: '#d3586c', ml: '10px'}}></CancelIcon>
                 </div>
             )}
             <FormControl fullWidth>
-              <InputLabel id="demo-simple-select-label">User</InputLabel>
+              <InputLabel id="demo-simple-select-label">Исполнитель</InputLabel>
               <Select
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"

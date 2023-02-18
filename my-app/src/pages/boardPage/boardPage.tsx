@@ -31,7 +31,7 @@ const BoardPage = () => {
       callback: (value: string) => AnyAction
     ) => {
       (e.target.value.length < minNumberOfLetters) ? setIsError(true) : setIsError(false);
-      (e && e.target.value.length >= minNumberOfLetters) ? setIsValidate(false) : setIsValidate(true);
+      (e.target.value.length >= minNumberOfLetters) ? setIsValidate(false) : setIsValidate(true);
       dispatch(callback(e.target.value));
     };
 
@@ -49,19 +49,21 @@ const BoardPage = () => {
           },
         ])
       );
+      dispatch(setColumnTitle(''));
     };
 
     const handleCreateColumn = (): void => {
-        setIsCreate(true);
+      setIsValidate(true)
+      setIsCreate(true);
     }
 
     function dragStartHandler(e: React.DragEvent<HTMLDivElement>, column: ColumnItemType): void {
-        setCurrentColumn(column);
+      setCurrentColumn(column);
     }
 
     function dragOverHandler(e: React.DragEvent<HTMLDivElement>): void {
-        e.preventDefault();
-       (e.target as HTMLDivElement).style.background = '#ece6e6'
+      e.preventDefault();
+      (e.target as HTMLDivElement).style.background = '#ece6e6'
     }
 
     function dragEndHandler(e: React.DragEvent<HTMLDivElement>): void {
@@ -102,7 +104,7 @@ const BoardPage = () => {
                       id="filled-basic" 
                       label="Filled" 
                       variant="filled" 
-                      sx={{height: '40px', mt: '30px', ml: '15px', minWidth: '210px'}} 
+                      sx={{height: '40px', ml: '15px', minWidth: '210px'}} 
                   />
                   {isError && <Typography variant="h5" component="p" sx={{fontSize: '12px', textAlign: 'left', color: 'red', mt: '15px', ml: '15px'}}>Необходимо минимум три символа</Typography>}
                   </div>
@@ -110,7 +112,7 @@ const BoardPage = () => {
                   onClick={handleSaveColumn} 
                   color='primary' 
                   variant='contained'
-                  sx={{height: '40px', mt: '30px', ml: '15px', minWidth: '160px'}} disabled={isValidate}>
+                  sx={{height: '40px', ml: '15px', minWidth: '160px'}} disabled={isValidate}>
                     Сохранить
                 </Button>
                 </>
@@ -119,7 +121,7 @@ const BoardPage = () => {
                 onClick={handleCreateColumn} 
                 color='primary' 
                 variant='contained'
-                sx={{height: '40px', mt: '30px', ml: '15px', minWidth: '160px'}}>
+                sx={{height: '40px', ml: '15px', minWidth: '160px'}}>
                   Добавить колонку
               </Button>
             </>

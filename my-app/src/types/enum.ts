@@ -14,6 +14,7 @@ export enum Actions {
   EDIT_TASK_TITLE = 'EDIT_TASK_TITLE',
   EDIT_TASK_DESCR = 'EDIT_TASK_DESCR',
   REMOVE_TASK = 'REMOVE_TASK',
+  SORT_TASK_LIST = 'SORT_TASK_LIST',
 }
 
 export enum DialogForm {
