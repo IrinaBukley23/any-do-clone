@@ -3,7 +3,7 @@ import CardContent from '@mui/material/CardContent'
 import CardActions from '@mui/material/CardActions'
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment'
 import Button from '@mui/material/Button'
-
+import DeleteIcon from '@mui/icons-material/Delete'
 import { TaskCalendarItemType } from '../../types/types'
 import { Stack } from '@mui/system'
 import Typography from '@mui/material/Typography'
@@ -113,7 +113,7 @@ const TaskCard = ({ task, onDelete, onChange }: Props) => {
   return (
     <Card className={styles.card}>
       <CardContent>
-        <Stack direction='row' spacing={2}>
+        <Stack direction='row' spacing={2} justifyContent='space-between'>
           <IconButton
             sx={{ alignSelf: 'flex-start' }}
             onClick={showMenu}
@@ -121,7 +121,7 @@ const TaskCard = ({ task, onDelete, onChange }: Props) => {
           >
             <GetIcon status={taskEdit.status} />
           </IconButton>
-          <Stack spacing={2} alignItems='flex-start' sx={{ width: '80%' }}>
+          <Stack spacing={2} alignItems='stretch' sx={{ width: '90%' }}>
             {isEdit.title ? (
               <TextFieldEdit
                 dataName={TypeChip.title}
@@ -131,7 +131,12 @@ const TaskCard = ({ task, onDelete, onChange }: Props) => {
                 onCancel={handleCancel}
               />
             ) : (
-              <Typography data-name={TypeChip.title} onClick={handleClickEdit} variant='h5'>
+              <Typography
+                align='left'
+                data-name={TypeChip.title}
+                onClick={handleClickEdit}
+                variant='h5'
+              >
                 {task.title}
               </Typography>
             )}
@@ -146,6 +151,7 @@ const TaskCard = ({ task, onDelete, onChange }: Props) => {
               />
             ) : task.description ? (
               <Typography
+                align='left'
                 data-name={TypeChip.description}
                 onClick={handleClickEdit}
                 alignSelf='flex-start'
@@ -154,6 +160,7 @@ const TaskCard = ({ task, onDelete, onChange }: Props) => {
               </Typography>
             ) : (
               <Chip
+                sx={{ alignSelf: 'flex-start' }}
                 data-name={TypeChip.description}
                 variant='outlined'
                 label='описание'
@@ -163,16 +170,22 @@ const TaskCard = ({ task, onDelete, onChange }: Props) => {
               />
             )}
           </Stack>
-          <Stack alignItems='flex-end' spacing={2}>
-            <LocalizationProvider dateAdapter={AdapterMoment} adapterLocale='ru'>
-              <MobileDateTimePicker
-                renderInput={(props) => <TextField {...props} />}
-                label='Дата'
-                onAccept={handleEdit}
-                onChange={handleDateChange}
-                value={dataValue}
-              />
-            </LocalizationProvider>
+          <Stack justifyContent='space-between' alignItems='flex-end'>
+            <IconButton color='primary' onClick={handleDelete}>
+              <DeleteIcon />
+            </IconButton>
+          </Stack>
+        </Stack>
+      </CardContent>
+      <CardActions sx={{ padding: '1rem 2rem ' }}>
+        <Stack
+          spacing={2}
+          direction='row'
+          justifyContent='space-between'
+          alignItems='center'
+          sx={{ width: '100%' }}
+        >
+          <Stack spacing={2} direction='row'>
             {taskEdit.project ? (
               <Chip
                 data-name={TypeChip.project}
@@ -191,36 +204,47 @@ const TaskCard = ({ task, onDelete, onChange }: Props) => {
                 icon={<ControlPointIcon />}
               />
             )}
+
+            {taskEdit.important ? (
+              <Chip
+                data-name={TypeChip.important}
+                // variant='outlined'
+                label={taskEdit.important}
+                onClick={showMenu}
+                color={
+                  taskEdit.important == Importance.immediat
+                    ? 'error'
+                    : taskEdit.important == Importance.important
+                    ? 'warning'
+                    : 'success'
+                }
+                onDelete={() => deleteChip(TypeChip.important)}
+              />
+            ) : (
+              <Chip
+                data-name={TypeChip.important}
+                variant='outlined'
+                label='важность'
+                onClick={showMenu}
+                // onDelete={showMenu}
+                icon={<ControlPointIcon />}
+              />
+            )}
           </Stack>
+          <LocalizationProvider
+            dateAdapter={AdapterMoment}
+            adapterLocale='ru'
+            sx={{ justifySelf: 'flex-start' }}
+          >
+            <MobileDateTimePicker
+              renderInput={(props) => <TextField {...props} />}
+              label='Дата'
+              onAccept={handleEdit}
+              onChange={handleDateChange}
+              value={dataValue}
+            />
+          </LocalizationProvider>
         </Stack>
-      </CardContent>
-      <CardActions sx={{ display: 'flex', justifyContent: 'space-between' }}>
-        <Button onClick={handleDelete}>Удалить</Button>
-        {taskEdit.tag ? (
-          <Chip
-            data-name={TypeChip.important}
-            // variant='outlined'
-            label={taskEdit.tag}
-            onClick={showMenu}
-            color={
-              taskEdit.tag == Importance.immediat
-                ? 'error'
-                : taskEdit.tag == Importance.important
-                ? 'warning'
-                : 'success'
-            }
-            onDelete={() => deleteChip(TypeChip.important)}
-          />
-        ) : (
-          <Chip
-            data-name={TypeChip.important}
-            variant='outlined'
-            label='важность'
-            onClick={showMenu}
-            // onDelete={showMenu}
-            icon={<ControlPointIcon />}
-          />
-        )}
       </CardActions>
       <TaskMenu
         open={open}
