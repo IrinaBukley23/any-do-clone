@@ -48,5 +48,15 @@
     "boardPageAddCol": "Add column",
     "boardPageSaveCol": "Save",
     "boardPageInputText": "Filled",
-    "boardPageInputError": "Minimum three characters required"
+    "boardPageInputError": "Minimum three characters required",
+    "weatherLabel": "Enter city",
+    "weatherWind": "Wind",
+    "weatherHumidity": "Humidity",
+    "weatherWindMS": "m/s",
+    "weatherCityNotFound": "City not found.",
+    "columnDel": "Delete column",
+    "columnCards": "Cards",
+    "columnAddTask": "Add task",
+    "taskDel": "Delete task",
+    "taskUser": "User"
 }

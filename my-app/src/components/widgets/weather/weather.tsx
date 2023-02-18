@@ -1,6 +1,7 @@
 import { Grid, TextField } from '@mui/material';
 import { useEffect, useState } from 'react';
 import styles from './weather.module.scss';
+import { useTranslation } from 'react-i18next';
 
 const defaultCity = localStorage.getItem('city');
 
@@ -15,26 +16,23 @@ interface IWeatherData {
 
 const Weather = () => {
   const [weatherData, setData] = useState<IWeatherData | null>(null);
-
   const [city, setCity] = useState(defaultCity)
-
   const [error, setError] = useState('')
-
+  const { t, } = useTranslation();
+  const lang = localStorage.getItem('i18nextLng')
   useEffect(() => {
     if (isFirstLoad && city !== null) {
       isFirstLoad = false
       getWeather(city)
     }
-  });
-
-  console.log(weatherData)
+  }, [lang]);
 
   async function getWeather(cityValue: string): Promise<void> {
     setCity(cityValue);
     localStorage.setItem('city', cityValue)
-    console.log('start')
+    const lang = localStorage.getItem('i18nextLng')
     try {
-      const url = `https://api.openweathermap.org/data/2.5/weather?q=${cityValue}&lang=en&appid=f24a0e6c09481d6e6ccf0547c5467caf&units=metric`
+      const url = `https://api.openweathermap.org/data/2.5/weather?q=${cityValue}&lang=${lang}&appid=f24a0e6c09481d6e6ccf0547c5467caf&units=metric`
       const res = await fetch(url)
       const data = await res.json()
       setError('')
@@ -46,7 +44,7 @@ const Weather = () => {
       })
     } catch(error) {
       console.log(error)
-      setError('City not found.')
+      setError(`${t('weatherCityNotFound')}`)
     }
   }
 
@@ -56,8 +54,8 @@ const Weather = () => {
         <TextField
           id="wether"
           size="small"
-          label="Погода"
-          placeholder="Введите город"
+          label={t('weatherLabel')}
+          placeholder=''
           multiline
           variant="standard"
           value={city}
@@ -83,8 +81,8 @@ const Weather = () => {
       <Grid item xs={4}>
         { weatherData !== null && error === '' &&
           <div>
-            <div>Wind: {weatherData.windSpeed} m/s</div>
-            <div>Humidity: {weatherData.humidity} %</div>
+            <div>{t('weatherWind')}: {weatherData.windSpeed} {t('weatherWindMS')}</div>
+            <div>{t('weatherHumidity')}: {weatherData.humidity} %</div>
           </div>
         }
       </Grid>

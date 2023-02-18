@@ -104,6 +104,7 @@ const BoardPage = () => {
                   <TextField 
                       onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChangeTitle(e, setColumnTitle)}
                       id="filled-basic" 
+                      placeholder=''
                       label={t('boardPageInputText')}
                       variant="filled" 
                       sx={{height: '40px', ml: '15px', minWidth: '210px'}} 

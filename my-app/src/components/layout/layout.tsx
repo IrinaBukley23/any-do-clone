@@ -6,13 +6,16 @@ import Quotes from '../widgets/quotes/quotes'
 import Weather from '../widgets/weather/weather'
 import { useTranslation } from 'react-i18next';
 import styles from './layout.module.scss'
+import { useDispatch } from 'react-redux'
+import { setLang } from '../../store/actions/actionCreators'
 
 const Layout = () => {
-
+  const dispatch = useDispatch()
   const { t, i18n } = useTranslation();
 
   const changeLanguage = (language: string) => {
     i18n.changeLanguage(language);
+    dispatch(setLang(language));
   };
 
   return (

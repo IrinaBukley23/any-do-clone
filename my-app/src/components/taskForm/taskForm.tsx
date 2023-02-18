@@ -58,6 +58,7 @@ const TaskForm = ({ handleClose }: IProps) => {
             id='title'
             name='title'
             label='Title'
+            placeholder=''
             fullWidth
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange(e, setTaskTitle, setIsError)}
             required
@@ -69,6 +70,7 @@ const TaskForm = ({ handleClose }: IProps) => {
             id='descr'
             name='descr'
             label='Description'
+            placeholder=''
             fullWidth
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange(e, setTaskDescr, setIsErrorDescr)}
             required

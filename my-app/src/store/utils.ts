@@ -18,6 +18,7 @@ export const initialState = {
     taskList: [],
     currentColumnId: '',
   },
+  lang: 'ru'
 }
 
 export const getCurrTasks = (tasks: TaskCalendarItemType[], date: Date | null) => {

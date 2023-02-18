@@ -48,5 +48,15 @@
     "boardPageAddCol": "Добавить колонку",
     "boardPageSaveCol": "Сохранить",
     "boardPageInputText": "Заполните",
-    "boardPageInputError": "Необходимо минимум три символа"
+    "boardPageInputError": "Необходимо минимум три символа",
+    "weatherLabel": "Введите город",
+    "weatherWind": "Ветер",
+    "weatherHumidity": "Влажность",
+    "weatherWindMS": "м/с",
+    "weatherCityNotFound": "Город не найден",
+    "columnDel": "Удалить колонку",
+    "columnCards": "Карточек",
+    "columnAddTask": "Добавить задачу",
+    "taskDel": "Удалить задачу",
+    "taskUser": "Исполнитель"
 }

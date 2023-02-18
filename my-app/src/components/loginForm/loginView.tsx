@@ -57,6 +57,7 @@ export const LoginView = ({ formId }: ViewProps) => {
             name='email'
             label={t('loginFormEmail')}
             fullWidth
+            placeholder=''
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             value={formik.values.email}
@@ -71,6 +72,7 @@ export const LoginView = ({ formId }: ViewProps) => {
             label={t('loginFormPassword')}
             type='password'
             fullWidth
+            placeholder=''
             value={formik.values.password}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}

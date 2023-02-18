@@ -6,9 +6,9 @@ import { useDispatch } from 'react-redux';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { editTaskDescr, editTaskTitle, setRemoveTask } from '../../store/actions/actionCreators';
 import CancelIcon from '@mui/icons-material/Cancel';
-import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
 import { DialogConfirm } from '../ui/dialogConfirm';
 import DownloadDoneIcon from '@mui/icons-material/DownloadDone'
+import { useTranslation } from 'react-i18next';
 
 interface IProps {
     taskItem: ITask;
@@ -29,22 +29,22 @@ const users = [
   }
 ];
 
-const regUsers = async function getRandomQuote() {
-  try {
-    const url = 'http://143.42.31.53:8080/api/users'
-    const res = await fetch(url);
-    const data = await res.json();
-    console.log(data);
-  } catch(error) {
-    console.log(error);
-  }
-}
+// const regUsers = async function getRandomQuote() {
+//   try {
+//     const url = 'http://143.42.31.53:8080/api/users'
+//     const res = await fetch(url);
+//     const data = await res.json();
+//     console.log(data);
+//   } catch(error) {
+//     console.log(error);
+//   }
+// }
 
 const Task = (props: IProps) => {
     const [openConfirm, setOpenConfirm] = useState(false);
     const { taskTitle, taskId, taskDescr } = props.taskItem;
     const dispatch = useDispatch();
-  
+    const { t, } = useTranslation();
     const [isEditTitle, setIsEditTitle] = useState(false);
     const [isEditDescr, setIsEditDescr] = useState(false);
     const [correctedTitle, setCorrectedTitle] = useState(taskTitle);
@@ -106,7 +106,14 @@ const Task = (props: IProps) => {
             {!isEditTitle && <Typography variant="h5" className={styles.task__title} onClick={handleEditTitle}>{taskTitle}</Typography>}
             {isEditTitle && (
                 <div className={styles.task__edit}>
-                    <TextField id="outlined-basic" label="Outlined" variant="outlined" value={correctedTitle} onChange={handleCorrectTitle} sx={{width: '160px'}} />
+                    <TextField 
+                      id="outlined-basic" 
+                      label="" 
+                      variant="outlined"
+                      placeholder='' 
+                      value={correctedTitle} 
+                      onChange={handleCorrectTitle} 
+                      sx={{width: '160px'}} />
                     <IconButton color='success' onClick={handleSaveTitle}>
                         <DownloadDoneIcon />
                     </IconButton>
@@ -116,7 +123,14 @@ const Task = (props: IProps) => {
             {!isEditDescr && <Typography variant="h5" onClick={handleEditDescr}  sx={{fontSize: '14px', textAlign: 'left', pl: '10px', mb: '15px', mt: '15px'}}>{taskDescr}</Typography>}
             {isEditDescr && (
                 <div className={styles.task__edit}>
-                    <TextField id="outlined-basic" label="Outlined" variant="outlined" value={correctedDescr} onChange={handleCorrectDescr} sx={{width: '160px', fontSize: '14px', textAlign: 'left',}} />
+                    <TextField 
+                      id="outlined-basic" 
+                      label="" 
+                      variant="outlined" 
+                      placeholder=''
+                      value={correctedDescr} 
+                      onChange={handleCorrectDescr} 
+                      sx={{width: '160px', fontSize: '14px', textAlign: 'left',}} />
                     <IconButton color='success' onClick={handleSaveDescr}>
                         <DownloadDoneIcon />
                     </IconButton>
@@ -124,12 +138,12 @@ const Task = (props: IProps) => {
                 </div>
             )}
             <FormControl fullWidth>
-              <InputLabel sx={{border: 'none'}}>Исполнитель</InputLabel>
+              <InputLabel>{t('taskUser')}</InputLabel>
               <Select
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
                 value={user}
-                label="User"
+                label=""
                 onChange={handleChangeSelect}
                 sx={{width: '80%', fontSize: '14px', textAlign: 'left'}}
               >
@@ -139,7 +153,7 @@ const Task = (props: IProps) => {
               </Select>
             </FormControl>
             <div>
-                <Tooltip title="Delete task">
+                <Tooltip title={t('taskDel')}>
                     <IconButton 
                         onClick={handleOpenConfirm}
                         sx={{position: 'absolute', bottom: '0', right: '0' , color: '#ab45fa'}}>

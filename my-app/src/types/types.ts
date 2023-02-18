@@ -13,6 +13,10 @@ export type CurrentId = {
   currentId: string
 }
 
+export type Lang = {
+  lang: string
+}
+
 export interface ITask {
   taskId: string
   taskTitle: string
@@ -36,6 +40,7 @@ export type State = {
   task: ITask
   calendar: ICalendar
   currentId: CurrentId
+  lang: Lang
 }
 
 export interface IUser {

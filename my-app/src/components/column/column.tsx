@@ -10,6 +10,7 @@ import Task from '../task/task';
 import { DialogConfirm } from '../ui/dialogConfirm';
 import ResponsiveDialog from '../ui/openDialog';
 import DownloadDoneIcon from '@mui/icons-material/DownloadDone'
+import { useTranslation } from 'react-i18next';
 
 interface IProps {
     columnItem: ColumnItemType;
@@ -22,7 +23,7 @@ const Column = (props: IProps) => {
     const dispatch = useDispatch();
     const { taskList } = useSelector((state: State) => state.task);
     const taskQuantity = taskList.length;
-  
+    const { t, } = useTranslation();
     const [isEdit, setIsEdit] = useState(false);
     const [correctedTitle, setCorrectedTitle] = useState(columnTitle);
 
@@ -117,16 +118,23 @@ const Column = (props: IProps) => {
             }
             {isEdit && (
                 <div className={styles.column__edit}>
-                    <TextField id="outlined-basic" label="Outlined" variant="outlined" value={correctedTitle} onChange={handleCorrect} sx={{width: '160px'}} />
+                    <TextField 
+                        id="outlined-basic" 
+                        label="" 
+                        variant="outlined" 
+                        placeholder=''
+                        value={correctedTitle} 
+                        onChange={handleCorrect} 
+                        sx={{width: '160px'}} />
                     <IconButton color='success' onClick={handleSave}>
                         <DownloadDoneIcon />
                     </IconButton>
                     <CancelIcon onClick={handleCancel} sx={{color: '#d3586c', ml: '10px'}}></CancelIcon>
                 </div>
             )}
-            <Typography variant="h5" component="p" sx={{fontSize: '14px', textAlign: 'left'}}>Карточек - {taskQuantity}</Typography>
+            <Typography variant="h5" component="p" sx={{fontSize: '14px', textAlign: 'left'}}>{t('columnCards')} - {taskQuantity}</Typography>
             <div>
-                <Tooltip title="Delete column">
+                <Tooltip title={t('columnDel')}>
                     <IconButton 
                         onClick={handleOpen}
                         sx={{position: 'absolute', top: '5px', right: '5px' , color: '#ab45fa'}}>
@@ -152,7 +160,7 @@ const Column = (props: IProps) => {
                   ) )}
                 </div>
             <Button onClick={handleTaskFormOpen} color='primary' variant='contained' sx={{ height: '40px', mt: '30px'}}>
-                Добавить задачу
+                {t('columnAddTask')}
             </Button>
             <ResponsiveDialog isOpen={isTaskModal} handleClose={handleTaskFormClose} />
         </div>
