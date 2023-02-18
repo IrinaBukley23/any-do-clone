@@ -100,6 +100,7 @@ const Column = (props: IProps) => {
             dispatch(
                 sortTaskList([...taskList], task, currentTask)
             );
+
          }
         
        (e.target as HTMLDivElement).style.boxShadow = 'none'
