@@ -41,5 +41,12 @@
     "sideBarAccordeonBoards": "Мои доски",
     "sideBarBoard": "Моя доска",
     "sideBarDate": "Выбранная дата: ",
-    "sideBarTasksAmount": "Количество задач: "
+    "sideBarTasksAmount": "Количество задач: ",
+    "exitBtn": "Выход",
+    "404PageTitle": "Страница не найдена",
+    "404PageBack": "Назад",
+    "boardPageAddCol": "Добавить колонку",
+    "boardPageSaveCol": "Сохранить",
+    "boardPageInputText": "Заполните",
+    "boardPageInputError": "Необходимо минимум три символа"
 }

@@ -40,6 +40,13 @@
     "sideBarProjHobby": "Hobby",
     "sideBarAccordeonBoards": "My boards",
     "sideBarBoard": "My boards",
-    "sideBarDate": "Selected date: ",
-    "sideBarTasksAmount": "Number of tasks: "
+    "sideBarDate": "Selected date:",
+    "sideBarTasksAmount": "Number of tasks:",
+    "exitBtn": "Exit",
+    "404PageTitle": "Page not found",
+    "404PageBack": "Back...",
+    "boardPageAddCol": "Add column",
+    "boardPageSaveCol": "Save",
+    "boardPageInputText": "Filled",
+    "boardPageInputError": "Minimum three characters required"
 }

@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setColumnList, setColumnTitle, sortColumnList } from '../../store/actions/actionCreators';
 import nextId from 'react-id-generator';
 import { minNumberOfLetters } from '../../types/constants';
+import { useTranslation } from 'react-i18next';
 
 let startOrder = 0;
 
@@ -20,6 +21,7 @@ const BoardPage = () => {
     const dispatch = useDispatch();
     const [isValidate, setIsValidate] = useState(true);
     const myId = nextId();
+    const { t, } = useTranslation();
     const [currentColumn, setCurrentColumn] = useState<ColumnItemType>({
       columnId: '',
       columnTitle: '',
@@ -102,18 +104,18 @@ const BoardPage = () => {
                   <TextField 
                       onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChangeTitle(e, setColumnTitle)}
                       id="filled-basic" 
-                      label="Filled" 
+                      label={t('boardPageInputText')}
                       variant="filled" 
                       sx={{height: '40px', ml: '15px', minWidth: '210px'}} 
                   />
-                  {isError && <Typography variant="h5" component="p" sx={{fontSize: '12px', textAlign: 'left', color: 'red', mt: '15px', ml: '15px'}}>Необходимо минимум три символа</Typography>}
+                  {isError && <Typography variant="h5" component="p" sx={{fontSize: '12px', textAlign: 'left', color: 'red', mt: '15px', ml: '15px'}}> {t('boardPageInputError')} </Typography>}
                   </div>
                 <Button 
                   onClick={handleSaveColumn} 
                   color='primary' 
                   variant='contained'
                   sx={{height: '40px', ml: '15px', minWidth: '160px'}} disabled={isValidate}>
-                    Сохранить
+                    {t('boardPageSaveCol')}
                 </Button>
                 </>
                 )}
@@ -122,7 +124,7 @@ const BoardPage = () => {
                 color='primary' 
                 variant='contained'
                 sx={{height: '40px', ml: '15px', minWidth: '160px'}}>
-                  Добавить колонку
+                  {t('boardPageAddCol')}
               </Button>
             </>
         </div>
