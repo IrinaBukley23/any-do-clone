@@ -1,3 +1,4 @@
+import { ITaskCalendarCreate } from './../../types/types'
 import { calendarTasksApi } from './../reducers/calendarReducer'
 import { TaskCalendarItemType } from '../../types/types'
 
@@ -5,12 +6,21 @@ import { Dispatch } from '@reduxjs/toolkit'
 import { calendarActions } from '../reducers/calendarReducer'
 import { TypeStatusTask } from '../../types/enum'
 
-export const setCurrDate = (date: string, key: string | null) => (dispatch: Dispatch) => {
+export const setCurrDate = (date: string, key: string | null) => async (dispatch: Dispatch) => {
   if (!key) return
 
   dispatch(calendarActions.setCurrentDate(date))
   dispatch(calendarActions.setDateSelectedInPlan(date))
-  getCurrTasks(key)
+
+  try {
+    const tasks = await calendarTasksApi.getTasks(key)
+    const data = await calendarTasksApi.getProjects(key)
+    console.log(data)
+    dispatch(calendarActions.loadTasks(tasks))
+  } catch (err) {
+    console.log(err)
+  }
+
   dispatch(calendarActions.getCurrTasks())
   dispatch(calendarActions.getListInPlan())
 }
@@ -26,17 +36,24 @@ export const setDateSelectedInPlan = (date: string) => (dispatch: Dispatch) => {
   dispatch(calendarActions.getListInPlan())
 }
 
-export const createTask = (taskTitle: string, date: string) => (dispatch: Dispatch) => {
-  const newTask: TaskCalendarItemType = {
-    performDate: date,
-    title: taskTitle,
-    id: Number(new Date()),
-    status: TypeStatusTask.notStart,
+export const createTask =
+  (taskTitle: string, date: string, key: string | null) => async (dispatch: Dispatch) => {
+    if (!key) return
+    const newTask: ITaskCalendarCreate = {
+      performDate: date,
+      title: taskTitle,
+      status: TypeStatusTask.notStart,
+    }
+    try {
+      await calendarTasksApi.createTask(key, newTask)
+    } catch (err) {
+      console.log(err)
+    }
+    setCurrDate(date, key)
+    // dispatch(calendarActions.createTask(newTask))
+    // dispatch(calendarActions.getCurrTasks())
+    // dispatch(calendarActions.getListInPlan())
   }
-  dispatch(calendarActions.createTask(newTask))
-  dispatch(calendarActions.getCurrTasks())
-  dispatch(calendarActions.getListInPlan())
-}
 
 export const deleteTask = (id: number) => (dispatch: Dispatch) => {
   dispatch(calendarActions.deleteTask(id))
@@ -48,14 +65,4 @@ export const changeTask = (task: TaskCalendarItemType) => (dispatch: Dispatch) =
   dispatch(calendarActions.changeTask(task))
   dispatch(calendarActions.getCurrTasks())
   dispatch(calendarActions.getListInPlan())
-}
-
-export const getCurrTasks = (key: string) => async (dispatch: Dispatch) => {
-  try {
-    const tasks = await calendarTasksApi.getTasks(key)
-    console.log(tasks)
-    dispatch(calendarActions.loadTasks(tasks))
-  } catch (err) {
-    console.log(err)
-  }
 }

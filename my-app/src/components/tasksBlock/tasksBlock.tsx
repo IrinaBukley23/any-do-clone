@@ -16,6 +16,7 @@ import { TaskCalendarItemType } from '../../types/types'
 
 const TasksBlock = () => {
   const { taskList, dateCurrent } = useAppSelector((state) => state.calendar)
+  const { key } = useAppSelector((state) => state.authorization)
   const [searchString, setSearchString] = useState('')
   const [taskTitle, setTaskTitle] = useState('')
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -27,7 +28,7 @@ const TasksBlock = () => {
   const dispatch = useAppDispatch()
   const handleKey = (e: React.KeyboardEvent<HTMLDivElement>) => {
     if (e.key === 'Enter') {
-      if (taskTitle) dispatch(createTask(taskTitle, dateCurrent))
+      if (taskTitle) dispatch(createTask(taskTitle, dateCurrent, key))
       setTaskTitle('')
     }
   }

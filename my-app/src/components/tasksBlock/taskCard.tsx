@@ -2,7 +2,7 @@ import { Card, Chip, IconButton, TextField } from '@mui/material'
 import CardContent from '@mui/material/CardContent'
 import CardActions from '@mui/material/CardActions'
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment'
-import Button from '@mui/material/Button'
+
 import DeleteIcon from '@mui/icons-material/Delete'
 import { TaskCalendarItemType } from '../../types/types'
 import { Stack } from '@mui/system'
@@ -17,7 +17,7 @@ import TextFieldEdit from '../ui/textFieldEdit/textFieldEdit'
 import TaskMenu from './taskMenu'
 import moment from 'moment'
 import { Importance, Projects, TypeChip, TypeStatusTask } from '../../types/enum'
-import GetIcon from './GetIcon'
+import GetIcon from './getIcon'
 import { setColor } from './utils'
 
 type Props = {
@@ -205,16 +205,16 @@ const TaskCard = ({ task, onDelete, onChange }: Props) => {
               />
             )}
 
-            {taskEdit.important ? (
+            {taskEdit.tag ? (
               <Chip
                 data-name={TypeChip.important}
                 // variant='outlined'
-                label={taskEdit.important}
+                label={taskEdit.tag}
                 onClick={showMenu}
                 color={
-                  taskEdit.important == Importance.immediat
+                  taskEdit.tag == Importance.immediat
                     ? 'error'
-                    : taskEdit.important == Importance.important
+                    : taskEdit.tag == Importance.important
                     ? 'warning'
                     : 'success'
                 }

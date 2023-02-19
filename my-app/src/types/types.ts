@@ -68,7 +68,7 @@ export type ICalendar = {
   taskListInPlan: TaskCalendarItemType[]
 }
 
-interface ITaskCalendarCreate {
+export interface ITaskCalendarCreate {
   title: string
   performDate: string
   status: TypeStatusTask
@@ -76,7 +76,6 @@ interface ITaskCalendarCreate {
   project?: Projects
   idProject?: number
   tag?: Importance
-  taskList: ITaskCalendar[]
 }
 export interface ITaskCalendar extends ITaskCalendarCreate {
   id: number

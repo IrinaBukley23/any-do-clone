@@ -4,7 +4,7 @@ import { Routes, Route } from 'react-router-dom'
 import MainPage from './pages/mainPage/mainPage'
 import NotFoundPage from './pages/notFoundPage/notFoundPage'
 import BoardPage from './pages/boardPage/boardPage'
-import Layout from './components/layout/Layout'
+import Layout from './components/layout/layout'
 // import { LoginForm } from './components/LoginForm/LoginForm';
 
 function App() {
