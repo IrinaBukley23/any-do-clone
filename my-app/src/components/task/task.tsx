@@ -11,7 +11,7 @@ import {
   Tooltip,
   Typography,
 } from '@mui/material'
-import { ITask } from '../../types/types'
+import { TaskItemType } from '../../types/types'
 import { useDispatch } from 'react-redux'
 import DeleteIcon from '@mui/icons-material/Delete'
 import { editTaskDescr, editTaskTitle, setRemoveTask } from '../../store/actions/actionCreators'
@@ -21,7 +21,7 @@ import DownloadDoneIcon from '@mui/icons-material/DownloadDone'
 import { useTranslation } from 'react-i18next'
 
 interface IProps {
-  taskItem: ITask
+    taskItem: TaskItemType;
 }
 
 const users = [

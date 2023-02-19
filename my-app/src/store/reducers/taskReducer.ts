@@ -3,7 +3,7 @@ import { ITask, TaskItemType } from '../../types/types';
 import { Action } from '../actions/actionTypes';
 import { initialState } from '../utils';
 
-export const taskReducer = (state: ITask = initialState.task, action: Action) => {
+export const taskReducer = (state: ITask = initialState.task, action: Action): ITask => {
     switch (action.type) {
         case Actions.SET_TASK_TITLE: {
           return {
@@ -66,7 +66,7 @@ export const taskReducer = (state: ITask = initialState.task, action: Action) =>
           };
         }
         case Actions.SORT_TASK_LIST: {
-          const sortedList = state.taskList.map((task: ITask) => {
+          const sortedList = state.taskList.map((task) => {
             if(task.taskId === action.payload.taskDrop.taskId) {
               return {
                 ...task, 

@@ -9,14 +9,14 @@ export const initialState = {
     columnOrder: 0,
     columnList: [],
   },
-  currentId: '',
+  currentId: {
+  },
   task: {
     taskId: '',
     taskTitle: '',
     taskDescr: '',
     taskOrder: 0,
     taskList: [],
-    currentColumnId: '',
   },
   lang: ''
 }

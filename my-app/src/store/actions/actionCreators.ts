@@ -1,3 +1,4 @@
+import { IColumn } from '../../api/ColumnApi'
 import { Actions } from '../../types/enum'
 import { ColumnItemType, TaskItemType } from '../../types/types'
 
@@ -29,7 +30,7 @@ export const setRemoveColumn = (columnTitle: string) => ({
   payload: columnTitle,
 })
 
-export const sortColumnList = (columnList: ColumnItemType[], columnDrop: ColumnItemType, columnDrag: ColumnItemType) => ({
+export const sortColumnList = (columnList: IColumn[], columnDrop: IColumn, columnDrag: IColumn) => ({
   type: Actions.SORT_COLUMN_LIST,
   payload: {
     columnList,
@@ -43,7 +44,7 @@ export const setTaskId = (taskId: string) => ({
   payload: taskId,
 })
 
-export const setCurrentId = (currentId: string) => ({
+export const setCurrentId = (currentId: number) => ({
   type: Actions.SET_CURRENT_ID,
   payload: currentId,
 })
@@ -63,7 +64,7 @@ export const setTaskList = (taskList: TaskItemType[]) => ({
   payload: taskList,
 })
 
-export const setCurrentColumnId = (currentColumnId: string) => ({
+export const setCurrentColumnId = (currentColumnId: number) => ({
   type: Actions.SET_CURRENT_COLUMN_ID,
   payload: currentColumnId,
 })

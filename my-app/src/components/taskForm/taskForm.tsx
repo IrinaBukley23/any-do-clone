@@ -8,6 +8,7 @@ import { useState } from 'react';
 import nextId from 'react-id-generator';
 import { minNumberOfLetters } from '../../types/constants';
 import { useTranslation } from 'react-i18next';
+import { useAppSelector } from '../../store/hooks';
 
 interface IProps {
   handleClose: () => void;
@@ -17,7 +18,7 @@ let startOrderTask = 0;
 
 const TaskForm = ({ handleClose }: IProps) => {
   const { taskList, taskTitle, taskDescr } = useSelector((state: State) => state.task);
-  const { currentId } = useSelector((state: State) => state.currentId);
+  const { currentId } = useAppSelector((state) => state.currentId);
   const dispatch = useDispatch();
   const [isError, setIsError] = useState(false);
   const [isErrorDescr, setIsErrorDescr] = useState(false);

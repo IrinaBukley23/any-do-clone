@@ -18,7 +18,7 @@ export interface IColumn {
 
 export type ColumnItemType = Omit<IColumn, 'columnList'>
 export type CurrentId = {
-  currentId: string
+  currentId?: number
 }
 
 export type Lang = {
@@ -30,8 +30,8 @@ export interface ITask {
   taskTitle: string
   taskDescr: string
   taskOrder: number
-  taskList: ITask[]
-  currentColumnId: string
+  taskList: TaskItemType[]
+  currentColumnId?: number
 }
 
 export type TaskItemType = Omit<ITask, 'taskList'>

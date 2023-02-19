@@ -35,7 +35,7 @@ export type Action =
   }
   | {
     type: Actions.SET_CURRENT_ID
-    payload: string
+    payload: number
   }
   | {
       type: Actions.SET_TASK_ID
@@ -73,7 +73,7 @@ export type Action =
     }
     | {
       type: Actions.SET_CURRENT_COLUMN_ID
-      payload: string
+      payload: number
     }
     | {
       type: Actions.SORT_TASK_LIST
