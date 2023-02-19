@@ -6,16 +6,12 @@ import { Dispatch } from '@reduxjs/toolkit'
 import { calendarActions } from '../reducers/calendarReducer'
 import { TypeStatusTask } from '../../types/enum'
 
-export const setCurrDate = (date: string, key: string | null) => async (dispatch: Dispatch) => {
-  if (!key) return
-
-  dispatch(calendarActions.setCurrentDate(date))
-  dispatch(calendarActions.setDateSelectedInPlan(date))
-
+const refreshLists = (key: string) => async (dispatch: Dispatch) => {
+  console.log(111)
   try {
     const tasks = await calendarTasksApi.getTasks(key)
     const data = await calendarTasksApi.getProjects(key)
-    console.log(data)
+    console.log('tasks', tasks)
     dispatch(calendarActions.loadTasks(tasks))
   } catch (err) {
     console.log(err)
@@ -23,6 +19,15 @@ export const setCurrDate = (date: string, key: string | null) => async (dispatch
 
   dispatch(calendarActions.getCurrTasks())
   dispatch(calendarActions.getListInPlan())
+}
+
+export const setCurrDate = (date: string, key: string | null) => async (dispatch: Dispatch) => {
+  if (!key) return
+
+  dispatch(calendarActions.setCurrentDate(date))
+  dispatch(calendarActions.setDateSelectedInPlan(date))
+
+  dispatch<any>(refreshLists(key))
 }
 export const getSearchedList = (findText: string) => (dispatch: Dispatch) => {
   if (!findText) dispatch(calendarActions.getCurrTasks())
