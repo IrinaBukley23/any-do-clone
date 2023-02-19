@@ -21,13 +21,16 @@ import TextField from '@mui/material/TextField'
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
 import { setCurrDate } from '../../store/actions/actionCalendar'
 import { PickersDay } from '@mui/x-date-pickers'
+import { useSelector } from 'react-redux';
+import { State } from '../../types/types';
 const CustomBar = () => {
   const { t, } = useTranslation();
   const { taskList } = useAppSelector((state) => state.calendar)
+  const { lang } = useSelector((state: State) => state.lang)
   return (
     <>
       <p>
-        {t('sideBarDate')} <b> {moment(new Date()).format('Do MMMM YYYY')}</b>
+        {t('sideBarDate')} <b> {moment(new Date()).locale(lang).format('Do MMMM YYYY')}</b>
       </p>
       <p>
       {t('sideBarTasksAmount')} <strong>{taskList.length}</strong>
@@ -37,6 +40,7 @@ const CustomBar = () => {
 }
 const SideBar = () => {
   const { dateCurrent } = useAppSelector((state) => state.calendar)
+  const { lang } = useSelector((state: State) => state.lang)
   const { taskListAll } = useAppSelector((state) => state.calendar)
   const dispatch = useAppDispatch()
   const changeDate = (date: string | null) => {
@@ -49,7 +53,7 @@ const SideBar = () => {
   return (
     <div className={styles.sidebar}>
       <Paper>
-        <LocalizationProvider dateAdapter={AdapterMoment} adapterLocale='ru'>
+        <LocalizationProvider dateAdapter={AdapterMoment} adapterLocale={lang}>
           <StaticDatePicker
             displayStaticWrapperAs='desktop'
             value={dateCurrent}

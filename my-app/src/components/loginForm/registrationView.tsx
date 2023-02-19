@@ -72,6 +72,7 @@ export const RegistrationView = ({ formId }: ViewProps) => {
             id='name'
             name='name'
             label={t('regFormName')}
+            placeholder=''
             fullWidth
             value={formik.values.name}
             onChange={formik.handleChange}
@@ -85,6 +86,7 @@ export const RegistrationView = ({ formId }: ViewProps) => {
             id='email'
             name='email'
             label={t('regFormEmail')}
+            placeholder=''
             fullWidth
             value={formik.values.email}
             onChange={formik.handleChange}
@@ -98,6 +100,7 @@ export const RegistrationView = ({ formId }: ViewProps) => {
             id='password'
             name='password'
             label={t('regFormPassword')}
+            placeholder=''
             fullWidth
             value={formik.values.password}
             onChange={formik.handleChange}
@@ -112,6 +115,7 @@ export const RegistrationView = ({ formId }: ViewProps) => {
             id='passwordConfirm'
             name='passwordConfirm'
             label={t('regFormPasswordConfirm')}
+            placeholder=''
             fullWidth
             value={formik.values.passwordConfirm}
             onChange={formik.handleChange}

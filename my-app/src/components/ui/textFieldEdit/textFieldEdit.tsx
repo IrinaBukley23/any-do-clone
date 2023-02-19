@@ -25,7 +25,13 @@ const TextFieldEdit = ({ dataName, label, value, onAprove, onCancel }: Props) =>
   }
   return (
     <Stack direction='row' spacing={2} sx={{ width: '100%' }}>
-      <TextField fullWidth label={label} onChange={handleChange} value={text}></TextField>
+      <TextField 
+        fullWidth 
+        label={label} 
+        onChange={handleChange} 
+        placeholder=''
+        value={text}
+        ></TextField>
       <IconButton data-name={dataName} color='success' onClick={handleAprove}>
         <DownloadDoneIcon />
       </IconButton>
