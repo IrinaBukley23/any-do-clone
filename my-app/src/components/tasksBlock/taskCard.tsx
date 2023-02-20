@@ -178,7 +178,7 @@ const TaskCard = ({ task, onDelete, onChange }: Props) => {
             )}
           </Stack>
           <Stack alignItems='flex-end' spacing={2}>
-            <LocalizationProvider dateAdapter={AdapterMoment} adapterLocale='ru'>
+            {/* <LocalizationProvider dateAdapter={AdapterMoment} adapterLocale='ru'>
               <MobileDateTimePicker
                 renderInput={(props) => <TextField {...props} />}
                 label={t('taskDate')}
@@ -186,7 +186,7 @@ const TaskCard = ({ task, onDelete, onChange }: Props) => {
                 onChange={handleDateChange}
                 value={dataValue}
               />
-            </LocalizationProvider>
+            </LocalizationProvider> */}
           </Stack>
           <Stack justifyContent='space-between' alignItems='flex-end'>
             <IconButton color='primary' onClick={handleDelete}>

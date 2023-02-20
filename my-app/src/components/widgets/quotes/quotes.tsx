@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { State } from '../../../types/types';
-import { quotesEn } from '../../../quotes/quotes-en';
-import { quotesRu } from '../../../quotes/quotes-ru';
+import { quotesEn } from '../../../const-quotes/quotes-en';
+import { quotesRu } from '../../../const-quotes/quotes-ru';
 
 import styles from './quotes.module.scss';
 
