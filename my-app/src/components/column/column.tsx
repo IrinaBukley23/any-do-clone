@@ -1,7 +1,7 @@
 import styles from './column.module.scss';
 import React, { useState } from 'react';
 import { Button, IconButton, TextField, Tooltip, Typography } from '@mui/material';
-import { ColumnItemType, IColumn, ITask, State, TaskItemType } from '../../types/types';
+import { ColumnItemType, ITask, State, TaskItemType } from '../../types/types';
 import { useDispatch, useSelector } from 'react-redux';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { editColumnTitle, setCurrentColumnId, setCurrentId, setRemoveColumn, sortTaskList } from '../../store/actions/actionCreators';
@@ -14,6 +14,8 @@ import { useTranslation } from 'react-i18next';
 
 interface IProps {
     columnItem: ColumnItemType;
+    taskOnDrag: ITask | undefined;
+    onTaskOnDragChange: (task: ITask | undefined) => void
   }
 
 const Column = (props: IProps) => {
@@ -26,15 +28,6 @@ const Column = (props: IProps) => {
     const { t, } = useTranslation();
     const [isEdit, setIsEdit] = useState(false);
     const [correctedTitle, setCorrectedTitle] = useState(columnTitle);
-
-    const [currentTask, setCurrentTask] = useState<ITask>({
-        taskId: '',
-        taskTitle: '',
-        taskDescr: '',
-        taskOrder: 0,
-        currentColumnId: '',
-        taskList: []
-      });
 
     const handleEdit = () => {
       setIsEdit(true);
@@ -76,7 +69,8 @@ const Column = (props: IProps) => {
     };
 
     function dragStartHandler(e: React.DragEvent<HTMLDivElement>, task: ITask): void {
-        setCurrentTask(task);
+        props.onTaskOnDragChange(task);
+        // setCurrentTask(task);
      }
  
      function dragOverHandler(e: React.DragEvent<HTMLDivElement>): void {
@@ -89,21 +83,22 @@ const Column = (props: IProps) => {
      }
  
      function dropHandler(e: React.DragEvent<HTMLDivElement>, task: TaskItemType): void {
+        if(!props.taskOnDrag) return;
          e.preventDefault();
-         if(task.currentColumnId === currentTask.currentColumnId) {
+         if(task.currentColumnId === props.taskOnDrag.currentColumnId) {
             dispatch(
-                sortTaskList([...taskList], task, currentTask)
+                sortTaskList([...taskList], task, props.taskOnDrag)
             );
          } else {
             dispatch(
                 setCurrentColumnId(task.currentColumnId)
             );
             dispatch(
-                sortTaskList([...taskList], task, currentTask)
+                sortTaskList([...taskList], task, {...props.taskOnDrag, currentColumnId: task.currentColumnId})
             );
 
          }
-        
+        props.onTaskOnDragChange(undefined);
        (e.target as HTMLDivElement).style.boxShadow = 'none'
      }
  

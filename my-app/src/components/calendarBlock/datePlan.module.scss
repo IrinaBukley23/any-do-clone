@@ -1,5 +1,7 @@
 .aside {
   width: 30rem;
+  max-width: 30rem;
+  min-width: 30rem;
   height: 90vh;
 }
 .content {
@@ -14,4 +16,9 @@
 .text {
   cursor: pointer;
   margin: 0.5rem 0;
+  padding: 0.5rem;
+}
+.container {
+  height: 100%;
+  width: 100%;
 }

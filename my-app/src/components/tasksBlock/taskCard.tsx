@@ -3,8 +3,8 @@ import CardContent from '@mui/material/CardContent'
 import CardActions from '@mui/material/CardActions'
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment'
 import Button from '@mui/material/Button'
-
-import { TaskCalendarItemType } from '../../types/types'
+import DeleteIcon from '@mui/icons-material/Delete'
+import { State, TaskCalendarItemType } from '../../types/types'
 import { Stack } from '@mui/system'
 import Typography from '@mui/material/Typography'
 import styles from './tasksBlock.module.scss'
@@ -20,6 +20,7 @@ import { Importance, ImportanceEn, Projects, ProjectsEn, TypeChip, TypeStatusTas
 import GetIcon from './getIcon'
 import { setColor } from './utils'
 import { useTranslation } from 'react-i18next';
+import { useSelector } from 'react-redux'
 
 type Props = {
   task: TaskCalendarItemType
@@ -39,6 +40,7 @@ const TaskCard = ({ task, onDelete, onChange }: Props) => {
   const [menuItems, setMenuItems] = useState<string[]>([])
   const [taskEdit, setTaskIsEdit] = useState<TaskCalendarItemType>(task)
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+  const {lang} = useSelector((state: State) => state.lang);
   const open = Boolean(anchorEl)
   const { t, } = useTranslation();
   useEffect(() => {
@@ -70,7 +72,7 @@ const TaskCard = ({ task, onDelete, onChange }: Props) => {
       setDataValue(date)
     }
   }
-  const lang = localStorage.getItem('i18nextLng');
+
   const showMenu = (e: React.MouseEvent<HTMLDivElement | HTMLButtonElement>) => {
     if (e.currentTarget.dataset.name == TypeChip.project) {
       (lang === 'ru') ? setMenuItems(typesProj) : setMenuItems(typesProjEn)
@@ -118,7 +120,7 @@ const TaskCard = ({ task, onDelete, onChange }: Props) => {
   return (
     <Card className={styles.card}>
       <CardContent>
-        <Stack direction='row' spacing={2}>
+        <Stack direction='row' spacing={2} justifyContent='space-between'>
           <IconButton
             sx={{ alignSelf: 'flex-start' }}
             onClick={showMenu}
@@ -126,7 +128,7 @@ const TaskCard = ({ task, onDelete, onChange }: Props) => {
           >
             <GetIcon status={taskEdit.status} />
           </IconButton>
-          <Stack spacing={2} alignItems='flex-start' sx={{ width: '80%' }}>
+          <Stack spacing={2} alignItems='stretch' sx={{ width: '90%' }}>
             {isEdit.title ? (
               <TextFieldEdit
                 dataName={TypeChip.title}
@@ -136,7 +138,12 @@ const TaskCard = ({ task, onDelete, onChange }: Props) => {
                 onCancel={handleCancel}
               />
             ) : (
-              <Typography data-name={TypeChip.title} onClick={handleClickEdit} variant='h5'>
+              <Typography
+                align='left'
+                data-name={TypeChip.title}
+                onClick={handleClickEdit}
+                variant='h5'
+              >
                 {task.title}
               </Typography>
             )}
@@ -151,6 +158,7 @@ const TaskCard = ({ task, onDelete, onChange }: Props) => {
               />
             ) : task.description ? (
               <Typography
+                align='left'
                 data-name={TypeChip.description}
                 onClick={handleClickEdit}
                 alignSelf='flex-start'
@@ -159,6 +167,7 @@ const TaskCard = ({ task, onDelete, onChange }: Props) => {
               </Typography>
             ) : (
               <Chip
+                sx={{ alignSelf: 'flex-start' }}
                 data-name={TypeChip.description}
                 variant='outlined'
                 label={t('taskDescription')}
@@ -178,6 +187,23 @@ const TaskCard = ({ task, onDelete, onChange }: Props) => {
                 value={dataValue}
               />
             </LocalizationProvider>
+          </Stack>
+          <Stack justifyContent='space-between' alignItems='flex-end'>
+            <IconButton color='primary' onClick={handleDelete}>
+              <DeleteIcon />
+            </IconButton>
+          </Stack>
+        </Stack>
+      </CardContent>
+      <CardActions sx={{ padding: '1rem 2rem ' }}>
+        <Stack
+          spacing={2}
+          direction='row'
+          justifyContent='space-between'
+          alignItems='center'
+          sx={{ width: '100%' }}
+        >
+          <Stack spacing={2} direction='row'>
             {taskEdit.project ? (
               <Chip
                 data-name={TypeChip.project}
@@ -196,36 +222,47 @@ const TaskCard = ({ task, onDelete, onChange }: Props) => {
                 icon={<ControlPointIcon />}
               />
             )}
+
+            {taskEdit.important ? (
+              <Chip
+                data-name={TypeChip.important}
+                // variant='outlined'
+                label={taskEdit.important}
+                onClick={showMenu}
+                color={
+                  taskEdit.important == Importance.immediat
+                    ? 'error'
+                    : taskEdit.important == Importance.important
+                    ? 'warning'
+                    : 'success'
+                }
+                onDelete={() => deleteChip(TypeChip.important)}
+              />
+            ) : (
+              <Chip
+                data-name={TypeChip.important}
+                variant='outlined'
+                label='важность'
+                onClick={showMenu}
+                // onDelete={showMenu}
+                icon={<ControlPointIcon />}
+              />
+            )}
           </Stack>
+          <LocalizationProvider
+            dateAdapter={AdapterMoment}
+            adapterLocale='ru'
+            sx={{ justifySelf: 'flex-start' }}
+          >
+            <MobileDateTimePicker
+              renderInput={(props) => <TextField {...props} />}
+              label='Дата'
+              onAccept={handleEdit}
+              onChange={handleDateChange}
+              value={dataValue}
+            />
+          </LocalizationProvider>
         </Stack>
-      </CardContent>
-      <CardActions sx={{ display: 'flex', justifyContent: 'space-between' }}>
-        <Button onClick={handleDelete}>{t('taskDelele')}</Button>
-        {taskEdit.important ? (
-          <Chip
-            data-name={TypeChip.important}
-            // variant='outlined'
-            label={taskEdit.important}
-            onClick={showMenu}
-            color={
-              taskEdit.important == Importance.immediat
-                ? 'error'
-                : taskEdit.important == Importance.important
-                ? 'warning'
-                : 'success'
-            }
-            onDelete={() => deleteChip(TypeChip.important)}
-          />
-        ) : (
-          <Chip
-            data-name={TypeChip.important}
-            variant='outlined'
-            label={t('taskImportance')}
-            onClick={showMenu}
-            // onDelete={showMenu}
-            icon={<ControlPointIcon />}
-          />
-        )}
       </CardActions>
       <TaskMenu
         open={open}

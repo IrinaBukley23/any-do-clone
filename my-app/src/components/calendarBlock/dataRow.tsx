@@ -26,7 +26,9 @@ const DataRow = ({ idRow, time, task, isEven, changeTask }: Props) => {
 
     if (e.target instanceof HTMLDivElement && e.target.dataset.id) {
       newId = +e.target.dataset.id
+      console.log('dgdfhhgjkl', e.target)
       const findTask = task.find((currTask) => currTask.id == newId)
+      console.log(findTask)
       if (findTask) setchangedTask({ ...findTask })
     } else {
       setchangedTask({
@@ -72,6 +74,7 @@ const DataRow = ({ idRow, time, task, isEven, changeTask }: Props) => {
             ref={droppableProvided.innerRef}
             {...droppableProvided.droppableProps}
           >
+{/* <<<<<<< HEAD
             {task.map((t, index) =>
               isEdit[t.id] ? (
                 <TextField
@@ -100,7 +103,35 @@ const DataRow = ({ idRow, time, task, isEven, changeTask }: Props) => {
                   )}
                 </Draggable>
               ),
+======= */}
+            {changedTask && (
+              <TextField
+                key={`${changedTask.id}t`}
+                autoFocus
+                placeholder=''
+                sx={{ width: '100%' }}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={changedTask.title}
+                data-id={changedTask.id}
+              />
             )}
+            {task.map((t, index) => (
+              <Draggable draggableId={t.id.toString()} index={index} key={t.id}>
+                {(draggableProvided) => (
+                  <Card
+                    {...draggableProvided.draggableProps}
+                    {...draggableProvided.dragHandleProps}
+                    ref={draggableProvided.innerRef}
+                    data-id={t.id}
+                    className={styles.text}
+                  >
+                    {t.title}
+                  </Card>
+                )}
+              </Draggable>
+            ))}
+
             {droppableProvided.placeholder}
           </TableCell>
         )}

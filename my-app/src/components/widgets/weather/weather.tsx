@@ -78,7 +78,7 @@ const Weather = () => {
           <div>
             <div>{weatherData.temp}°C</div>
             <div>{weatherData.description}</div>
-            <div className={styles.header__weather_icon}> <img src={weatherData.icon} alt='icon'/> </div>
+            {/* <div className={styles.header__weather_icon}> <img src={weatherData.icon} alt='icon'/> </div> */}
           </div>
         }
       </Grid>
