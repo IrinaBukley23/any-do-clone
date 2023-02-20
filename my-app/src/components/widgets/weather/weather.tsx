@@ -25,11 +25,11 @@ const Weather = () => {
   useEffect(() => {
     if (isFirstLoad && city !== null) {
       isFirstLoad = false
-      getWeather(city)
+      getWeather(city, lang);
     }
   }, [lang]);
 
-  async function getWeather(cityValue: string): Promise<void> {
+  async function getWeather(cityValue: string, lang: string): Promise<void> {
     setCity(cityValue);
     localStorage.setItem('city', cityValue)
     try {
@@ -61,7 +61,7 @@ const Weather = () => {
           variant="standard"
           value={city}
           onChange={(event) => {
-            getWeather(event.target.value)
+            getWeather(event.target.value, lang)
           }}
           
         />

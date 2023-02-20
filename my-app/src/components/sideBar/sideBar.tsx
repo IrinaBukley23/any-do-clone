@@ -33,7 +33,7 @@ const CustomBar = () => {
         {t('sideBarDate')} <b> {moment(new Date()).locale(lang).format('Do MMMM YYYY')}</b>
       </p>
       <p>
-      {t('sideBarTasksAmount')} <strong>{taskList.length}</strong>
+        {t('sideBarTasksAmount')} <b>{taskList.length}</b>
       </p>
     </>
   )
