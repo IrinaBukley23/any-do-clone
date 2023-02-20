@@ -49,6 +49,8 @@ const TaskForm = ({ handleClose }: IProps) => {
         },
       ])
     );
+    dispatch(setTaskTitle(''));
+    dispatch(setTaskDescr(''));
     handleClose();
   };
 
