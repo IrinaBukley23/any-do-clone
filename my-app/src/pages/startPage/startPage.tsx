@@ -7,11 +7,21 @@ import vlada from '../../assets/team/vlada.jpg'
 import polina from '../../assets/team/polina.jpg'
 import styles from './startPage.module.scss'
 import { LoginForm } from '../../components/loginForm/loginForm'
-import { useAppDispatch } from '../../store/hooks'
+import { useAppDispatch, useAppSelector } from '../../store/hooks'
 import { loginStart, registrationStart } from '../../store/reducers/authorization'
+import { useNavigate } from 'react-router-dom'
 
 const StartPage = () => {
+  const { key } = useAppSelector((state) => state.authorization)
   const dispatch = useAppDispatch()
+  const navigate = useNavigate()
+  const login = () => {
+    if (key) {
+      navigate('/main')
+    } else {
+      dispatch(loginStart())
+    }
+  }
   return (
     <div className={styles.wrapper}>
       <Typography variant='h1' component='h6' sx={{ fontSize: 52 }}>
@@ -25,12 +35,7 @@ const StartPage = () => {
           С этого дня ваша личная продуктивность и эффективность сотрудников будут непрерывно расти.
           Вам станет просто и легко управлять делами.
         </Typography>
-        <Button
-          onClick={() => dispatch(loginStart())}
-          color='primary'
-          variant='contained'
-          sx={{ mr: 5 }}
-        >
+        <Button onClick={login} color='primary' variant='contained' sx={{ mr: 5 }}>
           Войти
         </Button>
         <Button onClick={() => dispatch(registrationStart())} color='primary' variant='contained'>
