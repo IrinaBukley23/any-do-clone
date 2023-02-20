@@ -19,7 +19,8 @@ export default class CalendarTasksApi {
     console.log('getAll', data)
     return data as TaskCalendarItemType[]
   }
-  async createTask(key: string, task: ITaskCalendarCreate) {
+
+  async createTask(key: string, task: any) {
     const res = await fetch(`${BACKEND_BASE_URL}/api/tasks`, {
       method: 'POST',
       headers: {
@@ -28,12 +29,11 @@ export default class CalendarTasksApi {
       },
       body: JSON.stringify(task),
     })
-    if (res.status != 200) {
+    if (res.status >= 400) {
       const data: IError = await res.json()
       throw new Error(data.message)
     }
     const data = await res.json()
-    console.log('create', data)
     return data as TaskCalendarItemType
   }
   async changeTask(key: string, task: TaskCalendarItemType) {
@@ -53,8 +53,8 @@ export default class CalendarTasksApi {
 
     return data as TaskCalendarItemType
   }
-  async deleteTask(key: string, task: TaskCalendarItemType) {
-    const res = await fetch(`${BACKEND_BASE_URL}/api/tasks/${task.id}`, {
+  async deleteTask(key: string, id: number) {
+    const res = await fetch(`${BACKEND_BASE_URL}/api/tasks/${id}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',

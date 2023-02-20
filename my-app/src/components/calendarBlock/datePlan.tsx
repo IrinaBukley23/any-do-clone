@@ -31,24 +31,13 @@ const generateTime = (date: string): TimeCalendar[] => {
     })
     arr.push({ id: t + 30, time: moment(date).hour(t).minutes(30) })
   }
-  // const roundMin = (date: string) =>
-  //   moment(date).minute() >= 30
-  //     ? moment(date).minute(30).second(0)
-  //     : moment(date).minute(0).second(0)
-
-  // tasks.forEach((task) => {
-  //   const findTask = arr.find((elem) => {
-  //     return elem.time.isSame(roundMin(task.dateCreate))
-  //   })
-
-  //   if (findTask) findTask.task.push(task)
-  // })
 
   return arr
 }
 
 const DatePlan = () => {
   const { dateSelectedInPlan, taskListInPlan } = useAppSelector((state) => state.calendar)
+  const { key } = useAppSelector((state) => state.authorization)
   const [listTasks, setListTasks] = useState([] as TimeCalendar[])
   const dispatch = useAppDispatch()
   const handleLeft = () => {
@@ -68,7 +57,7 @@ const DatePlan = () => {
     )
   }
   const handleChahgeTask = (task: TaskCalendarItemType) => {
-    dispatch(changeTask(task))
+    dispatch(changeTask(task, key))
   }
   const handleDragEnd = (result: DropResult) => {
     const { destination, source, draggableId } = result

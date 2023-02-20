@@ -42,7 +42,7 @@ const TaskCard = ({ task, onDelete, onChange }: Props) => {
 
   useEffect(() => {
     setTaskIsEdit(task)
-    setDataValue(task.performDate)
+    setDataValue(moment(task.performDate).utc().format('YYYY-MM-DD HH:mm'))
   }, [task])
   useEffect(() => {
     setMenuItems(typesProj)

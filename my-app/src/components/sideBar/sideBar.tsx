@@ -20,6 +20,7 @@ import TextField from '@mui/material/TextField'
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
 import { setCurrDate } from '../../store/actions/actionCalendar'
 import { PickersDay } from '@mui/x-date-pickers'
+import { useEffect } from 'react'
 const CustomBar = () => {
   const { taskList } = useAppSelector((state) => state.calendar)
   return (
@@ -38,12 +39,13 @@ const SideBar = () => {
   const { taskListAll } = useAppSelector((state) => state.calendar)
   const { key } = useAppSelector((state) => state.authorization)
   const dispatch = useAppDispatch()
+
   const changeDate = (date: string | null) => {
     if (date) {
-      dispatch(setCurrDate(moment(date).format('YYYY-MM-DD HH:mm'), key))
+      dispatch(setCurrDate(moment(date).hour(0).minute(0).format('YYYY-MM-DD HH:mm'), key))
     }
   }
-
+  useEffect(() => changeDate(moment().format('YYYY-MM-DD HH:mm')), [])
   return (
     <div className={styles.sidebar}>
       <Paper>

@@ -38,10 +38,10 @@ const TasksBlock = () => {
   }
 
   const handleDeleteCard = (id: number) => {
-    dispatch(deleteTask(id))
+    dispatch(deleteTask(id, key))
   }
   const handleChangeCard = (task: TaskCalendarItemType) => {
-    dispatch(changeTask(task))
+    dispatch(changeTask(task, key))
   }
 
   return (
