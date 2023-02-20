@@ -66,6 +66,7 @@ export enum TypeChip {
   description = 'description',
   title = 'title',
   status = 'status',
+  statusEn = 'statusEn',
 }
 
 export enum TypeStatusTask {

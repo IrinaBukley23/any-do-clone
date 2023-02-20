@@ -17,8 +17,8 @@ import TextFieldEdit from '../ui/textFieldEdit/textFieldEdit'
 import TaskMenu from './taskMenu'
 import moment from 'moment'
 import { Importance, ImportanceEn, Projects, ProjectsEn, TypeChip, TypeStatusTask, TypeStatusTaskEn } from '../../types/enum'
-import GetIcon from './getIcon'
-import { setColor } from './utils'
+import { GetIcon, GetIconEn } from './getIcon'
+import { setColor, setColorEn } from './utils'
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux'
 
@@ -116,18 +116,44 @@ const TaskCard = ({ task, onDelete, onChange }: Props) => {
       setIsEdit((prevState) => ({ ...prevState, [type]: true }))
     }
   }
+  const setColorImportance = (lang: string) => {
+    if(lang === 'ru') {
+      return taskEdit.important == Importance.immediat
+                    ? 'error'
+                    : taskEdit.important == Importance.important
+                    ? 'warning'
+                    : 'success'
+    } else {
+      return taskEdit.important == ImportanceEn.immediat
+                    ? 'error'
+                    : taskEdit.important == ImportanceEn.important
+                    ? 'warning'
+                    : 'success'
+    }
+  }
 
   return (
     <Card className={styles.card}>
       <CardContent>
         <Stack direction='row' spacing={2} justifyContent='space-between'>
-          <IconButton
+          {(lang === 'ru') ? (
+            <IconButton
             sx={{ alignSelf: 'flex-start' }}
             onClick={showMenu}
             data-name={TypeChip.status}
           >
-            <GetIcon status={taskEdit.status} />
+            <GetIcon status={taskEdit.status} /> 
           </IconButton>
+          ) : (
+            <IconButton
+            sx={{ alignSelf: 'flex-start' }}
+            onClick={showMenu}
+            data-name={TypeChip.statusEn}
+          >
+           {/* <GetIconEn status={taskEdit.status} /> */}
+          </IconButton>
+          )}
+          
           <Stack spacing={2} alignItems='stretch' sx={{ width: '90%' }}>
             {isEdit.title ? (
               <TextFieldEdit
@@ -177,17 +203,6 @@ const TaskCard = ({ task, onDelete, onChange }: Props) => {
               />
             )}
           </Stack>
-          <Stack alignItems='flex-end' spacing={2}>
-            {/* <LocalizationProvider dateAdapter={AdapterMoment} adapterLocale='ru'>
-              <MobileDateTimePicker
-                renderInput={(props) => <TextField {...props} />}
-                label={t('taskDate')}
-                onAccept={handleEdit}
-                onChange={handleDateChange}
-                value={dataValue}
-              />
-            </LocalizationProvider> */}
-          </Stack>
           <Stack justifyContent='space-between' alignItems='flex-end'>
             <IconButton color='primary' onClick={handleDelete}>
               <DeleteIcon />
@@ -210,7 +225,7 @@ const TaskCard = ({ task, onDelete, onChange }: Props) => {
                 variant='outlined'
                 label={taskEdit.project}
                 onClick={showMenu}
-                color={setColor(taskEdit.project as Projects)}
+                color={(lang === 'ru') ? setColor(taskEdit.project as Projects) : setColorEn(taskEdit.project as ProjectsEn)}
                 onDelete={() => deleteChip(TypeChip.project)}
               />
             ) : (
@@ -229,20 +244,14 @@ const TaskCard = ({ task, onDelete, onChange }: Props) => {
                 // variant='outlined'
                 label={taskEdit.important}
                 onClick={showMenu}
-                color={
-                  taskEdit.important == Importance.immediat
-                    ? 'error'
-                    : taskEdit.important == Importance.important
-                    ? 'warning'
-                    : 'success'
-                }
+                color={ setColorImportance(lang) }
                 onDelete={() => deleteChip(TypeChip.important)}
               />
             ) : (
               <Chip
                 data-name={TypeChip.important}
                 variant='outlined'
-                label='важность'
+                label={t('taskImportance')}
                 onClick={showMenu}
                 // onDelete={showMenu}
                 icon={<ControlPointIcon />}
@@ -251,12 +260,12 @@ const TaskCard = ({ task, onDelete, onChange }: Props) => {
           </Stack>
           <LocalizationProvider
             dateAdapter={AdapterMoment}
-            adapterLocale='ru'
+            adapterLocale={lang}
             sx={{ justifySelf: 'flex-start' }}
           >
             <MobileDateTimePicker
               renderInput={(props) => <TextField {...props} />}
-              label='Дата'
+              label={t('taskDate')}
               onAccept={handleEdit}
               onChange={handleDateChange}
               value={dataValue}
