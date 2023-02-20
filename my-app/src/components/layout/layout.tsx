@@ -1,5 +1,8 @@
 import { Grid } from '@mui/material'
-import { Outlet } from 'react-router-dom'
+import { useEffect } from 'react'
+import { Navigate, Outlet } from 'react-router-dom'
+import { useAppDispatch, useAppSelector } from '../../store/hooks'
+import { loginStart } from '../../store/reducers/authorization'
 import SideBar from '../sideBar/sideBar'
 import UserMenu from '../widgets/menu/userMenu'
 import Quotes from '../widgets/quotes/quotes'
@@ -8,10 +11,20 @@ import Weather from '../widgets/weather/weather'
 import styles from './layout.module.scss'
 
 const Layout = () => {
-  return (
+  const { key } = useAppSelector((state) => state.authorization)
+  const dispatch = useAppDispatch()
+  useEffect(() => {
+    if (!key) dispatch(loginStart())
+  }, [key])
+  return key ? (
     <>
       <header className={styles.header}>
-        <Grid container spacing={1} columnSpacing={{ xs: 1, sm: 2, md: 10 }} sx={{alignItems: 'center'}}>
+        <Grid
+          container
+          spacing={1}
+          columnSpacing={{ xs: 1, sm: 2, md: 10 }}
+          sx={{ alignItems: 'center' }}
+        >
           <Grid item xs={12} sm={12} md={2} lg={3}>
             <UserMenu></UserMenu>
           </Grid>
@@ -28,6 +41,8 @@ const Layout = () => {
         <Outlet />
       </main>
     </>
+  ) : (
+    <Navigate to=''></Navigate>
   )
 }
 
