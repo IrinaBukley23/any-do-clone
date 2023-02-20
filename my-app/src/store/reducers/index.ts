@@ -8,6 +8,7 @@ import projectReducer from './projectReducer'
 import { langReducer, techReducer } from './techReducer'
 import columnsReducer from './columns'
 import cardsReducer from './cards'
+import usersReducer from './users'
 
 export default combineReducers({
   authorization: authorizationReducer,
@@ -20,4 +21,5 @@ export default combineReducers({
   currentId: techReducer,
   lang: langReducer,
   cards: cardsReducer,
+  users: usersReducer
 })

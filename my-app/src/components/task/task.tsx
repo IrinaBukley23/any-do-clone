@@ -1,5 +1,5 @@
 import styles from './task.module.scss';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   FormControl,
   IconButton,
@@ -17,50 +17,62 @@ import { DialogConfirm } from '../ui/dialogConfirm';
 import DownloadDoneIcon from '@mui/icons-material/DownloadDone';
 import { useTranslation } from 'react-i18next';
 import { ICard } from '../../api/CardApi';
-import { deleteCard, updateCardDescription, updateCardTitle } from '../../store/reducers/cards';
-import { useAppDispatch } from '../../store/hooks';
+import { deleteCard, updateCard, updateCardDescription, updateCardTitle } from '../../store/reducers/cards';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { loadUsers, userSelectors } from '../../store/reducers/users';
 
 interface IProps {
   card: ICard;
 }
 
-const users = [
-  {
-    name: 'Ирина',
-    email: 'irina@mail.ru',
-  },
-  {
-    name: 'Полина',
-    email: 'polina@mail.ru',
-  },
-  {
-    name: 'Владислава',
-    email: 'vlada@mail.ru',
-  },
-]
-
 const Task = (props: IProps) => {
-    const [openConfirm, setOpenConfirm] = useState(false);
-    const { t, } = useTranslation();
-    const card = props.card;
-    const { title: taskTitle, id: taskId, description: taskDescr } = card;
-    const dispatch = useAppDispatch();
-  
-    const [isEditTitle, setIsEditTitle] = useState(false);
-    const [isEditDescr, setIsEditDescr] = useState(false);
-    const [correctedTitle, setCorrectedTitle] = useState(taskTitle);
-    const [correctedDescr, setCorrectedDescr] = useState(taskDescr);
+  const card = props.card;
+  const { title: taskTitle, id: taskId, description: taskDescr, participant} = card;
+  const { t, } = useTranslation();
 
-  const [user, setUser] = React.useState('')
+  const [openConfirm, setOpenConfirm] = useState(false);
+  const [isEditTitle, setIsEditTitle] = useState(false);
+  const [isEditDescr, setIsEditDescr] = useState(false);
+  const [correctedTitle, setCorrectedTitle] = useState(taskTitle);
+  const [correctedDescr, setCorrectedDescr] = useState(taskDescr);
+  const [user, setUser] = useState(participant);
+  const [isFirstEffect, setIsFirstEffect] = useState(true);
+
+  const dispatch = useAppDispatch();
+
+  const users = useAppSelector((state) => userSelectors.selectAll(state.users));
+
+  useEffect(() => {
+    if (isFirstEffect) {
+      setIsFirstEffect(false);
+      dispatch(loadUsers());
+    }
+  });
 
   const handleChangeSelect = (event: SelectChangeEvent) => {
-    setUser(event.target.value as string)
-  }
+    setUser(event.target.value as string);
+    dispatch(updateCard({
+      id: taskId,
+      cardUpdate: { ...card, participant: event.target.value }
+    }));
+  };
+
+  const handleEditTitle = () => {
+    setIsEditTitle(true);
+  };
+
+  const handleEditDescr = () => {
+    setIsEditDescr(true);
+  };
+  
+  const handleCorrectTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setCorrectedTitle(e.target.value);
+  };
 
   const handleCorrectDescr = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCorrectedDescr(e.target.value);
   };
-
+  
   const handleSaveTitle = async () => {
     await dispatch(updateCardTitle(taskId, correctedTitle));
 
@@ -79,27 +91,15 @@ const Task = (props: IProps) => {
 
   const handleRemove = () => {
     dispatch(deleteCard(taskId))
-    setOpenConfirm(false)
+    setOpenConfirm(false);
   };
 
   const handleOpenConfirm = () => {
-    setOpenConfirm(true)
-  };
-
-  const handleEditTitle = () => {
-    setIsEditTitle(true)
-  };
-
-  const handleCorrectTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setCorrectedTitle(e.target.value)
+    setOpenConfirm(true);
   };
 
   const handleCloseConfirm = () => {
     setOpenConfirm(false)
-  };
-
-  const handleEditDescr = () => {
-    setIsEditDescr(true)
   };
 
   const handleCancelDescr = () => {
@@ -156,10 +156,10 @@ const Task = (props: IProps) => {
             onChange={handleCorrectDescr} 
             sx={{width: '160px', fontSize: '14px', textAlign: 'left',}}
           />
-          <IconButton color='success' onClick={handleSaveTitle}>
+          <IconButton color='success' onClick={handleSaveDescr}>
             <DownloadDoneIcon />
           </IconButton>
-          <IconButton color='error' onClick={handleCancelTitle}>
+          <IconButton color='error' onClick={handleCancelDescr}>
             <CancelIcon />
           </IconButton>
         </div>
