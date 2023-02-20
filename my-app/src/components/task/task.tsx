@@ -1,5 +1,5 @@
-import './task.scss'
-import React, { useState } from 'react'
+import styles from './task.module.scss';
+import React, { useState } from 'react';
 import {
   FormControl,
   IconButton,
@@ -10,18 +10,18 @@ import {
   TextField,
   Tooltip,
   Typography,
-} from '@mui/material'
-import { TaskItemType } from '../../types/types'
-import { useDispatch } from 'react-redux'
-import DeleteIcon from '@mui/icons-material/Delete'
-import { editTaskDescr, editTaskTitle, setRemoveTask } from '../../store/actions/actionCreators'
-import CancelIcon from '@mui/icons-material/Cancel'
-import { DialogConfirm } from '../ui/dialogConfirm'
-import DownloadDoneIcon from '@mui/icons-material/DownloadDone'
-import { useTranslation } from 'react-i18next'
+} from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
+import CancelIcon from '@mui/icons-material/Cancel';
+import { DialogConfirm } from '../ui/dialogConfirm';
+import DownloadDoneIcon from '@mui/icons-material/DownloadDone';
+import { useTranslation } from 'react-i18next';
+import { ICard } from '../../api/CardApi';
+import { deleteCard, updateCardDescription, updateCardTitle } from '../../store/reducers/cards';
+import { useAppDispatch } from '../../store/hooks';
 
 interface IProps {
-    taskItem: TaskItemType;
+  card: ICard;
 }
 
 const users = [
@@ -40,14 +40,16 @@ const users = [
 ]
 
 const Task = (props: IProps) => {
-  const [openConfirm, setOpenConfirm] = useState(false)
-  const { taskTitle, taskId, taskDescr } = props.taskItem
-  const dispatch = useDispatch()
-  const { t } = useTranslation()
-  const [isEditTitle, setIsEditTitle] = useState(false)
-  const [isEditDescr, setIsEditDescr] = useState(false)
-  const [correctedTitle, setCorrectedTitle] = useState(taskTitle)
-  const [correctedDescr, setCorrectedDescr] = useState(taskDescr)
+    const [openConfirm, setOpenConfirm] = useState(false);
+    const { t, } = useTranslation();
+    const card = props.card;
+    const { title: taskTitle, id: taskId, description: taskDescr } = card;
+    const dispatch = useAppDispatch();
+  
+    const [isEditTitle, setIsEditTitle] = useState(false);
+    const [isEditDescr, setIsEditDescr] = useState(false);
+    const [correctedTitle, setCorrectedTitle] = useState(taskTitle);
+    const [correctedDescr, setCorrectedDescr] = useState(taskDescr);
 
   const [user, setUser] = React.useState('')
 
@@ -55,87 +57,94 @@ const Task = (props: IProps) => {
     setUser(event.target.value as string)
   }
 
-  const handleEditTitle = () => {
-    setIsEditTitle(true)
-  }
-  const handleEditDescr = () => {
-    setIsEditDescr(true)
-  }
-
-  const handleCorrectTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setCorrectedTitle(e.target.value)
-  }
-
   const handleCorrectDescr = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setCorrectedDescr(e.target.value)
-  }
+    setCorrectedDescr(e.target.value);
+  };
 
-  const handleSaveTitle = () => {
-    setIsEditTitle(false)
-    dispatch(editTaskTitle(taskId, correctedTitle))
-  }
+  const handleSaveTitle = async () => {
+    await dispatch(updateCardTitle(taskId, correctedTitle));
 
-  const handleSaveDescr = () => {
-    setIsEditDescr(false)
-    dispatch(editTaskDescr(taskId, correctedDescr))
-  }
+    setIsEditTitle(false);
+  };
+
+  const handleSaveDescr = async () => {
+    await dispatch(updateCardDescription(taskId, correctedDescr))
+
+    setIsEditDescr(false);
+  };
 
   const handleCancelTitle = () => {
-    setIsEditTitle(false)
-  }
-
-  const handleCancelDescr = () => {
-    setIsEditDescr(false)
-  }
+    setIsEditTitle(false);
+  };
 
   const handleRemove = () => {
-    dispatch(setRemoveTask(taskId))
+    dispatch(deleteCard(taskId))
     setOpenConfirm(false)
-  }
+  };
 
   const handleOpenConfirm = () => {
     setOpenConfirm(true)
-  }
+  };
+
+  const handleEditTitle = () => {
+    setIsEditTitle(true)
+  };
+
+  const handleCorrectTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setCorrectedTitle(e.target.value)
+  };
+
   const handleCloseConfirm = () => {
     setOpenConfirm(false)
-  }
+  };
+
+  const handleEditDescr = () => {
+    setIsEditDescr(true)
+  };
+
+  const handleCancelDescr = () => {
+    setIsEditDescr(false)
+  };
 
   return (
-    <div id={taskId} key={taskId} className='task'>
-      {!isEditTitle && (
-        <Typography variant='h5' className='task__title' onDoubleClick={handleEditTitle}>
+    <div id={String(taskId)} key={taskId} className={styles.task}>
+      {!isEditTitle &&
+        <Typography
+          variant='h5'
+          className={styles.task__title}
+          onDoubleClick={handleEditTitle}
+        >
           {taskTitle}
         </Typography>
-      )}
+      }
       {isEditTitle && (
         <div className='task__edit'>
-          <TextField
+          <TextField 
             id='outlined-basic'
             label=''
             variant='outlined'
             placeholder=''
             value={correctedTitle}
             onChange={handleCorrectTitle}
-            sx={{ width: '160px' }}
+            sx={{width: '160px'}}
           />
           <IconButton color='success' onClick={handleSaveTitle}>
             <DownloadDoneIcon />
           </IconButton>
-          <CancelIcon
-            onClick={handleCancelTitle}
-            sx={{ color: '#d3586c', ml: '10px' }}
-          ></CancelIcon>
+          <IconButton color='error' onClick={handleCancelTitle}>
+            <CancelIcon />
+          </IconButton>
         </div>
       )}
-      {!isEditDescr && (
+      {!isEditDescr &&
         <Typography
           variant='h5'
           onDoubleClick={handleEditDescr}
-          sx={{ fontSize: '14px', textAlign: 'left', pl: '10px', mb: '15px', mt: '15px' }}
+          sx={{fontSize: '14px', textAlign: 'left', pl: '10px', mb: '15px', mt: '15px'}}
         >
           {taskDescr}
         </Typography>
-      )}
+      }
       {isEditDescr && (
         <div className='task__edit'>
           <TextField
@@ -143,17 +152,16 @@ const Task = (props: IProps) => {
             label=''
             variant='outlined'
             placeholder=''
-            value={correctedDescr}
-            onChange={handleCorrectDescr}
-            sx={{ width: '160px', fontSize: '14px', textAlign: 'left' }}
+            value={correctedDescr} 
+            onChange={handleCorrectDescr} 
+            sx={{width: '160px', fontSize: '14px', textAlign: 'left',}}
           />
-          <IconButton color='success' onClick={handleSaveDescr}>
+          <IconButton color='success' onClick={handleSaveTitle}>
             <DownloadDoneIcon />
           </IconButton>
-          <CancelIcon
-            onClick={handleCancelDescr}
-            sx={{ color: '#d3586c', ml: '10px' }}
-          ></CancelIcon>
+          <IconButton color='error' onClick={handleCancelTitle}>
+            <CancelIcon />
+          </IconButton>
         </div>
       )}
       <FormControl fullWidth>
@@ -164,12 +172,10 @@ const Task = (props: IProps) => {
           value={user}
           label=''
           onChange={handleChangeSelect}
-          sx={{ width: '80%', fontSize: '14px', textAlign: 'left' }}
+          sx={{width: '80%', fontSize: '14px', textAlign: 'left'}}
         >
           {users.map((user, i) => (
-            <MenuItem key={i} value={user.name}>
-              {user.name} ({user.email})
-            </MenuItem>
+            <MenuItem key={i} value={user.name}>{user.name} ({user.email})</MenuItem>
           ))}
         </Select>
       </FormControl>
@@ -177,8 +183,7 @@ const Task = (props: IProps) => {
         <Tooltip title={t('taskDel')}>
           <IconButton
             onClick={handleOpenConfirm}
-            sx={{ position: 'absolute', bottom: '0', right: '0', color: '#ab45fa' }}
-          >
+            sx={{position: 'absolute', bottom: '0', right: '0' , color: '#ab45fa'}}>
             <DeleteIcon />
           </IconButton>
         </Tooltip>

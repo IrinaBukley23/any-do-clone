@@ -7,6 +7,7 @@ import { taskReducer } from './taskReducer'
 import projectReducer from './projectReducer'
 import { langReducer, techReducer } from './techReducer'
 import columnsReducer from './columns'
+import cardsReducer from './cards'
 
 export default combineReducers({
   authorization: authorizationReducer,
@@ -18,4 +19,5 @@ export default combineReducers({
   task: taskReducer,
   currentId: techReducer,
   lang: langReducer,
+  cards: cardsReducer,
 })

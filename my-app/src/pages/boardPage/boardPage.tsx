@@ -1,16 +1,16 @@
 import styles from './boardPage.module.scss';
 import React, { useEffect, useState } from 'react';
 import { Button, TextField, Typography } from '@mui/material';
-import { ITask, State, TaskItemType } from '../../types/types';
 import Column from '../../components/column/column';
-import { useSelector } from 'react-redux';
-import { setColumnTitle, setTaskList, sortColumnList } from '../../store/actions/actionCreators';
+import { setColumnTitle, sortColumnList } from '../../store/actions/actionCreators';
 import { minNumberOfLetters } from '../../types/constants';
 import { useTranslation } from 'react-i18next';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { columnSelectors, createColumn, loadColumns } from '../../store/reducers/columns';
 import FormControl from '@mui/material/FormControl';
 import { IColumn } from '../../api/ColumnApi';
+import { insertCardToColumn } from '../../store/reducers/cards';
+import { ICard } from '../../api/CardApi';
 
 const BOARD_REFRESH_INTERVAL = 5000;
 
@@ -20,7 +20,6 @@ const BoardPage = () => {
     const columns = useAppSelector((state) => columnSelectors.selectAll(state.columns));
 
     const [isCreate, setIsCreate] = useState(false);
-    const { taskList } = useSelector((state: State) => state.task);
 
     const { columnTitle } = useAppSelector((state) => state.column);
     const { columnList } = useAppSelector((state) => state.column);
@@ -29,7 +28,7 @@ const BoardPage = () => {
     const { t, } = useTranslation();
   
     const [currentColumn, setCurrentColumn] = useState<IColumn | null>(null);
-    const [currentTask, setCurrentTask] = useState<TaskItemType | undefined>();
+    const [currentTask, setCurrentTask] = useState<ICard | undefined>();
     const [isFirstEffect, setIsFirstEffect] = useState(true);
     useEffect(() => {
       if (isFirstEffect) {
@@ -79,27 +78,16 @@ const BoardPage = () => {
     }
 
     function dragEndHandler(e: React.DragEvent<HTMLDivElement>): void {
-     (e.target as HTMLDivElement).style.background = ''
+      (e.target as HTMLDivElement).style.background = ''
     }
 
     function dropHandler(e: React.DragEvent<HTMLDivElement>, column: IColumn): void {
       e.preventDefault();
-      if((e.target as HTMLElement).classList.contains('task__title') || (e.target as HTMLElement).classList.contains('column__wrapper')) {
-        if(currentTask && currentTask.currentColumnId === column.id) return;
-        if(currentTask && currentTask.currentColumnId !== column.id) {
-          const newTaskList = [...taskList].filter((task) => task.taskId !== currentTask.taskId)
-          dispatch(
-            setTaskList([...newTaskList,
-              {...currentTask,
-                currentColumnId: column.id,
-              },
-            ])
-          );
-          console.log(e.target);
-          (e.target as HTMLDivElement).style.background = ''
-          return;
-        }
-      } 
+      (e.target as HTMLDivElement).style.background = '';
+      if (currentTask !== undefined) {
+        dispatch(insertCardToColumn(currentTask, column.id))
+      }
+
       if((e.target as HTMLElement).classList.contains('column__title') && currentColumn !== null) {
         dispatch(
           sortColumnList([...columnList], column, currentColumn)
@@ -122,7 +110,12 @@ const BoardPage = () => {
                 onDrop={(e: React.DragEvent<HTMLDivElement>) => dropHandler(e, column)}
                 draggable={true}
               >
-                <Column key={column.id} columnItem={column} taskOnDrag={currentTask} onTaskOnDragChange={setCurrentTask} />
+                <Column
+                  key={column.id}
+                  columnItem={column}
+                  draggedCard={currentTask}
+                  onDragCard={setCurrentTask}
+                />
               </section>
             ) )}
             {isCreate ? (

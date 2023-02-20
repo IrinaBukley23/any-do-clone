@@ -1,29 +1,27 @@
 import { Button, Grid, TextField, Typography } from '@mui/material'
 import styles from '../loginForm/form.module.scss';
-import { useDispatch, useSelector } from 'react-redux';
 import { AnyAction } from 'redux';
-import { setTaskDescr, setTaskList, setTaskTitle } from '../../store/actions/actionCreators';
-import { State } from '../../types/types';
+import { setTaskDescr, setTaskTitle } from '../../store/actions/actionCreators';
 import { useState } from 'react';
-import nextId from 'react-id-generator';
 import { minNumberOfLetters } from '../../types/constants';
 import { useTranslation } from 'react-i18next';
-import { useAppSelector } from '../../store/hooks';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { createCard } from '../../store/reducers/cards';
+import { IColumn } from '../../api/ColumnApi';
 
 interface IProps {
+  column: IColumn
   handleClose: () => void;
 }
 
-let startOrderTask = 0;
+const TaskForm = ({column, handleClose }: IProps) => {
+  const { taskTitle, taskDescr } = useAppSelector(state => state.task);
+  const dispatch = useAppDispatch();
 
-const TaskForm = ({ handleClose }: IProps) => {
-  const { taskList, taskTitle, taskDescr } = useSelector((state: State) => state.task);
-  const { currentId } = useAppSelector((state) => state.currentId);
-  const dispatch = useDispatch();
   const [isError, setIsError] = useState(false);
   const [isErrorDescr, setIsErrorDescr] = useState(false);
   const [isValidate, setIsValidate] = useState(true);
-  const myId = nextId();
+
   const { t, } = useTranslation();
 
   const handleChange = (
@@ -37,21 +35,12 @@ const TaskForm = ({ handleClose }: IProps) => {
   };
 
   const handleTaskSubmit = () => {
-    startOrderTask++;
-    dispatch(
-      setTaskList([
-        ...taskList,
-        {
-          taskId: myId,
-          taskTitle: taskTitle,
-          taskDescr: taskDescr,
-          taskOrder: startOrderTask,
-          currentColumnId: currentId,
-        },
-      ])
-    );
-    dispatch(setTaskTitle(''));
-    dispatch(setTaskDescr(''));
+    dispatch(createCard({
+      columnId: column.id,
+      title: taskTitle,
+      description: taskDescr,
+      order: 0
+    }))
     handleClose();
   };
 

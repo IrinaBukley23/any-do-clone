@@ -1,37 +1,64 @@
 import styles from './column.module.scss';
-import React, { useState } from 'react'
-import { Button, IconButton, TextField, Tooltip, Typography } from '@mui/material'
-import { TaskItemType } from '../../types/types'
-import DeleteIcon from '@mui/icons-material/Delete'
-import { setCurrentColumnId, setCurrentId, sortTaskList } from '../../store/actions/actionCreators'
-import CancelIcon from '@mui/icons-material/Cancel'
-import Task from '../task/task'
-import { DialogConfirm } from '../ui/dialogConfirm'
-import ResponsiveDialog from '../ui/openDialog'
+import React, { useEffect, useState } from 'react';
+import { Button, IconButton, TextField, Tooltip, Typography } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { setCurrentId } from '../../store/actions/actionCreators';
+import CancelIcon from '@mui/icons-material/Cancel';
+import Task from '../task/task';
+import { DialogConfirm } from '../ui/dialogConfirm';
+import ResponsiveDialog from '../ui/openDialog';
 import DownloadDoneIcon from '@mui/icons-material/DownloadDone'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { IColumn } from '../../api/ColumnApi';
 import { deleteColumn, updateColumnTitle } from '../../store/reducers/columns';
+import { cardSelectors, insertCardBefore, loadCards } from '../../store/reducers/cards';
+import { ICard } from '../../api/CardApi';
+
 interface IProps {
-    columnItem: IColumn;
-    taskOnDrag: TaskItemType | undefined;
-    onTaskOnDragChange: (task: TaskItemType | undefined) => void
-  }
+  columnItem: IColumn;
+  draggedCard: ICard | undefined;
+  onDragCard: (card: ICard | undefined) => void
+}
+
+const REFRESH_INTERVAL = 5000;
 
 const Column = (props: IProps) => {
     const dispatch = useAppDispatch();
 
-    const { title: columnTitle, id: columnId } = props.columnItem;
+    const column = props.columnItem;
+    const { title: columnTitle, id: columnId } = column;
 
-    const { taskList } = useAppSelector((state) => state.task);
-    const taskQuantity = taskList.length;
+    const cards = useAppSelector(
+        (state) => cardSelectors
+            .selectAll(state.cards)
+            .filter((card) => card.columnId === column.id)
+    );
+
+    const taskQuantity = cards.length;
 
     const [open, setOpen] = useState(false);
     const [isTaskModal, setIsTaskModal] = useState(false);
     const { t, } = useTranslation();
     const [isEdit, setIsEdit] = useState(false);
     const [correctedTitle, setCorrectedTitle] = useState(columnTitle);
+
+    const [isFirstEffect, setIsFirstEffect] = useState(true);
+    
+    useEffect(() => {
+      if (isFirstEffect) {
+        setIsFirstEffect(false);
+        dispatch(loadCards());
+      }
+
+      const intervalId = setInterval(() => {
+        dispatch(loadCards());
+      }, REFRESH_INTERVAL)
+
+      return () => {
+        clearInterval(intervalId);
+      }
+    });
 
     const handleEdit = () => {
       setIsEdit(true);
@@ -59,7 +86,7 @@ const Column = (props: IProps) => {
         setOpen(false);
     };
 
-    const handleTaskFormOpen = (e: React.SyntheticEvent) => {
+    const handleTaskFormOpen = () => {
         dispatch(setCurrentId(columnId));
         setIsTaskModal(true);
     };
@@ -73,44 +100,25 @@ const Column = (props: IProps) => {
         setOpen(false);
     };
 
-    function dragStartHandler(e: React.DragEvent<HTMLDivElement>, task: TaskItemType): void {
-        props.onTaskOnDragChange(task);
-        // setCurrentTask(task);
-     }
- 
-     function dragOverHandler(e: React.DragEvent<HTMLDivElement>): void {
-         e.preventDefault();
-        (e.target as HTMLDivElement).style.boxShadow = '0 2 px 3px gray'
-     }
- 
-     function dragEndHandler(e: React.DragEvent<HTMLDivElement>): void {
-      (e.target as HTMLDivElement).style.boxShadow = 'none'
-     }
- 
-     function dropHandler(e: React.DragEvent<HTMLDivElement>, task: TaskItemType): void {
-        if(!props.taskOnDrag) return;
-         e.preventDefault();
-         if(task.currentColumnId === props.taskOnDrag.currentColumnId) {
-            dispatch(
-                sortTaskList([...taskList], task, props.taskOnDrag)
-            );
-         } else {
-            if (task.currentColumnId !== undefined) {
-                dispatch(
-                    setCurrentColumnId(task.currentColumnId)
-                );
-            }
-            dispatch(
-                sortTaskList([...taskList], task, {...props.taskOnDrag, currentColumnId: task.currentColumnId})
-            );
+    function dragStartHandler(e: React.DragEvent<HTMLDivElement>, card: ICard): void {
+        props.onDragCard(card);
+    }
 
-         }
-        props.onTaskOnDragChange(undefined);
-       (e.target as HTMLDivElement).style.boxShadow = 'none'
-     }
- 
-     const sortTasks = (task1: TaskItemType, task2: TaskItemType) => task1.taskOrder - task2.taskOrder;
- 
+    function dragOverHandler(e: React.DragEvent<HTMLDivElement>): void {
+        e.preventDefault();
+        (e.target as HTMLDivElement).style.boxShadow = '0 2 px 3px gray'
+    }
+
+    function dragEndHandler(e: React.DragEvent<HTMLDivElement>): void {
+        (e.target as HTMLDivElement).style.boxShadow = '0 2 px 3px gray'
+    }
+
+    function dropHandler(e: React.DragEvent<HTMLDivElement>, card: ICard): void {
+        if(!props.draggedCard) return;
+        e.preventDefault();
+        dispatch(insertCardBefore(props.draggedCard, card))
+        props.onDragCard(undefined);
+    }
 
     return (
         <div id={String(columnId)} className={styles.column}>
@@ -150,19 +158,18 @@ const Column = (props: IProps) => {
                     handleRemove={handleRemove}
                 />
             </div>
-            <div className="column__wrapper"
-                >
-                {[...taskList]?.filter(task => task.currentColumnId === columnId).sort(sortTasks).map((task, i) => (
+            <div className={styles.column__wrapper}>
+                {cards.map((card) => (
                     <div
-                        key={i} 
-                        onDragStart={(e: React.DragEvent<HTMLDivElement>) => dragStartHandler(e, task)}
+                        key={card.id}
+                        onDragStart={(e: React.DragEvent<HTMLDivElement>) => dragStartHandler(e, card)}
                         onDragLeave={(e: React.DragEvent<HTMLDivElement>) => dragEndHandler(e)}
                         onDragEnd={(e: React.DragEvent<HTMLDivElement>) => dragEndHandler(e)}
                         onDragOver={(e: React.DragEvent<HTMLDivElement>) => dragOverHandler(e)}
-                        onDrop={(e: React.DragEvent<HTMLDivElement>) => dropHandler(e, task)}
+                        onDrop={(e: React.DragEvent<HTMLDivElement>) => dropHandler(e, card)}
                         draggable={true}
                     >
-                        <Task key={i} taskItem={task}/>
+                        <Task card={card}/>
                     </div>
                   ) )}
                 </div>
@@ -170,6 +177,7 @@ const Column = (props: IProps) => {
                 {t('columnAddTask')}
             </Button>
             <ResponsiveDialog
+                column={column}
                 isOpen={isTaskModal}
                 handleClose={handleTaskFormClose}
             />
