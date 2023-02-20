@@ -142,15 +142,15 @@ const TaskCard = ({ task, onDelete, onChange }: Props) => {
             onClick={showMenu}
             data-name={TypeChip.status}
           >
-            <GetIcon status={taskEdit.status} /> 
+            <GetIcon status={taskEdit.status as TypeStatusTask} /> 
           </IconButton>
           ) : (
             <IconButton
             sx={{ alignSelf: 'flex-start' }}
             onClick={showMenu}
-            data-name={TypeChip.statusEn}
+            data-name={TypeChip.status}
           >
-           {/* <GetIconEn status={taskEdit.status} /> */}
+            <GetIconEn status={taskEdit.status as TypeStatusTaskEn} />
           </IconButton>
           )}
           

@@ -77,7 +77,7 @@ export type ICalendar = {
 export interface ITaskCalendar {
   id: number
   dateCreate: string
-  status: TypeStatusTask
+  status: TypeStatusTask | TypeStatusTaskEn
   dateStart?: string
   dateEnd?: string
   title: string

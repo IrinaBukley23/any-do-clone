@@ -1,5 +1,3 @@
-import { withTranslation } from 'react-i18next';
-
 export enum Actions {
   SET_COLUMN_ID = 'SET_COLUMN_ID',
   SET_COLUMN_TITLE = 'SET_COLUMN_TITLE',
@@ -66,7 +64,6 @@ export enum TypeChip {
   description = 'description',
   title = 'title',
   status = 'status',
-  statusEn = 'statusEn',
 }
 
 export enum TypeStatusTask {

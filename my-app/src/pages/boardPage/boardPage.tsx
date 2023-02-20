@@ -10,6 +10,7 @@ import nextId from 'react-id-generator';
 import { minNumberOfLetters } from '../../types/constants';
 import { useTranslation } from 'react-i18next';
 
+let startOrder = 0;
 const BoardPage = () => {
     const [isCreate, setIsCreate] = useState(false);
     const { taskList } = useSelector((state: State) => state.task);
@@ -38,13 +39,14 @@ const BoardPage = () => {
     };
 
     const handleSaveColumn = () => {
+      startOrder++;
       setIsCreate(false);
       setCreated(true);
       dispatch(
         setColumnList([
           ...columnList,
           {
-            columnOrder: columnList.length + 1,
+            columnOrder: startOrder,
             columnId: myId,
             columnTitle: columnTitle,
           },
