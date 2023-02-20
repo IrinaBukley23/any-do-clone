@@ -1,18 +1,17 @@
 import styles from './boardPage.module.scss';
 import React, { useState } from 'react';
 import { Button, TextField, Typography } from '@mui/material';
-import { ColumnItemType, State } from '../../types/types';
+import { ColumnItemType, ITask, State } from '../../types/types';
 import Column from '../../components/column/column';
 import { AnyAction } from 'redux';
 import { useDispatch, useSelector } from 'react-redux';
-import { setColumnList, setColumnTitle, sortColumnList } from '../../store/actions/actionCreators';
+import { setColumnList, setColumnTitle, sortColumnList, setTaskList } from '../../store/actions/actionCreators';
 import nextId from 'react-id-generator';
 import { minNumberOfLetters } from '../../types/constants';
 
-let startOrder = 0;
-
 const BoardPage = () => {
     const [isCreate, setIsCreate] = useState(false);
+    const { taskList } = useSelector((state: State) => state.task);
     const [, setCreated] = useState(false);
     const { columnTitle } = useSelector((state: State) => state.column);
     const { columnList } = useSelector((state: State) => state.column);
@@ -25,7 +24,8 @@ const BoardPage = () => {
       columnTitle: '',
       columnOrder: 0
     });
-  
+
+    const [currentTask, setCurrentTask] = useState<ITask | undefined>();
     const handleChangeTitle = (
       e: React.ChangeEvent<HTMLInputElement>,
       callback: (value: string) => AnyAction
@@ -36,14 +36,13 @@ const BoardPage = () => {
     };
 
     const handleSaveColumn = () => {
-      startOrder++;
       setIsCreate(false);
       setCreated(true);
       dispatch(
         setColumnList([
           ...columnList,
           {
-            columnOrder: startOrder,
+            columnOrder: columnList.length + 1,
             columnId: myId,
             columnTitle: columnTitle,
           },
@@ -71,11 +70,24 @@ const BoardPage = () => {
     }
 
     function dropHandler(e: React.DragEvent<HTMLDivElement>, column: ColumnItemType): void {
-        e.preventDefault();
-       dispatch(
-        sortColumnList([...columnList], column, currentColumn)
-       );
-      (e.target as HTMLDivElement).style.background = ''
+      e.preventDefault();
+      (e.target as HTMLDivElement).style.background = '';
+      if(currentTask && currentTask.currentColumnId === column.columnId) return;
+      if(currentTask && currentTask.currentColumnId !== column.columnId) {
+        const newTaskList = [...taskList].filter((task) => task.taskId !== currentTask.taskId)
+        dispatch(
+          setTaskList([...newTaskList,
+            {...currentTask,
+              currentColumnId: column.columnId,
+            },
+          ])
+        );
+        (e.target as HTMLDivElement).style.background = ''
+        return;
+      }
+      dispatch(
+      sortColumnList([...columnList], column, currentColumn)
+      );
     }
 
     const sortColumns = (column1: ColumnItemType, column2: ColumnItemType) => column1.columnOrder - column2.columnOrder;
@@ -93,7 +105,7 @@ const BoardPage = () => {
                   onDrop={(e: React.DragEvent<HTMLDivElement>) => dropHandler(e, column)}
                   draggable={true}
                 >
-                  <Column key={i} columnItem={column} />
+                  <Column key={i} columnItem={column} taskOnDrag={currentTask} onTaskOnDragChange={setCurrentTask} />
                 </section>
              ) )}
               {isCreate && (
@@ -104,6 +116,7 @@ const BoardPage = () => {
                       id="filled-basic" 
                       label="Filled" 
                       variant="filled" 
+                      placeholder=''
                       sx={{height: '40px', ml: '15px', minWidth: '210px'}} 
                   />
                   {isError && <Typography variant="h5" component="p" sx={{fontSize: '12px', textAlign: 'left', color: 'red', mt: '15px', ml: '15px'}}>Необходимо минимум три символа</Typography>}

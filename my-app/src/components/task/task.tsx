@@ -106,7 +106,9 @@ const Task = (props: IProps) => {
             {!isEditTitle && <Typography variant="h5" className={styles.task__title} onClick={handleEditTitle}>{taskTitle}</Typography>}
             {isEditTitle && (
                 <div className={styles.task__edit}>
-                    <TextField id="outlined-basic" label="Outlined" variant="outlined" value={correctedTitle} onChange={handleCorrectTitle} sx={{width: '160px'}} />
+                    <TextField id="outlined-basic" label="Outlined" variant="outlined" value={correctedTitle} onChange={handleCorrectTitle} sx={{width: '160px'}} 
+                    placeholder=''
+                    />
                     <IconButton color='success' onClick={handleSaveTitle}>
                         <DownloadDoneIcon />
                     </IconButton>
@@ -116,7 +118,14 @@ const Task = (props: IProps) => {
             {!isEditDescr && <Typography variant="h5" onClick={handleEditDescr}  sx={{fontSize: '14px', textAlign: 'left', pl: '10px', mb: '15px', mt: '15px'}}>{taskDescr}</Typography>}
             {isEditDescr && (
                 <div className={styles.task__edit}>
-                    <TextField id="outlined-basic" label="Outlined" variant="outlined" value={correctedDescr} onChange={handleCorrectDescr} sx={{width: '160px', fontSize: '14px', textAlign: 'left',}} />
+                    <TextField 
+                      id="outlined-basic" 
+                      label="Outlined" 
+                      variant="outlined" 
+                      placeholder=''
+                      value={correctedDescr} 
+                      onChange={handleCorrectDescr} 
+                      sx={{width: '160px', fontSize: '14px', textAlign: 'left',}} />
                     <IconButton color='success' onClick={handleSaveDescr}>
                         <DownloadDoneIcon />
                     </IconButton>

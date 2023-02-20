@@ -77,6 +77,7 @@ const DataRow = ({ idRow, time, task, isEven, changeTask }: Props) => {
                 <TextField
                   key={`${t.id}t`}
                   autoFocus
+                  placeholder=''
                   sx={{ width: '100%' }}
                   onChange={handleChange}
                   onBlur={handleBlur}
