@@ -28,7 +28,7 @@ const TasksBlock = () => {
   const dispatch = useAppDispatch()
   const handleKey = (e: React.KeyboardEvent<HTMLDivElement>) => {
     if (e.key === 'Enter') {
-      if (taskTitle) dispatch(createTask(taskTitle, dateCurrent, key))
+      // if (taskTitle) dispatch(createTask(taskTitle, dateCurrent, key))
       setTaskTitle('')
     }
   }
