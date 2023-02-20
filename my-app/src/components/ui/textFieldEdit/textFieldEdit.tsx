@@ -24,15 +24,15 @@ const TextFieldEdit = ({ dataName, label, value, onAprove, onCancel }: Props) =>
     if (e.currentTarget.dataset.name) onCancel(e.currentTarget.dataset.name)
   }
   return (
-    <Stack direction='row' spacing={2} sx={{ width: '100%' }}>
+    <Stack direction='row' alignItems='flex-end' spacing={2} sx={{ width: '100%' }}>
       <TextField 
         fullWidth 
+        multiline 
+        placeholder=''
         label={label} 
         onChange={handleChange} 
-        placeholder=''
         value={text}
-        >
-        </TextField>
+        ></TextField>
       <IconButton data-name={dataName} color='success' onClick={handleAprove}>
         <DownloadDoneIcon />
       </IconButton>
