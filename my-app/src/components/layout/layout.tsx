@@ -23,8 +23,8 @@ const Layout = () => {
       <header className={styles.header}>
         <Grid container spacing={1} columnSpacing={{ xs: 1, sm: 2, md: 10 }} sx={{alignItems: 'center'}}>
           <Grid item xs={12} sm={12} md={2} lg={3} sx={{display: 'flex'}}>
-            <Button onClick={() => changeLanguage('en')}>EN</Button>
-            <Button onClick={() => changeLanguage('ru')}>RU</Button>
+            <Button color='primary' variant='contained' onClick={() => changeLanguage('en')} sx={{ mr: 2 }}>EN</Button>
+            <Button color='primary' variant='contained' onClick={() => changeLanguage('ru')}>RU</Button>
             <UserMenu></UserMenu>
           </Grid>
           <Grid item xs={12} sm={6} md={5} lg={5}>

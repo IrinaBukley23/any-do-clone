@@ -1,4 +1,13 @@
 .header__quote{
   font-style: italic;
-  font-size: 0.9em;
+  font-size: 1.1em;
+  font-weight: 500;
+  p {
+    margin: 0;
+  }
+  span {
+    text-align: right;
+    display: block;
+    font-weight: 400;
+  }
 }

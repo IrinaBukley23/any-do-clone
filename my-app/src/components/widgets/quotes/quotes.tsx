@@ -12,26 +12,25 @@ interface IQuote {
 }
 
 const Quotes = () => {
-
   const [quote, setQuote] = useState<IQuote | null>(null);
   const { lang } = useSelector((state: State) => state.lang);
-
   useEffect(() => {
-    getRandomQuote();
+    getRandomQuote(lang);
   }, [lang])
 
-  function getRandomQuote() {
+  function getRandomQuote(lang: string) {
     const randomEn = quotesEn[Math.floor(Math.random() * quotesEn.length)];
     const randomRu = quotesRu[Math.floor(Math.random() * quotesRu.length)];
    (lang === 'ru') ? setQuote(randomRu) : setQuote(randomEn);
   }
   
   if (quote === null) {
-    getRandomQuote()
+    getRandomQuote(lang)
   }
   return (
     <div className={styles.header__quote}>
-      {quote && `"${quote.text}" ${quote.author}`}
+      <p>{quote && `"${quote.text}"`}</p>
+      <span>{quote && `${quote.author}`}</span>
     </div>
   )
 }

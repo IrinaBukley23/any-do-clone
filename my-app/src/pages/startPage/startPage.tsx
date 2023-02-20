@@ -21,7 +21,7 @@ const StartPage = () => {
   return (
     <>
     <div className={styles.localization}>
-        <Button color='primary' variant='contained' onClick={() => changeLanguage('en')} sx={{ mr: 5 }}>EN</Button>
+        <Button color='primary' variant='contained' onClick={() => changeLanguage('en')} >EN</Button>
         <Button color='primary' variant='contained' onClick={() => changeLanguage('ru')}>RU</Button>
       </div>
     <div className={styles.wrapper}>

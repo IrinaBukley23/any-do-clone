@@ -13,7 +13,8 @@ interface IWeatherData {
   temp: string,
   description: string,
   windSpeed: string,
-  humidity: string
+  humidity: string,
+  icon?: string
 }
 
 const Weather = () => {
@@ -41,7 +42,8 @@ const Weather = () => {
         temp: data.main.temp,
         description: data.weather[0].description,
         windSpeed: data.wind.speed,
-        humidity: data.main.humidity
+        humidity: data.main.humidity,
+     //   icon: `http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`
       })
     } catch(error) {
       console.log(error)
@@ -76,6 +78,7 @@ const Weather = () => {
           <div>
             <div>{weatherData.temp}°C</div>
             <div>{weatherData.description}</div>
+            <div className={styles.header__weather_icon}> <img src={weatherData.icon} alt='icon'/> </div>
           </div>
         }
       </Grid>
