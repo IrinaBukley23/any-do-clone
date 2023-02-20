@@ -78,6 +78,7 @@ const DataRow = ({ idRow, time, task, isEven, changeTask }: Props) => {
               <TextField
                 key={`${changedTask.id}t`}
                 autoFocus
+                placeholder=''
                 sx={{ width: '100%' }}
                 onChange={handleChange}
                 onBlur={handleBlur}
@@ -93,7 +94,6 @@ const DataRow = ({ idRow, time, task, isEven, changeTask }: Props) => {
                     {...draggableProvided.dragHandleProps}
                     ref={draggableProvided.innerRef}
                     data-id={t.id}
-                    //
                     className={styles.text}
                   >
                     {t.title}

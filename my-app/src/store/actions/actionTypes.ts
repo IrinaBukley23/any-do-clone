@@ -1,5 +1,5 @@
 import { Actions } from '../../types/enum'
-import { ColumnItemType, TaskItemType } from '../../types/types'
+import { ColumnItemType, ITask, TaskItemType } from '../../types/types'
 
 export type Action =
   | {
@@ -74,4 +74,12 @@ export type Action =
     | {
       type: Actions.SET_CURRENT_COLUMN_ID
       payload: string
+    }
+    | {
+      type: Actions.SORT_TASK_LIST
+      payload: {
+        taskList: TaskItemType[],
+        taskDrag: TaskItemType,
+        taskDrop: TaskItemType,
+      }
     }

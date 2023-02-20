@@ -1,18 +1,20 @@
 import styles from './column.module.scss';
 import React, { useState } from 'react';
 import { Button, IconButton, TextField, Tooltip, Typography } from '@mui/material';
-import { ColumnItemType, State } from '../../types/types';
+import { ColumnItemType, ITask, State, TaskItemType } from '../../types/types';
 import { useDispatch, useSelector } from 'react-redux';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { editColumnTitle, setCurrentId, setRemoveColumn } from '../../store/actions/actionCreators';
+import { editColumnTitle, setCurrentColumnId, setCurrentId, setRemoveColumn, sortTaskList } from '../../store/actions/actionCreators';
 import CancelIcon from '@mui/icons-material/Cancel';
-import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
 import Task from '../task/task';
 import { DialogConfirm } from '../ui/dialogConfirm';
 import ResponsiveDialog from '../ui/openDialog';
+import DownloadDoneIcon from '@mui/icons-material/DownloadDone'
 
 interface IProps {
     columnItem: ColumnItemType;
+    taskOnDrag: ITask | undefined;
+    onTaskOnDragChange: (task: ITask | undefined) => void
   }
 
 const Column = (props: IProps) => {
@@ -25,7 +27,6 @@ const Column = (props: IProps) => {
   
     const [isEdit, setIsEdit] = useState(false);
     const [correctedTitle, setCorrectedTitle] = useState(columnTitle);
-
 
     const handleEdit = () => {
       setIsEdit(true);
@@ -66,6 +67,43 @@ const Column = (props: IProps) => {
         setOpen(false);
     };
 
+    function dragStartHandler(e: React.DragEvent<HTMLDivElement>, task: ITask): void {
+        props.onTaskOnDragChange(task);
+        // setCurrentTask(task);
+     }
+ 
+     function dragOverHandler(e: React.DragEvent<HTMLDivElement>): void {
+         e.preventDefault();
+        (e.target as HTMLDivElement).style.boxShadow = '0 2 px 3px gray'
+     }
+ 
+     function dragEndHandler(e: React.DragEvent<HTMLDivElement>): void {
+      (e.target as HTMLDivElement).style.boxShadow = 'none'
+     }
+ 
+     function dropHandler(e: React.DragEvent<HTMLDivElement>, task: TaskItemType): void {
+        if(!props.taskOnDrag) return;
+         e.preventDefault();
+         if(task.currentColumnId === props.taskOnDrag.currentColumnId) {
+            dispatch(
+                sortTaskList([...taskList], task, props.taskOnDrag)
+            );
+         } else {
+            dispatch(
+                setCurrentColumnId(task.currentColumnId)
+            );
+            dispatch(
+                sortTaskList([...taskList], task, {...props.taskOnDrag, currentColumnId: task.currentColumnId})
+            );
+
+         }
+        props.onTaskOnDragChange(undefined);
+       (e.target as HTMLDivElement).style.boxShadow = 'none'
+     }
+ 
+     const sortTasks = (task1: TaskItemType, task2: TaskItemType) => task1.taskOrder - task2.taskOrder;
+ 
+
     return (
         <div
             id={columnId} 
@@ -74,9 +112,18 @@ const Column = (props: IProps) => {
             }
             {isEdit && (
                 <div className={styles.column__edit}>
-                    <TextField id="outlined-basic" label="Outlined" variant="outlined" value={correctedTitle} onChange={handleCorrect} sx={{width: '160px'}} />
-                    <ThumbUpAltIcon onClick={handleSave} sx={{color: 'green', ml: '10px'}}></ThumbUpAltIcon>
-                    <CancelIcon onClick={handleCancel} sx={{color: 'blue', ml: '10px'}}></CancelIcon>
+                    <TextField 
+                        id="outlined-basic" 
+                        label="Outlined" 
+                        variant="outlined" 
+                        placeholder=''
+                        value={correctedTitle} 
+                        onChange={handleCorrect} 
+                        sx={{width: '160px'}} />
+                    <IconButton color='success' onClick={handleSave}>
+                        <DownloadDoneIcon />
+                    </IconButton>
+                    <CancelIcon onClick={handleCancel} sx={{color: '#d3586c', ml: '10px'}}></CancelIcon>
                 </div>
             )}
             <Typography variant="h5" component="p" sx={{fontSize: '14px', textAlign: 'left'}}>Карточек - {taskQuantity}</Typography>
@@ -90,11 +137,22 @@ const Column = (props: IProps) => {
                 </Tooltip>
                 <DialogConfirm isOpen={open} handleClose={handleClose} handleRemove={handleRemove} />
             </div>
-            <div className={styles.column__wrapper}>
-                {taskList?.filter(task => task.currentColumnId === columnId).map((task, i) => (
-                    <Task key={i} taskItem={task}/>
-                ) )}
-            </div>
+            <div className={styles.column__wrapper}
+                >
+                {[...taskList]?.filter(task => task.currentColumnId === columnId).sort(sortTasks).map((task, i) => (
+                    <div
+                        key={i} 
+                        onDragStart={(e: React.DragEvent<HTMLDivElement>) => dragStartHandler(e, task)}
+                        onDragLeave={(e: React.DragEvent<HTMLDivElement>) => dragEndHandler(e)}
+                        onDragEnd={(e: React.DragEvent<HTMLDivElement>) => dragEndHandler(e)}
+                        onDragOver={(e: React.DragEvent<HTMLDivElement>) => dragOverHandler(e)}
+                        onDrop={(e: React.DragEvent<HTMLDivElement>) => dropHandler(e, task)}
+                        draggable={true}
+                    >
+                        <Task key={i} taskItem={task}/>
+                    </div>
+                  ) )}
+                </div>
             <Button onClick={handleTaskFormOpen} color='primary' variant='contained' sx={{ height: '40px', mt: '30px'}}>
                 Добавить задачу
             </Button>

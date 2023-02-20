@@ -5,6 +5,7 @@ export interface IColumn {
   columnTitle: string
   columnOrder: number
   columnList: IColumn[]
+  taskList?: ITask[]
 }
 
 export type ColumnItemType = Omit<IColumn, 'columnList'>
@@ -16,7 +17,7 @@ export interface ITask {
   taskId: string
   taskTitle: string
   taskDescr: string
-  taskOrder?: string
+  taskOrder: number
   taskList: ITask[]
   currentColumnId: string
 }
