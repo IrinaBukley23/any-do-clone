@@ -15,7 +15,11 @@ export const DateBody = ({ listTasks, taskListInPlan, changeTask }: Props) => {
     changeTask(value)
   }
   const filterTask = (rowTime: Moment): TaskCalendarItemType[] => {
-    const filtered = taskListInPlan.filter((task) => rowTime.isSame(roundMin(task.performDate)))
+    const filtered = taskListInPlan.filter((task, index) => {
+      const round = roundMin(task.performDate).utc()
+
+      return rowTime.minutes() == round.minutes() && rowTime.hours() == round.hours()
+    })
 
     return filtered
   }
