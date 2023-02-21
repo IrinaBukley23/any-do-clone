@@ -16,17 +16,26 @@ import { StaticDatePicker } from '@mui/x-date-pickers/StaticDatePicker'
 import moment from 'moment'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import TextField from '@mui/material/TextField'
-
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
-import { setCurrDate } from '../../store/actions/actionCalendar'
 import { PickersDay } from '@mui/x-date-pickers'
 import { useEffect } from 'react'
+import { useSelector } from 'react-redux'
+import { calendarActions, calendarSelectors, loadTasks } from '../../store/reducers/calendarReducer'
+
+import { getCurrTasks } from '../../store/utils'
 const CustomBar = () => {
-  const { taskList } = useAppSelector((state) => state.calendar)
+  const { dateCurrent } = useAppSelector(
+    (state) => state.calendar,
+    (prev, curr) => prev.dateCurrent == curr.dateCurrent,
+  )
+  const taskList = useAppSelector(
+    (state) => getCurrTasks(calendarSelectors.selectAll(state.calendar), new Date(dateCurrent)),
+    (prev, curr) => prev.length == curr.length,
+  )
   return (
     <>
       <p>
-        Выбранная дата: <b> {moment(new Date()).format('Do MMMM YYYY')}</b>
+        Выбранная дата: <b> {moment(dateCurrent).format('Do MMMM YYYY')}</b>
       </p>
       <p>
         Количество задач: <strong>{taskList.length}</strong>
@@ -35,18 +44,32 @@ const CustomBar = () => {
   )
 }
 const SideBar = () => {
-  const { dateCurrent } = useAppSelector((state) => state.calendar)
-  const { taskListAll } = useAppSelector((state) => state.calendar)
+  const { dateCurrent } = useAppSelector(
+    (state) => state.calendar,
+    (prev, curr) => prev.dateCurrent == curr.dateCurrent,
+  )
+  const taskListAll = useAppSelector((state) => calendarSelectors.selectAll(state.calendar))
   const { key } = useAppSelector((state) => state.authorization)
   const dispatch = useAppDispatch()
 
+  console.log('sidebaRender', dateCurrent)
+
   const changeDate = (date: string | null) => {
     if (date) {
-      console.log('1, date')
-      dispatch(setCurrDate(moment(date).hour(0).minute(0).format('YYYY-MM-DD HH:mm'), key))
+      dispatch(
+        calendarActions.setCurrentDate(moment(date).hour(0).minute(0).format('YYYY-MM-DD HH:mm')),
+      )
+      dispatch(
+        calendarActions.setDateSelectedInPlan(
+          moment(date).hour(0).minute(0).format('YYYY-MM-DD HH:mm'),
+        ),
+      )
     }
   }
-  useEffect(() => changeDate(moment().format('YYYY-MM-DD HH:mm')), [])
+  useEffect(() => {
+    if (key) dispatch(loadTasks(key))
+    console.log('sidebar')
+  }, [])
   return (
     <div className={styles.sidebar}>
       <Paper>

@@ -6,24 +6,29 @@ import TaskCard from './taskCard'
 import { InputAdornment, TextField } from '@mui/material'
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
 import { useEffect, useState } from 'react'
-import {
-  changeTask,
-  createTask,
-  deleteTask,
-  getSearchedList,
-} from '../../store/actions/actionCalendar'
 import { TaskCalendarItemType } from '../../types/types'
+import { calendarSelectors } from '../../store/reducers/calendarReducer'
+import { getCurrTasks } from '../../store/utils'
 
 const TasksBlock = () => {
-  const { taskList, dateCurrent } = useAppSelector((state) => state.calendar)
+  const { dateCurrent } = useAppSelector(
+    (state) => state.calendar,
+    (oldValue, newValue) => oldValue.dateCurrent == newValue.dateCurrent,
+  )
+
+  const taskList = useAppSelector(
+    (state) => getCurrTasks(calendarSelectors.selectAll(state.calendar), new Date(dateCurrent)),
+    (oldValue, newValue) => oldValue.length == newValue.length,
+  )
   const { key } = useAppSelector((state) => state.authorization)
   const [searchString, setSearchString] = useState('')
   const [taskTitle, setTaskTitle] = useState('')
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTaskTitle(e.target.value)
   }
+
   useEffect(() => {
-    getSearchedList(searchString)
+    // getSearchedList(searchString)
   }, [searchString])
   const dispatch = useAppDispatch()
   const handleKey = (e: React.KeyboardEvent<HTMLDivElement>) => {
@@ -38,10 +43,10 @@ const TasksBlock = () => {
   }
 
   const handleDeleteCard = (id: number) => {
-    dispatch(deleteTask(id, key))
+    // dispatch(deleteTask(id, key))
   }
   const handleChangeCard = (task: TaskCalendarItemType) => {
-    dispatch(changeTask(task, key))
+    // dispatch(changeTask(task, key))
   }
 
   return (

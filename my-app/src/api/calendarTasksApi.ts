@@ -20,7 +20,7 @@ export default class CalendarTasksApi {
     return data as TaskCalendarItemType[]
   }
 
-  async createTask(key: string, task: any) {
+  async createTask(key: string, task: ITaskCalendarCreate) {
     const res = await fetch(`${BACKEND_BASE_URL}/api/tasks`, {
       method: 'POST',
       headers: {

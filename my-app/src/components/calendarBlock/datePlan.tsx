@@ -1,22 +1,19 @@
 import { TableContainer, TableHead } from '@mui/material'
-
 import IconButton from '@mui/material/IconButton'
 import Paper from '@mui/material/Paper'
 import Stack from '@mui/material/Stack/Stack'
 import Table from '@mui/material/Table'
-
 import ArrowLeftIcon from '@mui/icons-material/ArrowLeft'
 import ArrowRightIcon from '@mui/icons-material/ArrowRight'
-
 import styles from './datePlan.module.scss'
 import moment from 'moment'
-
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
 import { useEffect, useState } from 'react'
 import { TaskCalendarItemType, TimeCalendar } from '../../types/types'
 import { DateBody } from './dateBody'
-import { changeTask, setDateSelectedInPlan } from '../../store/actions/actionCalendar'
 import { DragDropContext, DropResult } from 'react-beautiful-dnd'
+import { calendarActions, calendarSelectors } from '../../store/reducers/calendarReducer'
+import { getCurrTasks } from '../../store/utils'
 
 const generateTime = (date: string): TimeCalendar[] => {
   const arr: TimeCalendar[] = []
@@ -36,13 +33,30 @@ const generateTime = (date: string): TimeCalendar[] => {
 }
 
 const DatePlan = () => {
-  const { dateSelectedInPlan, taskListInPlan } = useAppSelector((state) => state.calendar)
+  const { dateSelectedInPlan } = useAppSelector(
+    (state) => state.calendar,
+    (oldValue, newValue) => oldValue.dateSelectedInPlan == newValue.dateSelectedInPlan,
+  )
+  const taskListInPlan = useAppSelector(
+    (state) =>
+      getCurrTasks(
+        calendarSelectors.selectAll(state.calendar),
+        new Date(state.calendar.dateSelectedInPlan),
+      ),
+    (oldValue, newValue) => oldValue.length == newValue.length,
+  )
+  console.log({ inPlan: taskListInPlan })
+
+  // console.log(dateSelectedInPlan)
+
   const { key } = useAppSelector((state) => state.authorization)
   const [listTasks, setListTasks] = useState([] as TimeCalendar[])
   const dispatch = useAppDispatch()
   const handleLeft = () => {
     dispatch(
-      setDateSelectedInPlan(moment(dateSelectedInPlan).add(1, 'd').format('YYYY-MM-DD HH:mm')),
+      calendarActions.setDateSelectedInPlan(
+        moment(dateSelectedInPlan).add(1, 'd').format('YYYY-MM-DD HH:mm'),
+      ),
     )
   }
   useEffect(() => {
@@ -53,7 +67,9 @@ const DatePlan = () => {
 
   const handleRight = () => {
     dispatch(
-      setDateSelectedInPlan(moment(dateSelectedInPlan).subtract(1, 'd').format('YYYY-MM-DD HH:mm')),
+      calendarActions.setDateSelectedInPlan(
+        moment(dateSelectedInPlan).subtract(1, 'd').format('YYYY-MM-DD HH:mm'),
+      ),
     )
   }
   const handleChahgeTask = (task: TaskCalendarItemType) => {
