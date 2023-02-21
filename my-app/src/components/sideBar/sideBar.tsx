@@ -42,6 +42,7 @@ const SideBar = () => {
 
   const changeDate = (date: string | null) => {
     if (date) {
+      console.log('1, date')
       dispatch(setCurrDate(moment(date).hour(0).minute(0).format('YYYY-MM-DD HH:mm'), key))
     }
   }

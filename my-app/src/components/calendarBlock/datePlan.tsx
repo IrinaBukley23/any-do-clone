@@ -57,7 +57,8 @@ const DatePlan = () => {
     )
   }
   const handleChahgeTask = (task: TaskCalendarItemType) => {
-    dispatch(changeTask(task, key))
+    console.log('change task')
+    // dispatch(changeTask(task, key))
   }
   const handleDragEnd = (result: DropResult) => {
     const { destination, source, draggableId } = result
