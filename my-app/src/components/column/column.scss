@@ -6,7 +6,10 @@
     background-color: #ffffff;
     overflow: hidden;
     padding: 5px 10px 15px;
-    cursor: grab;
+    cursor: pointer;
+    &__title {
+        cursor: grab;
+    }
     &__edit {
         width: 200px;
         display: flex;
@@ -17,5 +20,6 @@
         overflow-y: auto;
         overflow-x: hidden;
         max-height: 70vh;
+        min-height: 50px;
     }
 }

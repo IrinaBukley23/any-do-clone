@@ -1,4 +1,4 @@
-import styles from './task.module.scss'
+import './task.scss'
 import React, { useState } from 'react';
 import { FormControl, IconButton, InputLabel, MenuItem, Select, SelectChangeEvent, TextField, Tooltip, Typography } from '@mui/material';
 import { ITask } from '../../types/types';
@@ -102,10 +102,10 @@ const Task = (props: IProps) => {
     };
 
     return (
-        <div id={taskId} key={taskId} className={styles.task}>
-            {!isEditTitle && <Typography variant="h5" className={styles.task__title} onClick={handleEditTitle}>{taskTitle}</Typography>}
+        <div id={taskId} key={taskId} className="task">
+            {!isEditTitle && <Typography variant="h5" className="task__title" onDoubleClick={handleEditTitle}>{taskTitle}</Typography>}
             {isEditTitle && (
-                <div className={styles.task__edit}>
+                <div className="task__edit">
                     <TextField 
                       id="outlined-basic" 
                       label="" 
@@ -120,9 +120,9 @@ const Task = (props: IProps) => {
                     <CancelIcon onClick={handleCancelTitle} sx={{color: '#d3586c', ml: '10px'}}></CancelIcon>
                 </div>
             )}
-            {!isEditDescr && <Typography variant="h5" onClick={handleEditDescr}  sx={{fontSize: '14px', textAlign: 'left', pl: '10px', mb: '15px', mt: '15px'}}>{taskDescr}</Typography>}
+            {!isEditDescr && <Typography variant="h5" onDoubleClick={handleEditDescr}  sx={{fontSize: '14px', textAlign: 'left', pl: '10px', mb: '15px', mt: '15px'}}>{taskDescr}</Typography>}
             {isEditDescr && (
-                <div className={styles.task__edit}>
+                <div className="task__edit">
                     <TextField 
                       id="outlined-basic" 
                       label="" 

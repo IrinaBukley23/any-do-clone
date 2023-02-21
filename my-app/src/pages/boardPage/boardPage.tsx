@@ -75,23 +75,30 @@ const BoardPage = () => {
 
     function dropHandler(e: React.DragEvent<HTMLDivElement>, column: ColumnItemType): void {
       e.preventDefault();
-      (e.target as HTMLDivElement).style.background = '';
-      if(currentTask && currentTask.currentColumnId === column.columnId) return;
-      if(currentTask && currentTask.currentColumnId !== column.columnId) {
-        const newTaskList = [...taskList].filter((task) => task.taskId !== currentTask.taskId)
+      if((e.target as HTMLElement).classList.contains('task__title') || (e.target as HTMLElement).classList.contains('column__wrapper')) {
+        if(currentTask && currentTask.currentColumnId === column.columnId) return;
+        if(currentTask && currentTask.currentColumnId !== column.columnId) {
+          const newTaskList = [...taskList].filter((task) => task.taskId !== currentTask.taskId)
+          dispatch(
+            setTaskList([...newTaskList,
+              {...currentTask,
+                currentColumnId: column.columnId,
+              },
+            ])
+          );
+          console.log(e.target);
+          (e.target as HTMLDivElement).style.background = ''
+          return;
+        }
+      } 
+      if((e.target as HTMLElement).classList.contains('column__title')) {
         dispatch(
-          setTaskList([...newTaskList,
-            {...currentTask,
-              currentColumnId: column.columnId,
-            },
-          ])
-        );
-        (e.target as HTMLDivElement).style.background = ''
-        return;
+          sortColumnList([...columnList], column, currentColumn)
+          );
       }
-      dispatch(
-      sortColumnList([...columnList], column, currentColumn)
-      );
+     
+      (e.target as HTMLDivElement).style.background = '';
+     
     }
 
     const sortColumns = (column1: ColumnItemType, column2: ColumnItemType) => column1.columnOrder - column2.columnOrder;
@@ -121,7 +128,7 @@ const BoardPage = () => {
                       placeholder=''
                       label={t('boardPageInputText')}
                       variant="filled" 
-                      sx={{height: '40px', ml: '15px', minWidth: '210px'}} 
+                      sx={{ml: '15px', minWidth: '210px'}} 
                   />
                   {isError && <Typography variant="h5" component="p" sx={{fontSize: '12px', textAlign: 'left', color: 'red', mt: '15px', ml: '15px'}}> {t('boardPageInputError')} </Typography>}
                   </div>

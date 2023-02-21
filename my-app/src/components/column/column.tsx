@@ -1,4 +1,4 @@
-import styles from './column.module.scss';
+import './column.scss';
 import React, { useState } from 'react';
 import { Button, IconButton, TextField, Tooltip, Typography } from '@mui/material';
 import { ColumnItemType, ITask, State, TaskItemType } from '../../types/types';
@@ -108,11 +108,11 @@ const Column = (props: IProps) => {
     return (
         <div
             id={columnId} 
-            className={styles.column}>
-            {!isEdit && <Typography variant="h5" onClick={handleEdit}>{columnTitle}</Typography>
+            className="column">
+            {!isEdit && <Typography variant="h5" className='column__title' onDoubleClick={handleEdit}>{columnTitle}</Typography>
             }
             {isEdit && (
-                <div className={styles.column__edit}>
+                <div className="column__edit">
                     <TextField 
                         id="outlined-basic" 
                         label="" 
@@ -138,7 +138,7 @@ const Column = (props: IProps) => {
                 </Tooltip>
                 <DialogConfirm isOpen={open} handleClose={handleClose} handleRemove={handleRemove} />
             </div>
-            <div className={styles.column__wrapper}
+            <div className="column__wrapper"
                 >
                 {[...taskList]?.filter(task => task.currentColumnId === columnId).sort(sortTasks).map((task, i) => (
                     <div
@@ -154,7 +154,7 @@ const Column = (props: IProps) => {
                     </div>
                   ) )}
                 </div>
-            <Button onClick={handleTaskFormOpen} color='primary' variant='contained' sx={{ height: '40px', mt: '30px'}}>
+            <Button onClick={handleTaskFormOpen} color='primary' variant='contained' sx={{ height: '40px', mt: '30px', cursor: 'pointer'}}>
                 {t('columnAddTask')}
             </Button>
             <ResponsiveDialog isOpen={isTaskModal} handleClose={handleTaskFormClose} />

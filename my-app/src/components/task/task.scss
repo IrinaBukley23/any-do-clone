@@ -1,14 +1,20 @@
 .task {
     background: #ffffff;
-    box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+    box-shadow: 6px 6px 10px 1px rgba(0, 0, 0, 0.2);
     border-radius: 5px;
-    border: 1px solid rgba(0, 0, 0, 0.2);
     margin-bottom: 10px;
     position: relative;
+    width: 95%;
+    &:hover {
+        
+    }
     &__edit {
         width: 100%;
         display: flex;
         align-items: center;
         justify-content: flex-start;
+    }
+    &__title {
+        cursor: grab;
     }
 }
