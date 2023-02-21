@@ -40,8 +40,7 @@ export const columnReducer = (state: IColumn = initialState.column, action: Acti
             };
           }
           case Actions.SORT_COLUMN_LIST: {
-            console.log(action.payload)
-            const sortedList = state.columnList.map((column: ColumnItemType) => {
+            const sortedList = state.columnList.map((column: IColumn) => {
               if(column.columnId === action.payload.columnDrop.columnId) {
                 return {...column, columnOrder: action.payload.columnDrag.columnOrder};
               }
