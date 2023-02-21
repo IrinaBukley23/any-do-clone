@@ -7,7 +7,11 @@ import { InputAdornment, TextField } from '@mui/material'
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
 import { useEffect, useState } from 'react'
 import { TaskCalendarItemType } from '../../types/types'
-import { calendarSelectors } from '../../store/reducers/calendarReducer'
+import {
+  calendarActions,
+  calendarSelectors,
+  deleteTask,
+} from '../../store/reducers/calendarReducer'
 import { getCurrTasks } from '../../store/utils'
 
 const TasksBlock = () => {
@@ -43,7 +47,7 @@ const TasksBlock = () => {
   }
 
   const handleDeleteCard = (id: number) => {
-    // dispatch(deleteTask(id, key))
+    if (key) dispatch(deleteTask({ key: key, id: id }))
   }
   const handleChangeCard = (task: TaskCalendarItemType) => {
     // dispatch(changeTask(task, key))

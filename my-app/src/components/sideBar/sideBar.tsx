@@ -23,6 +23,7 @@ import { useSelector } from 'react-redux'
 import { calendarActions, calendarSelectors, loadTasks } from '../../store/reducers/calendarReducer'
 
 import { getCurrTasks } from '../../store/utils'
+import { inherits } from 'util'
 const CustomBar = () => {
   const { dateCurrent } = useAppSelector(
     (state) => state.calendar,
@@ -78,6 +79,7 @@ const SideBar = () => {
             displayStaticWrapperAs='desktop'
             value={dateCurrent}
             onChange={changeDate}
+            // sx={{ minHeight: 'inherits' }}
             renderInput={(params) => <TextField {...params} />}
             components={{
               ActionBar: CustomBar,

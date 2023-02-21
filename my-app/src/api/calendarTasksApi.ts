@@ -65,7 +65,7 @@ export default class CalendarTasksApi {
       const data: IError = await res.json()
       throw new Error(data.message)
     }
-    // const data = await res.json()
+    return await res.json()
 
     // return data as TaskCalendarItemType
   }

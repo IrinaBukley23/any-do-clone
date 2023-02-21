@@ -19,7 +19,7 @@ const generateTime = (date: string): TimeCalendar[] => {
   const arr: TimeCalendar[] = []
   arr.push({
     id: 0,
-    time: moment(date).hour(0).minutes(0),
+    time: moment(date).utc().hour(0).minutes(0),
   })
   for (let t = 7; t <= 20; t++) {
     arr.push({
@@ -45,12 +45,9 @@ const DatePlan = () => {
       ),
     (oldValue, newValue) => oldValue.length == newValue.length,
   )
-  console.log({ inPlan: taskListInPlan })
-
-  // console.log(dateSelectedInPlan)
 
   const { key } = useAppSelector((state) => state.authorization)
-  const [listTasks, setListTasks] = useState([] as TimeCalendar[])
+  const [listTasks, setListTasks] = useState<TimeCalendar[]>([])
   const dispatch = useAppDispatch()
   const handleLeft = () => {
     dispatch(
