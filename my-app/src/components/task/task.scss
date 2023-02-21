@@ -5,8 +5,9 @@
     margin-bottom: 10px;
     position: relative;
     width: 95%;
+    transition: all 0.8s ease-in;
     &:hover {
-        
+        transform: scale(1.05);
     }
     &__edit {
         width: 100%;

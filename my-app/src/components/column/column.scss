@@ -7,6 +7,10 @@
     overflow: hidden;
     padding: 5px 10px 15px;
     cursor: pointer;
+    transition: all 0.8s ease-in;
+    &:hover {
+        box-shadow: 6px 6px 10px 1px rgba(0, 0, 0, 0.2);
+    }
     &__title {
         cursor: grab;
     }
