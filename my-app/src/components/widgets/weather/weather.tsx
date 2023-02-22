@@ -43,7 +43,7 @@ const Weather = () => {
         description: data.weather[0].description,
         windSpeed: data.wind.speed,
         humidity: data.main.humidity,
-     //   icon: `http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`
+        icon: `http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`
       })
     } catch(error) {
       console.log(error)
@@ -75,10 +75,10 @@ const Weather = () => {
           </div>
         }
         { weatherData !== null && error === '' &&
-          <div>
+          <div className={styles.weather__container}>
+            {/* <div>{weatherData.description}</div> */}
+            <div className={styles.header__weather_icon}> <img src={weatherData.icon} alt='icon'/> </div>
             <div>{weatherData.temp}°C</div>
-            <div>{weatherData.description}</div>
-            {/* <div className={styles.header__weather_icon}> <img src={weatherData.icon} alt='icon'/> </div> */}
           </div>
         }
       </Grid>

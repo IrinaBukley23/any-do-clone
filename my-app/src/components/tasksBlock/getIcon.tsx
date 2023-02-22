@@ -5,7 +5,7 @@ import PausePresentationIcon from '@mui/icons-material/PausePresentation'
 import CheckBoxOutlinedIcon from '@mui/icons-material/CheckBoxOutlined'
 import { TypeStatusTask, TypeStatusTaskEn } from '../../types/enum'
 
-export const GetIcon = ({ status }: { status: TypeStatusTask }) => {
+export const GetIcon = ({ status }: { status: unknown }) => {
   switch (status) {
     case TypeStatusTask.notStart:
       return <CheckBoxOutlineBlankIcon />
@@ -17,11 +17,6 @@ export const GetIcon = ({ status }: { status: TypeStatusTask }) => {
       return <DisabledByDefaultOutlinedIcon />
     case TypeStatusTask.done:
       return <CheckBoxOutlinedIcon />
-  }
-}
-
-export const GetIconEn = ({ status }: { status: TypeStatusTaskEn }) => {
-  switch (status) {
     case TypeStatusTaskEn.notStart:
       return <CheckBoxOutlineBlankIcon />
     case TypeStatusTaskEn.start:
@@ -32,5 +27,8 @@ export const GetIconEn = ({ status }: { status: TypeStatusTaskEn }) => {
       return <DisabledByDefaultOutlinedIcon />
     case TypeStatusTaskEn.done:
       return <CheckBoxOutlinedIcon />
+    default:
+      return <SlideshowOutlinedIcon />
   }
 }
+

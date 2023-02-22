@@ -10,6 +10,7 @@ import { LoginForm } from '../../components/loginForm/loginForm';
 import { useAppDispatch } from '../../store/hooks';
 import { loginStart, registrationStart } from '../../store/reducers/authorization';
 import { useTranslation } from 'react-i18next';
+import { setLang } from '../../store/actions/actionCreators'
 
 const StartPage = () => {
   const dispatch = useAppDispatch();
@@ -17,11 +18,12 @@ const StartPage = () => {
 
   const changeLanguage = (language: string) => {
     i18n.changeLanguage(language);
+    dispatch(setLang(language))
   };
   return (
     <>
     <div className={styles.localization}>
-        <Button color='primary' variant='contained' onClick={() => changeLanguage('en')} >EN</Button>
+        <Button color='primary' variant='contained' onClick={() => changeLanguage('en')} sx={{mr: '15px'}}>EN</Button>
         <Button color='primary' variant='contained' onClick={() => changeLanguage('ru')}>RU</Button>
       </div>
     <div className={styles.wrapper}>

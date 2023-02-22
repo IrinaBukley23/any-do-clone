@@ -2,7 +2,6 @@ import { Card, Chip, IconButton, TextField } from '@mui/material'
 import CardContent from '@mui/material/CardContent'
 import CardActions from '@mui/material/CardActions'
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment'
-import Button from '@mui/material/Button'
 import DeleteIcon from '@mui/icons-material/Delete'
 import { State, TaskCalendarItemType } from '../../types/types'
 import { Stack } from '@mui/system'
@@ -17,7 +16,7 @@ import TextFieldEdit from '../ui/textFieldEdit/textFieldEdit'
 import TaskMenu from './taskMenu'
 import moment from 'moment'
 import { Importance, ImportanceEn, Projects, ProjectsEn, TypeChip, TypeStatusTask, TypeStatusTaskEn } from '../../types/enum'
-import { GetIcon, GetIconEn } from './getIcon'
+import { GetIcon } from './getIcon'
 import { setColor, setColorEn } from './utils'
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux'
@@ -136,23 +135,13 @@ const TaskCard = ({ task, onDelete, onChange }: Props) => {
     <Card className={styles.card}>
       <CardContent>
         <Stack direction='row' spacing={2} justifyContent='space-between'>
-          {(lang === 'ru') ? (
-            <IconButton
+          <IconButton
             sx={{ alignSelf: 'flex-start' }}
             onClick={showMenu}
             data-name={TypeChip.status}
           >
             <GetIcon status={taskEdit.status as TypeStatusTask} /> 
           </IconButton>
-          ) : (
-            <IconButton
-            sx={{ alignSelf: 'flex-start' }}
-            onClick={showMenu}
-            data-name={TypeChip.status}
-          >
-            <GetIconEn status={taskEdit.status as TypeStatusTaskEn} />
-          </IconButton>
-          )}
           
           <Stack spacing={2} alignItems='stretch' sx={{ width: '90%' }}>
             {isEdit.title ? (

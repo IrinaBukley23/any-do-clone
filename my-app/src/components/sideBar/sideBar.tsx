@@ -27,6 +27,7 @@ const CustomBar = () => {
   const { t, } = useTranslation();
   const { taskList } = useAppSelector((state) => state.calendar)
   const { lang } = useSelector((state: State) => state.lang)
+
   return (
     <>
       <p>
@@ -49,7 +50,6 @@ const SideBar = () => {
     }
   }
   const { t, } = useTranslation();
-
   return (
     <div className={styles.sidebar}>
       <Paper>
