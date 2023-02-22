@@ -1,6 +1,6 @@
 import './task.scss'
 import React, { useState } from 'react';
-import { FormControl, IconButton, InputLabel, Chip, MenuItem, Select, SelectChangeEvent, TextField, Tooltip, Typography } from '@mui/material';
+import { FormControl, IconButton, Chip, MenuItem, TextField, Tooltip, Typography } from '@mui/material';
 import { ITask, TypeUserMenu } from '../../types/types';
 import { useDispatch } from 'react-redux';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -11,7 +11,7 @@ import DownloadDoneIcon from '@mui/icons-material/DownloadDone'
 import { useTranslation } from 'react-i18next';
 import ControlPointIcon from '@mui/icons-material/ControlPoint'
 import Menu from '@mui/material/Menu';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 
 interface IProps {
     taskItem: ITask;
@@ -46,6 +46,7 @@ const Task = (props: IProps) => {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const [userLabel, setUserLabel] = useState(`${t('taskUser')}`);
     const open = Boolean(anchorEl);
+   
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
       setAnchorEl(event.currentTarget);
     };
@@ -99,6 +100,10 @@ const Task = (props: IProps) => {
     const handleCloseConfirm = () => {
       setOpenConfirm(false);
     };
+    const handleClearUser = () => {
+      setAnchorEl(null);
+      setUserLabel(`${t('taskUser')}`);
+    }
 
     return (
         <div id={taskId} key={taskId} className="task">
@@ -136,14 +141,15 @@ const Task = (props: IProps) => {
                     <CancelIcon onClick={handleCancelDescr} sx={{color: '#d3586c', ml: '10px'}}></CancelIcon>
                 </div>
             )}
-            <FormControl fullWidth>
+            <FormControl fullWidth >
               <Chip
                 variant='outlined'
                 label={userLabel}
-                sx={{width: '50%', ml: '10px', justifyContent: 'flex-start'}}
+                sx={{width: '55%', ml: '10px', justifyContent: 'flex-start', position: 'relative'}}
                 onClick={handleClick}
-                icon={<ControlPointIcon />}
+                icon={(userLabel === `${t('taskUser')}`) ? (<ControlPointIcon />) : (<HighlightOffIcon color='primary' onClick={handleClearUser} sx={{position: 'absolute', top: 4, right: 10}} />)}
               />
+            
               <div>
                 <Menu
                   id="long-menu"
@@ -162,7 +168,7 @@ const Task = (props: IProps) => {
                 >
                   {users.map((user) => (
                     <MenuItem id={`${user.name}-${user.email}`} key={user.name} onClick={handleClose}>
-                      {user.name} - {user.email}
+                      {user.name} - {user.email} 
                     </MenuItem>
                   ))}
                 </Menu>
