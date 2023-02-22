@@ -6,9 +6,7 @@ import { Draggable, Droppable } from 'react-beautiful-dnd'
 import { TypeStatusTask } from '../../types/enum'
 import { TaskCalendarItemType } from '../../types/types'
 import styles from './datePlan.module.scss'
-interface IIsEdit {
-  [id: string]: boolean
-}
+
 type Props = {
   idRow: number
   time: Moment
@@ -47,7 +45,7 @@ const DataRow = ({ idRow, time, task, isEven, changeTask }: Props) => {
     setchangedTask(null)
   }
   return (
-    <TableRow sx={{ height: '2rem' }}>
+    <TableRow sx={{ height: '2.5rem' }}>
       <TableCell>
         {isEven ? (
           <>

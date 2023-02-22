@@ -13,6 +13,7 @@ import {
   changeTask,
   createTask,
   deleteTask,
+  getTaskList,
 } from '../../store/reducers/calendarReducer'
 import { getCurrTasks } from '../../store/utils'
 
@@ -22,9 +23,7 @@ const TasksBlock = () => {
     (oldValue, newValue) => oldValue.dateCurrent == newValue.dateCurrent,
   )
 
-  const taskList = useAppSelector((state) =>
-    getCurrTasks(calendarSelectors.selectAll(state.calendar), new Date(state.calendar.dateCurrent)),
-  )
+  const taskList = useAppSelector((state) => getTaskList(state.calendar))
 
   const { key } = useAppSelector((state) => state.authorization)
   const [searchString, setSearchString] = useState('')
@@ -34,7 +33,7 @@ const TasksBlock = () => {
   }
 
   useEffect(() => {
-    // getSearchedList(searchString)
+    dispatch(calendarActions.setSearchString(searchString))
   }, [searchString])
   const dispatch = useAppDispatch()
   const handleKey = (e: React.KeyboardEvent<HTMLDivElement>) => {

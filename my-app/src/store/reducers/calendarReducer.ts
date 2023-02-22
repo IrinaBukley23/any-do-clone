@@ -11,6 +11,7 @@ import { TaskCalendarItemType, ITaskCalendarCreate, State } from './../../types/
 import CalendarTasksApi from '../../api/calendarTasksApi'
 import { TypeStatusTask } from '../../types/enum'
 import moment from 'moment'
+import { getByPlaceholderText } from '@testing-library/react'
 
 export const loadTasks = createAsyncThunk(
   'calendar/getTasks',
@@ -72,12 +73,16 @@ export const calendarAdapter = createEntityAdapter<TaskCalendarItemType>({
 export const calendarSelectors = calendarAdapter.getSelectors()
 
 export const getTaskList = createSelector(
-  calendarSelectors.selectAll,
-  (state: RootState) => state.calendar.dateSelectedInPlan,
-  (entities, dateSelectedInPlan) => {
-    return getCurrTasks(entities, new Date(dateSelectedInPlan))
+  [calendarSelectors.selectAll, (state) => state.dateCurrent, (state) => state.searchString],
+  (entities, dateCurrent, filter) => {
+    const byDate = getCurrTasks(entities, new Date(dateCurrent))
+    console.log({ byDate: byDate, ent: entities, filter: filter })
+    if (!filter) return byDate
+    return byDate.filter((task) => task.title.toLowerCase().includes(filter.toLowerCase()))
   },
 )
+
+// export const getTaskByTime = createSelector([calendarSelectors.selectAll,(state) => state.dateSelectedInPlan],(entities, dateCurrent)=>{})
 
 export const calendarSlice = createSlice({
   name: 'calendar',
@@ -92,6 +97,9 @@ export const calendarSlice = createSlice({
     },
     setDateSelectedInPlan: (state, action: PayloadAction<string>) => {
       state.dateSelectedInPlan = action.payload
+    },
+    setSearchString: (state, action) => {
+      state.searchString = action.payload
     },
   },
   extraReducers(builder) {
