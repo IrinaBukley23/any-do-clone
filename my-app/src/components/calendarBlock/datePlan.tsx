@@ -12,7 +12,12 @@ import { useEffect, useState } from 'react'
 import { TaskCalendarItemType, TimeCalendar } from '../../types/types'
 import { DateBody } from './dateBody'
 import { DragDropContext, DropResult } from 'react-beautiful-dnd'
-import { calendarActions, calendarSelectors } from '../../store/reducers/calendarReducer'
+import {
+  calendarActions,
+  calendarSelectors,
+  changeTask,
+  createTask,
+} from '../../store/reducers/calendarReducer'
 import { getCurrTasks } from '../../store/utils'
 
 const generateTime = (date: string): TimeCalendar[] => {
@@ -37,13 +42,11 @@ const DatePlan = () => {
     (state) => state.calendar,
     (oldValue, newValue) => oldValue.dateSelectedInPlan == newValue.dateSelectedInPlan,
   )
-  const taskListInPlan = useAppSelector(
-    (state) =>
-      getCurrTasks(
-        calendarSelectors.selectAll(state.calendar),
-        new Date(state.calendar.dateSelectedInPlan),
-      ),
-    (oldValue, newValue) => oldValue.length == newValue.length,
+  const taskListInPlan = useAppSelector((state) =>
+    getCurrTasks(
+      calendarSelectors.selectAll(state.calendar),
+      new Date(state.calendar.dateSelectedInPlan),
+    ),
   )
 
   const { key } = useAppSelector((state) => state.authorization)
@@ -56,6 +59,7 @@ const DatePlan = () => {
       ),
     )
   }
+
   useEffect(() => {
     const list = generateTime(dateSelectedInPlan)
 
@@ -70,8 +74,11 @@ const DatePlan = () => {
     )
   }
   const handleChahgeTask = (task: TaskCalendarItemType) => {
-    console.log('change task')
-    // dispatch(changeTask(task, key))
+    if (key) {
+      if (task.id == 0)
+        dispatch(createTask({ title: task.title, date: task.performDate, key: key }))
+      else dispatch(changeTask({ task: task, key: key }))
+    }
   }
   const handleDragEnd = (result: DropResult) => {
     const { destination, source, draggableId } = result
@@ -85,15 +92,15 @@ const DatePlan = () => {
       (task) => task.id == +destination.droppableId,
     ) as TimeCalendar
 
-    const taskList = taskListInPlan.find((task: TaskCalendarItemType) => +draggableId === task.id)
-    if (taskList) {
+    const currTask = taskListInPlan.find((task: TaskCalendarItemType) => +draggableId === task.id)
+
+    if (currTask) {
       handleChahgeTask({
-        ...taskList,
+        ...currTask,
         performDate: destinationTimeCell.time.format('YYYY-MM-DD HH:mm'),
       })
     }
   }
-
   return (
     <Paper className={styles.aside}>
       <Stack className={styles.content}>

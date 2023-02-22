@@ -23,7 +23,7 @@ import { useSelector } from 'react-redux'
 import { calendarActions, calendarSelectors, loadTasks } from '../../store/reducers/calendarReducer'
 
 import { getCurrTasks } from '../../store/utils'
-import { inherits } from 'util'
+
 const CustomBar = () => {
   const { dateCurrent } = useAppSelector(
     (state) => state.calendar,
@@ -36,7 +36,7 @@ const CustomBar = () => {
   return (
     <>
       <p>
-        Выбранная дата: <b> {moment(dateCurrent).format('Do MMMM YYYY')}</b>
+        Выбранная дата: <b> {moment(new Date(dateCurrent)).format('Do MMMM YYYY')}</b>
       </p>
       <p>
         Количество задач: <strong>{taskList.length}</strong>

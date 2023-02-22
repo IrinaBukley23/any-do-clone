@@ -45,14 +45,14 @@ export default class CalendarTasksApi {
       },
       body: JSON.stringify(task),
     })
-    if (res.status != 200) {
+    if (res.status >= 400) {
       const data: IError = await res.json()
       throw new Error(data.message)
     }
     const data = await res.json()
-
     return data as TaskCalendarItemType
   }
+
   async deleteTask(key: string, id: number) {
     const res = await fetch(`${BACKEND_BASE_URL}/api/tasks/${id}`, {
       method: 'DELETE',
@@ -61,13 +61,10 @@ export default class CalendarTasksApi {
         'Api-Key': key,
       },
     })
-    if (res.status != 200) {
+    if (res.status != 204) {
       const data: IError = await res.json()
       throw new Error(data.message)
     }
-    return await res.json()
-
-    // return data as TaskCalendarItemType
   }
   async getProjects(key: string) {
     const res = await fetch(`${BACKEND_BASE_URL}/api/projects`, {

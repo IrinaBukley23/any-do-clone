@@ -19,6 +19,7 @@ import moment from 'moment'
 import { Importance, Projects, TypeChip, TypeStatusTask } from '../../types/enum'
 import GetIcon from './getIcon'
 import { setColor } from './utils'
+import { setNestedObjectValues } from 'formik'
 
 type Props = {
   task: TaskCalendarItemType
@@ -31,14 +32,18 @@ const TaskCard = ({ task, onDelete, onChange }: Props) => {
   const typesImportant = Object.values(Importance)
   const typesStartTask = Object.values(TypeStatusTask)
   const [isEdit, setIsEdit] = useState({ title: false, description: false })
+  const [isNeedToUpdate, setIsNeedToUpdate] = useState(false)
   const [dataValue, setDataValue] = useState<string>('')
   const [menuItems, setMenuItems] = useState<string[]>([])
   const [taskEdit, setTaskIsEdit] = useState<TaskCalendarItemType>(task)
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
   useEffect(() => {
-    onChange(taskEdit)
-  }, [taskEdit])
+    if (isNeedToUpdate) {
+      onChange(taskEdit)
+      setIsNeedToUpdate(false)
+    }
+  }, [isNeedToUpdate])
 
   useEffect(() => {
     setTaskIsEdit(task)
@@ -54,11 +59,13 @@ const TaskCard = ({ task, onDelete, onChange }: Props) => {
   }
 
   const handleEdit = (date: string | null) => {
-    if (date)
+    if (date) {
       setTaskIsEdit((prevState) => ({
         ...prevState,
         performDate: moment(date).format('YYYY-MM-DD HH:mm'),
       }))
+      setIsNeedToUpdate(true)
+    }
   }
   const handleDateChange = (date: string | null) => {
     if (date) {
@@ -79,11 +86,13 @@ const TaskCard = ({ task, onDelete, onChange }: Props) => {
   }
   const aceptMenu = (value?: string) => {
     const field = anchorEl?.dataset.name
+    console.log(field, value)
     if (field && value) {
       setTaskIsEdit((prevState) => ({
         ...prevState,
         [field]: value,
       }))
+      setIsNeedToUpdate(true)
     }
     closeMenu()
   }
@@ -92,6 +101,7 @@ const TaskCard = ({ task, onDelete, onChange }: Props) => {
   }
   const deleteChip = (field: string) => {
     setTaskIsEdit((prevState: TaskCalendarItemType) => ({ ...prevState, [field]: null }))
+    setIsNeedToUpdate(true)
   }
   const handleCancel = (type: string) => {
     if (type) setIsEdit((prevState) => ({ ...prevState, [type]: false }))
@@ -99,6 +109,7 @@ const TaskCard = ({ task, onDelete, onChange }: Props) => {
   const handleApprove = (type: string, value: string) => {
     setTaskIsEdit((prevState) => ({ ...prevState, [type]: value }))
     setIsEdit((prevState) => ({ ...prevState, [type]: false }))
+    setIsNeedToUpdate(true)
   }
   const handleClickEdit = (
     e: React.MouseEvent<HTMLDivElement> | React.MouseEvent<HTMLButtonElement>,
