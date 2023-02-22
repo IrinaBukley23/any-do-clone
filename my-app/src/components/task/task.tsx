@@ -1,7 +1,7 @@
 import './task.scss'
 import React, { useState } from 'react';
-import { FormControl, IconButton, InputLabel, MenuItem, Select, SelectChangeEvent, TextField, Tooltip, Typography } from '@mui/material';
-import { ITask } from '../../types/types';
+import { FormControl, IconButton, InputLabel, Chip, MenuItem, Select, SelectChangeEvent, TextField, Tooltip, Typography } from '@mui/material';
+import { ITask, TypeUserMenu } from '../../types/types';
 import { useDispatch } from 'react-redux';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { editTaskDescr, editTaskTitle, setRemoveTask } from '../../store/actions/actionCreators';
@@ -9,12 +9,15 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import { DialogConfirm } from '../ui/dialogConfirm';
 import DownloadDoneIcon from '@mui/icons-material/DownloadDone'
 import { useTranslation } from 'react-i18next';
+import ControlPointIcon from '@mui/icons-material/ControlPoint'
+import Menu from '@mui/material/Menu';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 interface IProps {
     taskItem: ITask;
 }
 
-const users = [
+const users: TypeUserMenu[] = [
   {
     name: 'Ирина',
     email: 'irina@mail.ru'
@@ -29,16 +32,7 @@ const users = [
   }
 ];
 
-// const regUsers = async function getRandomQuote() {
-//   try {
-//     const url = 'http://143.42.31.53:8080/api/users'
-//     const res = await fetch(url);
-//     const data = await res.json();
-//     console.log(data);
-//   } catch(error) {
-//     console.log(error);
-//   }
-// }
+const ITEM_HEIGHT = 48;
 
 const Task = (props: IProps) => {
     const [openConfirm, setOpenConfirm] = useState(false);
@@ -49,13 +43,18 @@ const Task = (props: IProps) => {
     const [isEditDescr, setIsEditDescr] = useState(false);
     const [correctedTitle, setCorrectedTitle] = useState(taskTitle);
     const [correctedDescr, setCorrectedDescr] = useState(taskDescr);
+    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+    const [userLabel, setUserLabel] = useState(`${t('taskUser')}`);
+    const open = Boolean(anchorEl);
+    const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+      setAnchorEl(event.currentTarget);
+    };
+    const handleClose = (e: React.SyntheticEvent) => {
+      const selectedUser = (e.target as HTMLElement).id.split('-')[0];
+      setUserLabel(selectedUser)
+      setAnchorEl(null);
+    };
 
-    const [user, setUser] = React.useState('');
-
-  const handleChangeSelect = (event: SelectChangeEvent) => {
-    setUser(event.target.value as string);
-  };
-  
     const handleEditTitle = () => {
       setIsEditTitle(true);
     };
@@ -138,19 +137,36 @@ const Task = (props: IProps) => {
                 </div>
             )}
             <FormControl fullWidth>
-              <InputLabel>{t('taskUser')}</InputLabel>
-              <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value={user}
-                label=""
-                onChange={handleChangeSelect}
-                sx={{width: '80%', fontSize: '14px', textAlign: 'left'}}
-              >
-                {users.map((user, i) => (
-                  <MenuItem key={i} value={user.name}>{user.name} ({user.email})</MenuItem>
-                ))}
-              </Select>
+              <Chip
+                variant='outlined'
+                label={userLabel}
+                sx={{width: '50%', ml: '10px', justifyContent: 'flex-start'}}
+                onClick={handleClick}
+                icon={<ControlPointIcon />}
+              />
+              <div>
+                <Menu
+                  id="long-menu"
+                  MenuListProps={{
+                    'aria-labelledby': 'long-button',
+                  }}
+                  anchorEl={anchorEl}
+                  open={open}
+                  onClose={handleClose}
+                  PaperProps={{
+                    style: {
+                      maxHeight: ITEM_HEIGHT * 4.5,
+                      width: 'auto',
+                    },
+                  }}
+                >
+                  {users.map((user) => (
+                    <MenuItem id={`${user.name}-${user.email}`} key={user.name} onClick={handleClose}>
+                      {user.name} - {user.email}
+                    </MenuItem>
+                  ))}
+                </Menu>
+              </div>
             </FormControl>
             <div>
                 <Tooltip title={t('taskDel')}>

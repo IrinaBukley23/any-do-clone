@@ -1,5 +1,6 @@
 import { ListItemButton, ListItemText, Menu, MenuItem } from '@mui/material'
 import React from 'react'
+import { TypeUserMenu } from '../../types/types'
 
 type Props = {
   open: boolean

@@ -23,6 +23,7 @@ export interface ITask {
   taskDescr: string
   taskOrder: number
   taskList: ITask[]
+  taskUser?: string
   currentColumnId: string
 }
 
@@ -48,6 +49,8 @@ export interface IUser {
   email: string
   password: string
 }
+
+export type TypeUserMenu = Omit<IUser, 'password'>
 
 export interface IAuthorization {
   email: string
