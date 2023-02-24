@@ -70,7 +70,7 @@ const TaskCard = ({ task, onDelete, onChange }: Props) => {
     setTaskIsEdit(task)
     setDataValue(moment(task.performDate).utc().format('YYYY-MM-DD HH:mm'))
     setProject(projectAll.find((project) => project.id == task.projectId) || null)
-  }, [task])
+  }, [task, projectAll])
   useEffect(() => {
     setMenuItems(typesProj)
     setTaskIsEdit(task)

@@ -11,11 +11,17 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import { NavLink } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
 import React, { useEffect, useState } from 'react'
-import { createProject, loadProjects, projectSelectors } from '../../store/reducers/projectReducer'
+import {
+  changeProject,
+  createProject,
+  loadProjects,
+  projectSelectors,
+} from '../../store/reducers/projectReducer'
 import { DialogModal } from '../ui/dialogModal'
-import { Project } from '../../types/types'
 import { calendarActions } from '../../store/reducers/calendarReducer'
 import { useTranslation } from 'react-i18next'
+import { Project } from '../../types/types'
+import TextFieldEdit from '../ui/textFieldEdit/textFieldEdit'
 
 const SideProjects = () => {
   const { key } = useAppSelector((state) => state.authorization)
@@ -23,6 +29,7 @@ const SideProjects = () => {
   const { project } = useAppSelector((state) => state.calendar)
   const [open, setOpen] = useState(false)
   const [projectName, setProjectName] = useState('')
+  const [projectEdit, setProjectEdit] = useState<Project | null>(null)
 
   const handleAddProject = () => {
     console.log('add project')
@@ -39,6 +46,9 @@ const SideProjects = () => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setProjectName(e.target.value)
   }
+  const handleCancel = () => {
+    setProjectEdit(null)
+  }
   const handleClose = () => {
     setOpen(false)
   }
@@ -48,8 +58,15 @@ const SideProjects = () => {
     if (key) dispatch(createProject({ key: key, name: projectName }))
     setOpen(false)
   }
+  const handleAprove = (dataset: string, text: string) => {
+    if (projectEdit && key)
+      dispatch(changeProject({ key: key, project: { ...projectEdit, name: text } }))
+    setProjectEdit(null)
+  }
   const { t } = useTranslation()
-
+  const handleDoubleClick = (currProject: Project) => {
+    setProjectEdit(currProject)
+  }
   return (
     <>
       <Accordion>
@@ -69,16 +86,28 @@ const SideProjects = () => {
           >
             <Typography>{t('sideBarProjAll')}</Typography>
           </NavLink>
-          {projectAll.map((projectCurr) => (
-            <NavLink
-              key={projectCurr.id}
-              to='/main'
-              onClick={() => handleClick(projectCurr.id)}
-              className={({ isActive }) => (project == projectCurr.id ? styles.activeLink : '')}
-            >
-              <Typography>{projectCurr.name}</Typography>
-            </NavLink>
-          ))}
+          {projectAll.map((projectCurr) =>
+            projectEdit?.id == projectCurr.id ? (
+              <TextFieldEdit
+                dataName='project'
+                key={projectEdit.id}
+                label='Проект'
+                value={projectEdit.name}
+                onAprove={handleAprove}
+                onCancel={handleCancel}
+              />
+            ) : (
+              <NavLink
+                key={projectCurr.id}
+                to='/main'
+                onClick={() => handleClick(projectCurr.id)}
+                onDoubleClick={() => handleDoubleClick(projectCurr)}
+                className={({ isActive }) => (project == projectCurr.id ? styles.activeLink : '')}
+              >
+                <Typography>{projectCurr.name}</Typography>
+              </NavLink>
+            ),
+          )}
           <Button onClick={handleAddProject}>+</Button>
         </AccordionDetails>
       </Accordion>
