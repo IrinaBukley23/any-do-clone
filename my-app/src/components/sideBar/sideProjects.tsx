@@ -15,6 +15,7 @@ import { createProject, loadProjects, projectSelectors } from '../../store/reduc
 import { DialogModal } from '../ui/dialogModal'
 import { Project } from '../../types/types'
 import { calendarActions } from '../../store/reducers/calendarReducer'
+import { useTranslation } from 'react-i18next'
 
 const SideProjects = () => {
   const { key } = useAppSelector((state) => state.authorization)
@@ -47,6 +48,7 @@ const SideProjects = () => {
     if (key) dispatch(createProject({ key: key, name: projectName }))
     setOpen(false)
   }
+  const { t } = useTranslation()
 
   return (
     <>
@@ -56,7 +58,7 @@ const SideProjects = () => {
           aria-controls='panel1a-content'
           id='panel1a-header'
         >
-          <Typography>Мои проекты</Typography>
+          <Typography>{t('sideBarAccordeonProj')}</Typography>
         </AccordionSummary>
         <AccordionDetails>
           <NavLink
@@ -65,7 +67,7 @@ const SideProjects = () => {
             onClick={() => handleClick(null)}
             className={({ isActive }) => (!project ? styles.activeLink : '')}
           >
-            <Typography>Все проекты</Typography>
+            <Typography>{t('sideBarProjAll')}</Typography>
           </NavLink>
           {projectAll.map((projectCurr) => (
             <NavLink

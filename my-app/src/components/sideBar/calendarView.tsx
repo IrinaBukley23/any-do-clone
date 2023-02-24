@@ -14,6 +14,7 @@ import { useSelector } from 'react-redux'
 import { calendarActions, calendarSelectors, loadTasks } from '../../store/reducers/calendarReducer'
 
 import { getCurrTasks } from '../../store/utils'
+import { useTranslation } from 'react-i18next'
 
 const CustomBar = () => {
   const { dateCurrent } = useAppSelector(
@@ -24,18 +25,21 @@ const CustomBar = () => {
     (state) => getCurrTasks(calendarSelectors.selectAll(state.calendar), new Date(dateCurrent)),
     (prev, curr) => prev.length == curr.length,
   )
+
+  const { t } = useTranslation()
+  const { lang } = useAppSelector((state) => state.lang)
+
   return (
     <>
       <p>
-        Выбранная дата: <b> {moment(new Date(dateCurrent)).format('Do MMMM YYYY')}</b>
+        {t('sideBarDate')} <b> {moment(new Date()).locale(lang).format('Do MMMM YYYY')}</b>
       </p>
       <p>
-        Количество задач: <strong>{taskList.length}</strong>
+        {t('sideBarTasksAmount')} <b>{taskList.length}</b>
       </p>
     </>
   )
 }
-
 const CalendarView = () => {
   const { dateCurrent } = useAppSelector(
     (state) => state.calendar,
@@ -43,6 +47,8 @@ const CalendarView = () => {
   )
   const taskListAll = useAppSelector((state) => calendarSelectors.selectAll(state.calendar))
   const { key } = useAppSelector((state) => state.authorization)
+  const { lang } = useAppSelector((state) => state.lang)
+
   const dispatch = useAppDispatch()
 
   console.log('sidebaRender', dateCurrent)
@@ -66,7 +72,7 @@ const CalendarView = () => {
 
   return (
     <Paper>
-      <LocalizationProvider dateAdapter={AdapterMoment} adapterLocale='ru'>
+      <LocalizationProvider dateAdapter={AdapterMoment} adapterLocale={lang}>
         <StaticDatePicker
           displayStaticWrapperAs='desktop'
           value={dateCurrent}
