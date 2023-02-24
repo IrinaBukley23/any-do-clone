@@ -10,14 +10,16 @@ import {
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import { NavLink } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { createProject, loadProjects, projectSelectors } from '../../store/reducers/projectReducer'
 import { DialogModal } from '../ui/dialogModal'
+import { Project } from '../../types/types'
+import { calendarActions } from '../../store/reducers/calendarReducer'
 
 const SideProjects = () => {
   const { key } = useAppSelector((state) => state.authorization)
   const projectAll = useAppSelector((state) => projectSelectors.selectAll(state.project))
-
+  const { project } = useAppSelector((state) => state.calendar)
   const [open, setOpen] = useState(false)
   const [projectName, setProjectName] = useState('')
 
@@ -30,7 +32,9 @@ const SideProjects = () => {
     if (key) dispatch(loadProjects(key))
     console.log('sidebar')
   }, [])
-
+  const handleClick = (project: number | null) => {
+    dispatch(calendarActions.setProject(project))
+  }
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setProjectName(e.target.value)
   }
@@ -55,11 +59,23 @@ const SideProjects = () => {
           <Typography>Мои проекты</Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <NavLink to='/main' className={({ isActive }) => (isActive ? styles.activeLink : '')}>
+          <NavLink
+            to='/main'
+            // selected={!project}
+            onClick={() => handleClick(null)}
+            className={({ isActive }) => (!project ? styles.activeLink : '')}
+          >
             <Typography>Все проекты</Typography>
           </NavLink>
-          {projectAll.map((project) => (
-            <Typography key={project.id}>{project.name}</Typography>
+          {projectAll.map((projectCurr) => (
+            <NavLink
+              key={projectCurr.id}
+              to='/main'
+              onClick={() => handleClick(projectCurr.id)}
+              className={({ isActive }) => (project == projectCurr.id ? styles.activeLink : '')}
+            >
+              <Typography>{projectCurr.name}</Typography>
+            </NavLink>
           ))}
           <Button onClick={handleAddProject}>+</Button>
         </AccordionDetails>
