@@ -8,7 +8,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setColumnList, setColumnTitle, sortColumnList, setTaskList } from '../../store/actions/actionCreators';
 import nextId from 'react-id-generator';
 import { minNumberOfLetters } from '../../types/constants';
+import { useTranslation } from 'react-i18next';
 
+let startOrder = 0;
 const BoardPage = () => {
     const [isCreate, setIsCreate] = useState(false);
     const { taskList } = useSelector((state: State) => state.task);
@@ -19,6 +21,7 @@ const BoardPage = () => {
     const dispatch = useDispatch();
     const [isValidate, setIsValidate] = useState(true);
     const myId = nextId();
+    const { t, } = useTranslation();
     const [currentColumn, setCurrentColumn] = useState<ColumnItemType>({
       columnId: '',
       columnTitle: '',
@@ -36,13 +39,14 @@ const BoardPage = () => {
     };
 
     const handleSaveColumn = () => {
+      startOrder++;
       setIsCreate(false);
       setCreated(true);
       dispatch(
         setColumnList([
           ...columnList,
           {
-            columnOrder: columnList.length + 1,
+            columnOrder: startOrder,
             columnId: myId,
             columnTitle: columnTitle,
           },
@@ -71,23 +75,30 @@ const BoardPage = () => {
 
     function dropHandler(e: React.DragEvent<HTMLDivElement>, column: ColumnItemType): void {
       e.preventDefault();
-      (e.target as HTMLDivElement).style.background = '';
-      if(currentTask && currentTask.currentColumnId === column.columnId) return;
-      if(currentTask && currentTask.currentColumnId !== column.columnId) {
-        const newTaskList = [...taskList].filter((task) => task.taskId !== currentTask.taskId)
+      if((e.target as HTMLElement).classList.contains('task__title') || (e.target as HTMLElement).classList.contains('column__wrapper')) {
+        if(currentTask && currentTask.currentColumnId === column.columnId) return;
+        if(currentTask && currentTask.currentColumnId !== column.columnId) {
+          const newTaskList = [...taskList].filter((task) => task.taskId !== currentTask.taskId)
+          dispatch(
+            setTaskList([...newTaskList,
+              {...currentTask,
+                currentColumnId: column.columnId,
+              },
+            ])
+          );
+          console.log(e.target);
+          (e.target as HTMLDivElement).style.background = ''
+          return;
+        }
+      } 
+      if((e.target as HTMLElement).classList.contains('column__title')) {
         dispatch(
-          setTaskList([...newTaskList,
-            {...currentTask,
-              currentColumnId: column.columnId,
-            },
-          ])
-        );
-        (e.target as HTMLDivElement).style.background = ''
-        return;
+          sortColumnList([...columnList], column, currentColumn)
+          );
       }
-      dispatch(
-      sortColumnList([...columnList], column, currentColumn)
-      );
+     
+      (e.target as HTMLDivElement).style.background = '';
+     
     }
 
     const sortColumns = (column1: ColumnItemType, column2: ColumnItemType) => column1.columnOrder - column2.columnOrder;
@@ -114,19 +125,19 @@ const BoardPage = () => {
                   <TextField 
                       onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChangeTitle(e, setColumnTitle)}
                       id="filled-basic" 
-                      label="Filled" 
-                      variant="filled" 
                       placeholder=''
-                      sx={{height: '40px', ml: '15px', minWidth: '210px'}} 
+                      label={t('boardPageInputText')}
+                      variant="filled" 
+                      sx={{ml: '15px', minWidth: '210px'}} 
                   />
-                  {isError && <Typography variant="h5" component="p" sx={{fontSize: '12px', textAlign: 'left', color: 'red', mt: '15px', ml: '15px'}}>Необходимо минимум три символа</Typography>}
+                  {isError && <Typography variant="h5" component="p" sx={{fontSize: '12px', textAlign: 'left', color: 'red', mt: '15px', ml: '15px'}}> {t('boardPageInputError')} </Typography>}
                   </div>
                 <Button 
                   onClick={handleSaveColumn} 
                   color='primary' 
                   variant='contained'
                   sx={{height: '40px', ml: '15px', minWidth: '160px'}} disabled={isValidate}>
-                    Сохранить
+                    {t('boardPageSaveCol')}
                 </Button>
                 </>
                 )}
@@ -135,7 +146,7 @@ const BoardPage = () => {
                 color='primary' 
                 variant='contained'
                 sx={{height: '40px', ml: '15px', minWidth: '160px'}}>
-                  Добавить колонку
+                  {t('boardPageAddCol')}
               </Button>
             </>
         </div>

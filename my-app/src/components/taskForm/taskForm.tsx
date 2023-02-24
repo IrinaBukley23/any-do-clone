@@ -7,6 +7,7 @@ import { State } from '../../types/types';
 import { useState } from 'react';
 import nextId from 'react-id-generator';
 import { minNumberOfLetters } from '../../types/constants';
+import { useTranslation } from 'react-i18next';
 
 interface IProps {
   handleClose: () => void;
@@ -22,6 +23,7 @@ const TaskForm = ({ handleClose }: IProps) => {
   const [isErrorDescr, setIsErrorDescr] = useState(false);
   const [isValidate, setIsValidate] = useState(true);
   const myId = nextId();
+  const { t, } = useTranslation();
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -47,6 +49,8 @@ const TaskForm = ({ handleClose }: IProps) => {
         },
       ])
     );
+    dispatch(setTaskTitle(''));
+    dispatch(setTaskDescr(''));
     handleClose();
   };
 
@@ -57,29 +61,29 @@ const TaskForm = ({ handleClose }: IProps) => {
           <TextField
             id='title'
             name='title'
-            label='Title'
+            label={t('taskTitle')}
             placeholder=''
             fullWidth
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange(e, setTaskTitle, setIsError)}
             required
           />
-          {isError && <Typography variant="h5" component="p" sx={{fontSize: '12px', textAlign: 'left', color: 'red'}}>Необходимо минимум три символа</Typography>}
+          {isError && <Typography variant="h5" component="p" sx={{fontSize: '12px', textAlign: 'left', color: 'red'}}>{t('taskTitleError')}</Typography>}
         </Grid>
         <Grid item xs={12}>
           <TextField
             id='descr'
             name='descr'
-            label='Description'
+            label={t('taskDescr')}
             placeholder=''
             fullWidth
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange(e, setTaskDescr, setIsErrorDescr)}
             required
           />
-          {isErrorDescr && <Typography variant="h5" component="p" sx={{fontSize: '12px', textAlign: 'left', color: 'red'}}>Необходимо минимум три символа</Typography>}
+          {isErrorDescr && <Typography variant="h5" component="p" sx={{fontSize: '12px', textAlign: 'left', color: 'red'}}>{t('taskTitleError')}</Typography>}
         </Grid>
       </Grid>
-      <Button autoFocus onClick={handleClose}>Отмена</Button>
-      <Button onClick={handleTaskSubmit} disabled={isValidate}>Создать</Button>
+      <Button autoFocus onClick={handleClose}>{t('taskCancel')}</Button>
+      <Button onClick={handleTaskSubmit} disabled={isValidate}>{t('taskCreate')}</Button>
     </form>
   )
 }

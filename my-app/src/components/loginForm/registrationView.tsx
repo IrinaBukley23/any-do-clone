@@ -1,43 +1,47 @@
 import { Alert, Grid, TextField } from '@mui/material'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
-import theme from '../../defaultTheme'
+// import theme from '../../defaultTheme'
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
 import { register } from '../../store/reducers/authorization'
 import styles from './form.module.scss'
+import { useTranslation } from 'react-i18next';
 
-const validationSchem = yup.object({
-  name: yup
-    .string()
-    .min(3, 'Имя должно быть минимум 3 символа') // Name should be of minimum 3 characters length
-    .required('Имя обязательно для заполнения'), // Name is required
-  email: yup
-    .string()
-    .email('Введите корректный e-mail')
-    .required('Email обязателен для заполнения'), // Enter a valid email
-
-  password: yup
-    .string()
-    .matches(/[0-9]/, 'Пароль должен содержать минимум одну цифру') // Password must contain at least one number
-    .matches(/[A-ZА-Я]/, 'Пароль должен содержать хотя бы одну заглавную букву') // Password must contain at least one uppercase letter
-    .min(8, 'Минимальная длина пароля 8 символов') // Password should be of minimum 8 characters length
-    .matches(
-      /^(?=.*[a-zа-я])(?=.*[A-ZА-Я])(?=.*\d)(?=.*[^\da-zA-Zа-яА-Я\s])(?!.*\s).{8,}$/,
-      'Пароль должен содержать хотя бы один спец символ',
-    ) // Password must contain at least one special symbol
-    .required('Поле обязательно для заполнения'), // Password is required
-  passwordConfirm: yup
-    .string()
-    .oneOf([yup.ref('password'), null], 'Пароли должны совпадать') // Password must much
-    .required('Требуется подтверждение пароля'), // Confirm password is required
-})
 interface ViewProps {
   formId: string
 }
 
 export const RegistrationView = ({ formId }: ViewProps) => {
   const dispatch = useAppDispatch()
+  const { t, } = useTranslation();
   const error = useAppSelector(state => state.authorization.serverError);
+  
+  const validationSchem = yup.object({
+    name: yup
+      .string()
+      .min(3, `${t('regFormNameErrorLen')}`) // Name should be of minimum 3 characters length
+      .required(`${t('regFormNameErrorReq')}`), // Name is required
+    email: yup
+      .string()
+      .email(`${t('regFormEmailError')}`)
+      .required(`${t('regFormEmailErrorReq')}`), // Enter a valid email
+  
+    password: yup
+      .string()
+      .matches(/[0-9]/, `${t('regFormPasswordErrorNum')}`) // Password must contain at least one number
+      .matches(/[A-ZА-Я]/, `${t('regFormPasswordErrorLetter')}`) // Password must contain at least one uppercase letter
+      .min(8, `${t('regFormPasswordErrorLength')}`) // Password should be of minimum 8 characters length
+      .matches(
+        /^(?=.*[a-zа-я])(?=.*[A-ZА-Я])(?=.*\d)(?=.*[^\da-zA-Zа-яА-Я\s])(?!.*\s).{8,}$/,
+        `${t('regFormPasswordErrorSymbol')}`,
+      ) // Password must contain at least one special symbol
+      .required(`${t('regFormPasswordErrorReq')}`), // Password is required
+    passwordConfirm: yup
+      .string()
+      .oneOf([yup.ref('password'), null], `${t('regFormPasswordConfirmError')}`) // Password must much
+      .required(`${t('regFormPasswordConfirmErrorReq')}`), // Confirm password is required
+  })
+  
   const formik = useFormik({
     initialValues: {
       name: '',
@@ -67,7 +71,7 @@ export const RegistrationView = ({ formId }: ViewProps) => {
           <TextField
             id='name'
             name='name'
-            label='Имя'
+            label={t('regFormName')}
             placeholder=''
             fullWidth
             value={formik.values.name}
@@ -81,7 +85,7 @@ export const RegistrationView = ({ formId }: ViewProps) => {
           <TextField
             id='email'
             name='email'
-            label='Email'
+            label={t('regFormEmail')}
             placeholder=''
             fullWidth
             value={formik.values.email}
@@ -95,9 +99,9 @@ export const RegistrationView = ({ formId }: ViewProps) => {
           <TextField
             id='password'
             name='password'
-            label='Пароль'
-            fullWidth
+            label={t('regFormPassword')}
             placeholder=''
+            fullWidth
             value={formik.values.password}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
@@ -110,9 +114,9 @@ export const RegistrationView = ({ formId }: ViewProps) => {
           <TextField
             id='passwordConfirm'
             name='passwordConfirm'
-            label='Подтвердите пароль'
-            fullWidth
+            label={t('regFormPasswordConfirm')}
             placeholder=''
+            fullWidth
             value={formik.values.passwordConfirm}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}

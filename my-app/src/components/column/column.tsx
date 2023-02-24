@@ -1,4 +1,4 @@
-import styles from './column.module.scss'
+import './column.scss'
 import React, { useState } from 'react'
 import { Button, IconButton, TextField, Tooltip, Typography } from '@mui/material'
 import { ColumnItemType, ITask, State, TaskItemType } from '../../types/types'
@@ -16,6 +16,7 @@ import Task from '../task/task'
 import { DialogConfirm } from '../ui/dialogConfirm'
 import ResponsiveDialog from '../ui/openDialog'
 import DownloadDoneIcon from '@mui/icons-material/DownloadDone'
+import { useTranslation } from 'react-i18next'
 
 interface IProps {
   columnItem: ColumnItemType
@@ -30,9 +31,10 @@ const Column = (props: IProps) => {
   const dispatch = useDispatch()
   const { taskList } = useSelector((state: State) => state.task)
   const taskQuantity = taskList.length
-
+  const { t } = useTranslation()
   const [isEdit, setIsEdit] = useState(false)
   const [correctedTitle, setCorrectedTitle] = useState(columnTitle)
+
   const handleEdit = () => {
     setIsEdit(true)
   }
@@ -107,17 +109,17 @@ const Column = (props: IProps) => {
   const sortTasks = (task1: TaskItemType, task2: TaskItemType) => task1.taskOrder - task2.taskOrder
 
   return (
-    <div id={columnId} className={styles.column}>
+    <div id={columnId} className='column'>
       {!isEdit && (
-        <Typography variant='h5' onClick={handleEdit}>
+        <Typography variant='h5' className='column__title' onDoubleClick={handleEdit}>
           {columnTitle}
         </Typography>
       )}
       {isEdit && (
-        <div className={styles.column__edit}>
+        <div className='column__edit'>
           <TextField
             id='outlined-basic'
-            label='Outlined'
+            label=''
             variant='outlined'
             placeholder=''
             value={correctedTitle}
@@ -131,10 +133,10 @@ const Column = (props: IProps) => {
         </div>
       )}
       <Typography variant='h5' component='p' sx={{ fontSize: '14px', textAlign: 'left' }}>
-        Карточек - {taskQuantity}
+        {t('columnCards')} - {taskQuantity}
       </Typography>
       <div>
-        <Tooltip title='Delete column'>
+        <Tooltip title={t('columnDel')}>
           <IconButton
             onClick={handleOpen}
             sx={{ position: 'absolute', top: '5px', right: '5px', color: '#ab45fa' }}
@@ -144,7 +146,7 @@ const Column = (props: IProps) => {
         </Tooltip>
         <DialogConfirm isOpen={open} handleClose={handleClose} handleRemove={handleRemove} />
       </div>
-      <div className={styles.column__wrapper}>
+      <div className='column__wrapper'>
         {[...taskList]
           ?.filter((task) => task.currentColumnId === columnId)
           .sort(sortTasks)
@@ -166,9 +168,9 @@ const Column = (props: IProps) => {
         onClick={handleTaskFormOpen}
         color='primary'
         variant='contained'
-        sx={{ height: '40px', mt: '30px' }}
+        sx={{ height: '40px', mt: '30px', cursor: 'pointer' }}
       >
-        Добавить задачу
+        {t('columnAddTask')}
       </Button>
       <ResponsiveDialog isOpen={isTaskModal} handleClose={handleTaskFormClose} />
     </div>

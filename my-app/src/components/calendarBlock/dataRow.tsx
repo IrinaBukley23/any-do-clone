@@ -63,6 +63,36 @@ const DataRow = ({ idRow, time, task, isEven, changeTask }: Props) => {
             ref={droppableProvided.innerRef}
             {...droppableProvided.droppableProps}
           >
+{/* <<<<<<< HEAD
+            {task.map((t, index) =>
+              isEdit[t.id] ? (
+                <TextField
+                  key={`${t.id}t`}
+                  autoFocus
+                  placeholder=''
+                  sx={{ width: '100%' }}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  value={changedTask?.title}
+                  data-id={t.id}
+                />
+              ) : (
+                <Draggable draggableId={t.id.toString()} index={index} key={t.id}>
+                  {(draggableProvided) => (
+                    <Card
+                      {...draggableProvided.draggableProps}
+                      {...draggableProvided.dragHandleProps}
+                      ref={draggableProvided.innerRef}
+                      data-id={t.id}
+                      // key={t.id}
+                      className={styles.text}
+                    >
+                      {t.title}
+                    </Card>
+                  )}
+                </Draggable>
+              ),
+======= */}
             {changedTask && (
               <TextField
                 key={`${changedTask.id}t`}

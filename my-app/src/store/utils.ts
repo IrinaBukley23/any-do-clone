@@ -18,6 +18,7 @@ export const initialState = {
     taskList: [],
     currentColumnId: '',
   },
+  lang: ''
 }
 
 const roundMin = (date: string) =>

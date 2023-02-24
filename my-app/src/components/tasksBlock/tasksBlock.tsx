@@ -1,6 +1,6 @@
 import styles from './tasksBlock.module.scss'
 import SearchIcon from '@mui/icons-material/Search'
-
+import { useTranslation } from 'react-i18next'
 import Stack from '@mui/material/Stack'
 import TaskCard from './taskCard'
 import { InputAdornment, TextField } from '@mui/material'
@@ -31,7 +31,7 @@ const TasksBlock = () => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTaskTitle(e.target.value)
   }
-
+  const { t } = useTranslation()
   useEffect(() => {
     dispatch(calendarActions.setSearchString(searchString))
   }, [searchString])
@@ -58,7 +58,7 @@ const TasksBlock = () => {
   return (
     <Stack spacing={2} className={styles.central}>
       <TextField
-        placeholder='Начните вводить для поиска...'
+        placeholder={t('taskSearch') as string}
         InputProps={{
           startAdornment: (
             <InputAdornment position='start'>
@@ -70,7 +70,7 @@ const TasksBlock = () => {
         onChange={handleSearchChange}
       />
       <TextField
-        placeholder='Введите задачу'
+        placeholder={t('taskCreatePlaceholder') as string}
         value={taskTitle}
         onChange={handleChange}
         onKeyUp={handleKey}

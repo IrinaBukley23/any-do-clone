@@ -4,8 +4,10 @@
 }
 .header {
   display: flex;
-  height: 70px;
-  background-color: #ffffff;
+  height: auto;
+  padding: 10px;
+ // background-color: #e3dfdf;
+  border: 4px solid #ffffff;
   align-items: center;
 }
 

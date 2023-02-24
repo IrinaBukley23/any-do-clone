@@ -83,3 +83,7 @@ export type Action =
         taskDrop: TaskItemType,
       }
     }
+    | {
+      type: Actions.SET_LANG
+      payload: string
+    }
