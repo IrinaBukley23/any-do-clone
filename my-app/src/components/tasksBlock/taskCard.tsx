@@ -142,20 +142,29 @@ const TaskCard = ({ task, onDelete, onChange }: Props) => {
       setIsEdit((prevState) => ({ ...prevState, [type]: true }))
     }
   }
-  const setColorImportance = (lang: string) => {
-    if (lang === 'ru') {
-      return taskEdit.tag == Importance.immediat
-        ? 'error'
-        : taskEdit.tag == Importance.important
-        ? 'warning'
-        : 'success'
+  const setColorImportance = () => {
+    return taskEdit.tag == Importance.immediat || ImportanceEn.immediat
+      ? 'error'
+      : taskEdit.tag == Importance.important || ImportanceEn.important
+      ? 'warning'
+      : 'success'
+  }
+  const getImportance = () => {
+    let res = null
+    if (lang == 'ru') {
+      taskEdit.tag == Importance.immediat || ImportanceEn.immediat
+        ? (res = Importance.immediat)
+        : taskEdit.tag == Importance.important || ImportanceEn.important
+        ? (res = Importance.important)
+        : (res = Importance.notImediat)
     } else {
-      return taskEdit.tag == ImportanceEn.immediat
-        ? 'error'
-        : taskEdit.tag == ImportanceEn.important
-        ? 'warning'
-        : 'success'
+      taskEdit.tag == Importance.immediat || ImportanceEn.immediat
+        ? (res = ImportanceEn.immediat)
+        : taskEdit.tag == Importance.important || ImportanceEn.important
+        ? (res = ImportanceEn.important)
+        : (res = ImportanceEn.notImediat)
     }
+    return res
   }
 
   return (
@@ -262,9 +271,9 @@ const TaskCard = ({ task, onDelete, onChange }: Props) => {
               <Chip
                 data-name={TypeChip.important}
                 // variant='outlined'
-                label={taskEdit.tag}
+                label={getImportance()}
                 onClick={showMenu}
-                color={setColorImportance(lang)}
+                color={setColorImportance()}
                 onDelete={() => deleteChip(TypeChip.important)}
               />
             ) : (
