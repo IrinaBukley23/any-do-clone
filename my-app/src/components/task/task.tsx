@@ -1,7 +1,7 @@
 import './task.scss'
 import React, { useState } from 'react';
 import { FormControl, IconButton, Chip, MenuItem, TextField, Tooltip, Typography } from '@mui/material';
-import { ITask, State, TaskItemType, TypeUserMenu } from '../../types/types';
+import { ITask, State, TypeUserMenu } from '../../types/types';
 import { useDispatch, useSelector } from 'react-redux';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { editTaskDescr, editTaskTitle, setRemoveTask, setTaskUser } from '../../store/actions/actionCreators';
@@ -11,7 +11,7 @@ import DownloadDoneIcon from '@mui/icons-material/DownloadDone'
 import { useTranslation } from 'react-i18next';
 import ControlPointIcon from '@mui/icons-material/ControlPoint'
 import Menu from '@mui/material/Menu';
-import HighlightOffIcon from '@mui/icons-material/HighlightOff';
+
 
 interface IProps {
     taskItem: ITask;
@@ -32,10 +32,7 @@ const users: TypeUserMenu[] = [
   }
 ];
 
-const resUsers: TypeUserMenu[] =  [{
-  name: '',
-  email: ''
-}, ...users]
+
 
 const ITEM_HEIGHT = 48;
 
@@ -101,6 +98,10 @@ const Task = (props: IProps) => {
     const handleCloseConfirm = () => {
       setOpenConfirm(false);
     };
+    const resUsers: TypeUserMenu[] =  [{
+      name: '',
+      email: ''
+    }, ...users]
     const user = taskList.filter((item) => item.taskId === taskId)[0].taskUser
     return (
         <div id={taskId} key={taskId} className="task">
