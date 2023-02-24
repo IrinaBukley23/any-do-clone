@@ -1,4 +1,4 @@
-import styles from './column.module.scss'
+import './column.scss'
 import React, { useState } from 'react'
 import { Button, IconButton, TextField, Tooltip, Typography } from '@mui/material'
 import { ColumnItemType, ITask, State, TaskItemType } from '../../types/types'
@@ -109,14 +109,14 @@ const Column = (props: IProps) => {
   const sortTasks = (task1: TaskItemType, task2: TaskItemType) => task1.taskOrder - task2.taskOrder
 
   return (
-    <div id={columnId} className={styles.column}>
+    <div id={columnId} className='column'>
       {!isEdit && (
-        <Typography variant='h5' className={styles.column__title} onDoubleClick={handleEdit}>
+        <Typography variant='h5' className='column__title' onDoubleClick={handleEdit}>
           {columnTitle}
         </Typography>
       )}
       {isEdit && (
-        <div className={styles.column__edit}>
+        <div className='column__edit'>
           <TextField
             id='outlined-basic'
             label=''
@@ -146,7 +146,7 @@ const Column = (props: IProps) => {
         </Tooltip>
         <DialogConfirm isOpen={open} handleClose={handleClose} handleRemove={handleRemove} />
       </div>
-      <div className={styles.column__wrapper}>
+      <div className='column__wrapper'>
         {[...taskList]
           ?.filter((task) => task.currentColumnId === columnId)
           .sort(sortTasks)
