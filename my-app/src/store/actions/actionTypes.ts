@@ -1,5 +1,5 @@
 import { Actions } from '../../types/enum'
-import { ColumnItemType, ITask, TaskItemType } from '../../types/types'
+import { ColumnItemType, TaskItemType } from '../../types/types'
 
 export type Action =
   | {
@@ -49,6 +49,13 @@ export type Action =
       type: Actions.SET_TASK_DESCR
       payload: string
     }
+  | {
+    type: Actions.SET_TASK_USER
+    payload: {
+      taskUser: string
+      taskId: string
+    }
+  }
   | {
       type: Actions.SET_TASK_LIST
       payload: TaskItemType[]

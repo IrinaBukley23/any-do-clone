@@ -1,10 +1,10 @@
 import './task.scss'
 import React, { useState } from 'react';
 import { FormControl, IconButton, Chip, MenuItem, TextField, Tooltip, Typography } from '@mui/material';
-import { ITask, TypeUserMenu } from '../../types/types';
-import { useDispatch } from 'react-redux';
+import { ITask, State, TaskItemType, TypeUserMenu } from '../../types/types';
+import { useDispatch, useSelector } from 'react-redux';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { editTaskDescr, editTaskTitle, setRemoveTask } from '../../store/actions/actionCreators';
+import { editTaskDescr, editTaskTitle, setRemoveTask, setTaskUser } from '../../store/actions/actionCreators';
 import CancelIcon from '@mui/icons-material/Cancel';
 import { DialogConfirm } from '../ui/dialogConfirm';
 import DownloadDoneIcon from '@mui/icons-material/DownloadDone'
@@ -32,35 +32,35 @@ const users: TypeUserMenu[] = [
   }
 ];
 
+const resUsers: TypeUserMenu[] =  [{
+  name: '',
+  email: ''
+}, ...users]
+
 const ITEM_HEIGHT = 48;
 
 const Task = (props: IProps) => {
     const [openConfirm, setOpenConfirm] = useState(false);
     const { taskTitle, taskId, taskDescr } = props.taskItem;
+    const { taskList } = useSelector((state: State) => state.task)
     const dispatch = useDispatch();
     const { t, } = useTranslation();
     const [isEditTitle, setIsEditTitle] = useState(false);
     const [isEditDescr, setIsEditDescr] = useState(false);
-    const [isEditUser, setIsEditUser] = useState(false);
+    const [isEditUser, ] = useState(false);
     const [correctedTitle, setCorrectedTitle] = useState(taskTitle);
     const [correctedDescr, setCorrectedDescr] = useState(taskDescr);
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-    const [userLabel, setUserLabel] = useState(`${t('taskUser')}`);
     const open = Boolean(anchorEl);
    
     const handleClickUser = (event: React.MouseEvent<HTMLElement>) => {
       setAnchorEl(event.currentTarget);
-      setIsEditUser(true)
     };
-    const handleCloseUser = (e: React.SyntheticEvent) => {
+    const handleSelectUser = (e: React.SyntheticEvent) => {
       const selectedUser = (e.target as HTMLElement).id.split('-')[0];
-      setUserLabel(selectedUser)
+      dispatch(setTaskUser(selectedUser, taskId));
       setAnchorEl(null);
     };
-    const handleClearUser = () => {
-      setIsEditUser(true)
-      setUserLabel(`${t('taskUser')}`);
-    }
 
     const handleEditTitle = () => {
       setIsEditTitle(true);
@@ -101,7 +101,7 @@ const Task = (props: IProps) => {
     const handleCloseConfirm = () => {
       setOpenConfirm(false);
     };
-
+    const user = taskList.filter((item) => item.taskId === taskId)[0].taskUser
     return (
         <div id={taskId} key={taskId} className="task">
             {!isEditTitle && <Typography variant="h5" className="task__title" onDoubleClick={handleEditTitle}>{taskTitle}</Typography>}
@@ -139,23 +139,15 @@ const Task = (props: IProps) => {
                 </div>
             )}
             <FormControl fullWidth sx={{position: 'relative'}}>
-              {!isEditUser ? (
+              {!isEditUser && (
                 <Chip
-                variant='outlined'
-                label={userLabel}
-                sx={{width: '55%', mt: '10px', justifyContent: 'flex-start'}}
-                onClick={handleClickUser}
-                icon={<ControlPointIcon />}
-              />
-              ) : (
-                <Chip
-                variant='outlined'
-                label={userLabel}
-                sx={{width: '55%', mt: '10px', justifyContent: 'flex-start', position: 'relative'}}
-               // onClick={handleClearUser}
-                icon={<HighlightOffIcon color='primary' onClick={handleClearUser} sx={{position: 'absolute', top: 4, right: 10}} />}
-              />
-              )}
+                  variant='outlined'
+                  label={(user !== '') ? (user): (`${t('taskUser')}`)}
+                  sx={{width: '55%', mt: '10px', justifyContent: 'flex-start'}}
+                  onClick={handleClickUser}
+                  icon={<ControlPointIcon />}
+                />
+              ) }
               <div>
                 <Menu
                   id="long-menu"
@@ -164,7 +156,7 @@ const Task = (props: IProps) => {
                   }}
                   anchorEl={anchorEl}
                   open={open}
-                  onClose={handleCloseUser}
+                  onClose={handleSelectUser}
                   PaperProps={{
                     style: {
                       maxHeight: ITEM_HEIGHT * 4.5,
@@ -172,8 +164,8 @@ const Task = (props: IProps) => {
                     },
                   }}
                 >
-                  {users.map((user) => (
-                    <MenuItem id={`${user.name}-${user.email}`} key={user.name} onClick={handleCloseUser}>
+                  {resUsers.map((user) => (
+                    <MenuItem id={`${user.name}-${user.email}`} key={user.name} onClick={handleSelectUser}>
                       {user.name} - {user.email} 
                     </MenuItem>
                   ))}

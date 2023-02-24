@@ -23,7 +23,7 @@ export interface ITask {
   taskDescr: string
   taskOrder: number
   taskList: ITask[]
-  taskUser?: string
+  taskUser: string
   currentColumnId: string
 }
 

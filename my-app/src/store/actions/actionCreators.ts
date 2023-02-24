@@ -58,6 +58,14 @@ export const setTaskDescr = (taskDescr: string) => ({
   payload: taskDescr,
 })
 
+export const setTaskUser = (taskUser: string, taskId: string) => ({
+  type: Actions.SET_TASK_USER,
+  payload: {
+    taskUser,
+    taskId
+  }
+})
+
 export const setTaskList = (taskList: TaskItemType[]) => ({
   type: Actions.SET_TASK_LIST,
   payload: taskList,

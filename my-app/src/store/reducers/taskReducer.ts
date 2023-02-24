@@ -1,4 +1,3 @@
-import { current } from '@reduxjs/toolkit';
 import { Actions } from '../../types/enum';
 import { ITask, TaskItemType } from '../../types/types';
 import { Action } from '../actions/actionTypes';
@@ -17,6 +16,22 @@ export const taskReducer = (state: ITask = initialState.task, action: Action) =>
               ...state,
               taskDescr: action.payload,
           }
+        }
+        case Actions.SET_TASK_USER: {
+          const newTaskList = state.taskList.map((item: TaskItemType) => {
+            if (item.taskId === action.payload.taskId) {
+              return {
+                ...item,
+                taskUser: action.payload.taskUser,
+              };
+            }
+            return item;
+          });
+          console.log(action.payload.taskUser)
+          return {
+            ...state,
+            taskList: newTaskList,
+          };
         }
         case Actions.SET_TASK_LIST: {
           return {
