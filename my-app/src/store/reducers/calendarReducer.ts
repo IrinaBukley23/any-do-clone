@@ -7,16 +7,10 @@ import {
   createEntityAdapter,
   createSelector,
 } from '@reduxjs/toolkit'
-import { TaskCalendarItemType, ITaskCalendarCreate, State } from './../../types/types'
+import { TaskCalendarItemType, ITaskCalendarCreate, State, Project } from './../../types/types'
 import CalendarTasksApi from '../../api/calendarTasksApi'
 import { TypeStatusTask } from '../../types/enum'
 import moment from 'moment'
-import { getByPlaceholderText } from '@testing-library/react'
-
-export const loadTasks = createAsyncThunk(
-  'calendar/getTasks',
-  async (key: string) => await calendarTasksApi.getTasks(key),
-)
 
 const today = moment(new Date()).hour(0).minute(0).format('YYYY-MM-DD HH:mm')
 
@@ -33,6 +27,11 @@ type ChangeValue = {
   key: string
   task: TaskCalendarItemType
 }
+export const loadTasks = createAsyncThunk(
+  'calendar/getTasks',
+  async (key: string) => await calendarTasksApi.getTasks(key),
+)
+
 export const createTask = createAsyncThunk(
   'calendar/createTask',
   async (value: CreateTaskValue) => {
@@ -52,11 +51,6 @@ export const changeTask = createAsyncThunk('calendar/changeTask', async (value: 
   console.log('changed')
   return task
 })
-
-// export const changeDate= createAsyncThunk('calendar/changeTask', async (value: ChangeValue) => {
-//   const task = await calendarTasksApi.changeTask(value.key, value.task)
-//   return task
-// })
 
 export const deleteTask = createAsyncThunk(
   'calendar/deleteTask',
@@ -106,6 +100,7 @@ export const calendarSlice = createSlice({
     builder.addCase(loadTasks.fulfilled, (state, action: PayloadAction<TaskCalendarItemType[]>) => {
       calendarAdapter.setAll(state, action.payload)
     })
+
     builder.addCase(deleteTask.fulfilled, (state, action) => {
       calendarAdapter.removeOne(state, action.payload)
     })
@@ -113,7 +108,6 @@ export const calendarSlice = createSlice({
       calendarAdapter.addOne(state, action.payload)
     })
     builder.addCase(changeTask.fulfilled, (state, action) => {
-      console.log('change')
       calendarAdapter.updateOne(state, { id: action.payload.id, changes: action.payload })
     })
   },

@@ -83,6 +83,11 @@ export interface ITaskCalendar extends ITaskCalendarCreate {
   taskList: ITaskCalendar[]
 }
 
+export type Project = {
+  id: number
+  name: string
+}
+
 export type TaskCalendarItemType = Omit<ITaskCalendar, 'taskList'>
 
 export type TimeCalendar = {
