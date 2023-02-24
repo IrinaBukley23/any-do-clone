@@ -1,8 +1,7 @@
 import 'moment/locale/ru'
-
+import styles from './sideBar.module.scss'
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment'
-import { Paper, Badge } from '@mui/material'
-
+import { AccordionSummary, Badge, Accordion, AccordionDetails } from '@mui/material'
 import { StaticDatePicker } from '@mui/x-date-pickers/StaticDatePicker'
 import moment from 'moment'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
@@ -10,11 +9,10 @@ import TextField from '@mui/material/TextField'
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
 import { PickersDay } from '@mui/x-date-pickers'
 import { useEffect } from 'react'
-import { useSelector } from 'react-redux'
 import { calendarActions, calendarSelectors, loadTasks } from '../../store/reducers/calendarReducer'
-
 import { getCurrTasks } from '../../store/utils'
 import { useTranslation } from 'react-i18next'
+import { GridExpandMoreIcon } from '@mui/x-data-grid'
 
 const CustomBar = () => {
   const { dateCurrent } = useAppSelector(
@@ -30,14 +28,15 @@ const CustomBar = () => {
   const { lang } = useAppSelector((state) => state.lang)
 
   return (
-    <>
+    <div className={styles.calendarWrapper}>
       <p>
-        {t('sideBarDate')} <b> {moment(new Date()).locale(lang).format('Do MMMM YYYY')}</b>
+        {t('sideBarDate')}
+        <br /> <b> {moment(new Date()).locale(lang).format('Do MMMM YYYY')}</b>
       </p>
       <p>
         {t('sideBarTasksAmount')} <b>{taskList.length}</b>
       </p>
-    </>
+    </div>
   )
 }
 const CalendarView = () => {
@@ -71,46 +70,48 @@ const CalendarView = () => {
   }, [])
 
   return (
-    <Paper>
-      <LocalizationProvider dateAdapter={AdapterMoment} adapterLocale={lang}>
-        <StaticDatePicker
-          displayStaticWrapperAs='desktop'
-          value={dateCurrent}
-          onChange={changeDate}
-          renderInput={(params) => <TextField {...params} />}
-          components={{
-            ActionBar: CustomBar,
-          }}
-          renderDay={(day, _value, DayComponentProps) => {
-            const isSelected = taskListAll
-              .map((task) => task.performDate)
-              .some((x) => moment(day).isSame(x, 'day'))
+    <Accordion>
+      <AccordionSummary expandIcon={<GridExpandMoreIcon />}>
+        <CustomBar />
+      </AccordionSummary>
+      <AccordionDetails sx={{ margin: 0, padding: 0 }}>
+        <LocalizationProvider dateAdapter={AdapterMoment} adapterLocale={lang}>
+          <StaticDatePicker
+            displayStaticWrapperAs='desktop'
+            value={dateCurrent}
+            onChange={changeDate}
+            renderInput={(params) => <TextField {...params} />}
+            renderDay={(day, _value, DayComponentProps) => {
+              const isSelected = taskListAll
+                .map((task) => task.performDate)
+                .some((x) => moment(day).isSame(x, 'day'))
 
-            return (
-              <Badge
-                key={day.toString()}
-                overlap='circular'
-                color='primary'
-                badgeContent={isSelected ? '' : undefined}
-                anchorOrigin={{
-                  vertical: 'bottom',
-                  horizontal: 'right',
-                }}
-                sx={{
-                  '& .MuiBadge-badge': {
-                    right: '50%',
-                    height: '2px',
-                    width: '1px',
-                  },
-                }}
-              >
-                <PickersDay {...DayComponentProps} />
-              </Badge>
-            )
-          }}
-        />
-      </LocalizationProvider>
-    </Paper>
+              return (
+                <Badge
+                  key={day.toString()}
+                  overlap='circular'
+                  color='primary'
+                  badgeContent={isSelected ? '' : undefined}
+                  anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'right',
+                  }}
+                  sx={{
+                    '& .MuiBadge-badge': {
+                      right: '50%',
+                      height: '2px',
+                      width: '1px',
+                    },
+                  }}
+                >
+                  <PickersDay {...DayComponentProps} />
+                </Badge>
+              )
+            }}
+          />
+        </LocalizationProvider>
+      </AccordionDetails>
+    </Accordion>
   )
 }
 export default CalendarView

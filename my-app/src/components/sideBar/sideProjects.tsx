@@ -87,8 +87,8 @@ const SideProjects = () => {
         isOpen={open}
         formsParams={{ textApprove: 'Добавить', formId: 'addProject' }}
       >
-        <form id='addProject' onSubmit={handleSubmit}>
-          <TextField label='Проект' value={projectName} onChange={handleChange} />
+        <form id='addProject' onSubmit={handleSubmit} className={styles.form}>
+          <TextField fullWidth label='Проект' value={projectName} onChange={handleChange} />
         </form>
       </DialogModal>
     </>
