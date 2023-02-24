@@ -4,6 +4,7 @@ import { ReactNode } from 'react'
 import CloseIcon from '@mui/icons-material/Close'
 import styles from './dialogModal.module.scss'
 import { FormParam } from '../../types/types'
+import { useTranslation } from 'react-i18next';
 interface PropsDialogModal {
   onClose?: () => void
   isOpen: boolean
@@ -12,6 +13,8 @@ interface PropsDialogModal {
 }
 
 export const DialogModal = ({ onClose, isOpen, formsParams, children }: PropsDialogModal) => {
+  const { t, } = useTranslation();
+
   const handleClose = () => {
     if (onClose) {
       onClose()
@@ -36,7 +39,7 @@ export const DialogModal = ({ onClose, isOpen, formsParams, children }: PropsDia
       </Box>
       <DialogContent className={styles.dialog}>{children}</DialogContent>
       <DialogActions>
-        <Button onClick={handleClose}>Отмена</Button>
+        <Button onClick={handleClose}>{t('taskCancel')}</Button>
         <Button form={formsParams.formId} color='primary' variant='contained' type='submit'>
           {formsParams.textApprove}
         </Button>

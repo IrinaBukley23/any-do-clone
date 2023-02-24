@@ -9,11 +9,19 @@ import styles from './startPage.module.scss'
 import { LoginForm } from '../../components/loginForm/loginForm'
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
 import { loginStart, registrationStart } from '../../store/reducers/authorization'
+import { useTranslation } from 'react-i18next'
+import { setLang } from '../../store/actions/actionCreators'
 import { useNavigate } from 'react-router-dom'
 
 const StartPage = () => {
   const { key } = useAppSelector((state) => state.authorization)
   const dispatch = useAppDispatch()
+  const { t, i18n } = useTranslation()
+
+  const changeLanguage = (language: string) => {
+    i18n.changeLanguage(language)
+    dispatch(setLang(language))
+  }
   const navigate = useNavigate()
   const login = () => {
     if (key) {
@@ -23,146 +31,160 @@ const StartPage = () => {
     }
   }
   return (
-    <div className={styles.wrapper}>
-      <Typography variant='h1' component='h6' sx={{ fontSize: 52 }}>
-        Добро пожаловать в ЛидерТаск!
-      </Typography>
-      <Typography variant='h3' component='p' sx={{ fontWeitgh: 700, fontSize: 38, mt: 7 }}>
-        Поздравляем! Сегодня ваш день — это великолепный день!
-      </Typography>
-      <div className={styles.wrapper__text}>
-        <Typography component='p' sx={{ fontSize: 28, mb: 10 }}>
-          С этого дня ваша личная продуктивность и эффективность сотрудников будут непрерывно расти.
-          Вам станет просто и легко управлять делами.
+    <>
+      <div className={styles.localization}>
+        <Button
+          color='primary'
+          variant='contained'
+          onClick={() => changeLanguage('en')}
+          sx={{ mr: '15px' }}
+        >
+          EN
+        </Button>
+        <Button color='primary' variant='contained' onClick={() => changeLanguage('ru')}>
+          RU
+        </Button>
+      </div>
+      <div className={styles.wrapper}>
+        <Typography variant='h1' component='h6' sx={{ fontSize: 52 }}>
+          {t('startPageTitle')}
         </Typography>
-        <Button onClick={login} color='primary' variant='contained' sx={{ mr: 5 }}>
-          Войти
-        </Button>
-        <Button onClick={() => dispatch(registrationStart())} color='primary' variant='contained'>
-          Зарегистрироваться
-        </Button>
-        <LoginForm />
-        <div className={styles.wrapper__team}>
-          <Card sx={{ display: 'flex', width: 300, justifyContent: 'center' }}>
-            <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-              <div className={styles.wrapper__photo}>
-                <img src={irina} alt='irina' />
-              </div>
-              <CardContent sx={{ flex: '1 0 auto' }}>
-                <Typography component='div' variant='h5' sx={{ fontSize: 16 }}>
-                  Irina Bukley
-                </Typography>
-                <Typography
-                  variant='subtitle1'
-                  color='text.secondary'
-                  component='div'
-                  sx={{ fontSize: 14 }}
+        <Typography variant='h3' component='p' sx={{ fontWeitgh: 700, fontSize: 38, mt: 7 }}>
+          {t('startPageSubTitle')}
+        </Typography>
+        <div className={styles.wrapper__text}>
+          <Typography component='p' sx={{ fontSize: 28, mb: 10 }}>
+            {t('startPageDescription')}
+          </Typography>
+          <Button onClick={login} color='primary' variant='contained' sx={{ mr: 5 }}>
+            {t('enterBtn')}
+          </Button>
+          <Button onClick={() => dispatch(registrationStart())} color='primary' variant='contained'>
+            {t('regBtn')}
+          </Button>
+          <LoginForm />
+          <div className={styles.wrapper__team}>
+            <Card sx={{ display: 'flex', width: 300, justifyContent: 'center' }}>
+              <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                <div className={styles.wrapper__photo}>
+                  <img src={irina} alt='irina' />
+                </div>
+                <CardContent sx={{ flex: '1 0 auto' }}>
+                  <Typography component='div' variant='h5' sx={{ fontSize: 16 }}>
+                    {t('irina')}
+                  </Typography>
+                  <Typography
+                    variant='subtitle1'
+                    color='text.secondary'
+                    component='div'
+                    sx={{ fontSize: 14 }}
+                  >
+                    {t('profession')}
+                  </Typography>
+                </CardContent>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-around',
+                    pl: 1,
+                    pb: 1,
+                  }}
                 >
-                  Front-end developer
-                </Typography>
-              </CardContent>
-              <Box
-                sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-around',
-                  pl: 1,
-                  pb: 1,
-                }}
-              >
-                <a href='https://github.com/IrinaBukley23'>
-                  <GitHubIcon aria-label='previous'></GitHubIcon>
-                </a>
-                <a href='https://t.me/irina_bukley'>
-                  <TelegramIcon aria-label='previous'></TelegramIcon>
-                </a>
-                <a href='https://www.linkedin.com/in/irina-bukley-283839227/'>
-                  <LinkedInIcon aria-label='previous'></LinkedInIcon>
-                </a>
+                  <a href='https://github.com/IrinaBukley23'>
+                    <GitHubIcon aria-label='previous'></GitHubIcon>
+                  </a>
+                  <a href='https://t.me/irina_bukley'>
+                    <TelegramIcon aria-label='previous'></TelegramIcon>
+                  </a>
+                  <a href='https://www.linkedin.com/in/irina-bukley-283839227/'>
+                    <LinkedInIcon aria-label='previous'></LinkedInIcon>
+                  </a>
+                </Box>
               </Box>
-            </Box>
-          </Card>
-          <Card sx={{ display: 'flex', mr: 5, ml: 5, width: 300, justifyContent: 'center' }}>
-            <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-              <div className={styles.wrapper__photo}>
-                <img src={vlada} alt='vlada' />
-              </div>
-              <CardContent sx={{ flex: '1 0 auto' }}>
-                <Typography component='div' variant='h5' sx={{ fontSize: 16 }}>
-                  Uladzislava Shkrabava
-                </Typography>
-                <Typography
-                  variant='subtitle1'
-                  color='text.secondary'
-                  component='div'
-                  sx={{ fontSize: 14 }}
+            </Card>
+            <Card sx={{ display: 'flex', mr: 5, ml: 5, width: 300, justifyContent: 'center' }}>
+              <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                <div className={styles.wrapper__photo}>
+                  <img src={vlada} alt='vlada' />
+                </div>
+                <CardContent sx={{ flex: '1 0 auto' }}>
+                  <Typography component='div' variant='h5' sx={{ fontSize: 16 }}>
+                    {t('vlada')}
+                  </Typography>
+                  <Typography
+                    variant='subtitle1'
+                    color='text.secondary'
+                    component='div'
+                    sx={{ fontSize: 14 }}
+                  >
+                    {t('profession')}
+                  </Typography>
+                </CardContent>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-around',
+                    pl: 1,
+                    pb: 1,
+                  }}
                 >
-                  Front-end developer
-                </Typography>
-              </CardContent>
-              <Box
-                sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-around',
-                  pl: 1,
-                  pb: 1,
-                }}
-              >
-                <a href='https://github.com/vladislava96'>
-                  <GitHubIcon aria-label='previous'></GitHubIcon>
-                </a>
-                <a href='https://t.me/Vladislavasname'>
-                  <TelegramIcon aria-label='previous'></TelegramIcon>
-                </a>
-                <a href='##'>
-                  <LinkedInIcon aria-label='previous'></LinkedInIcon>
-                </a>
+                  <a href='https://github.com/vladislava96'>
+                    <GitHubIcon aria-label='previous'></GitHubIcon>
+                  </a>
+                  <a href='https://t.me/Vladislavasname'>
+                    <TelegramIcon aria-label='previous'></TelegramIcon>
+                  </a>
+                  <a href='##'>
+                    <LinkedInIcon aria-label='previous'></LinkedInIcon>
+                  </a>
+                </Box>
               </Box>
-            </Box>
-          </Card>
-          <Card sx={{ display: 'flex', width: 300, justifyContent: 'center' }}>
-            <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-              <div className={styles.wrapper__photo}>
-                <img src={polina} alt='polina' />
-              </div>
-              <CardContent sx={{ flex: '1 0 auto' }}>
-                <Typography component='div' variant='h5' sx={{ fontSize: 16 }}>
-                  Polina Makarova
-                </Typography>
-                <Typography
-                  variant='subtitle1'
-                  color='text.secondary'
-                  component='div'
-                  sx={{ fontSize: 14 }}
+            </Card>
+            <Card sx={{ display: 'flex', width: 300, justifyContent: 'center' }}>
+              <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                <div className={styles.wrapper__photo}>
+                  <img src={polina} alt='polina' />
+                </div>
+                <CardContent sx={{ flex: '1 0 auto' }}>
+                  <Typography component='div' variant='h5' sx={{ fontSize: 16 }}>
+                    {t('polina')}
+                  </Typography>
+                  <Typography
+                    variant='subtitle1'
+                    color='text.secondary'
+                    component='div'
+                    sx={{ fontSize: 14 }}
+                  >
+                    {t('profession')}
+                  </Typography>
+                </CardContent>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-around',
+                    pl: 1,
+                    pb: 1,
+                  }}
                 >
-                  Front-end developer
-                </Typography>
-              </CardContent>
-              <Box
-                sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-around',
-                  pl: 1,
-                  pb: 1,
-                }}
-              >
-                <a href='https://github.com/sunnyfur'>
-                  <GitHubIcon aria-label='previous'></GitHubIcon>
-                </a>
-                <a href='https://t.me/polin_makarova'>
-                  <TelegramIcon aria-label='previous'></TelegramIcon>
-                </a>
-                <a href='##'>
-                  <LinkedInIcon aria-label='previous'></LinkedInIcon>
-                </a>
+                  <a href='https://github.com/sunnyfur'>
+                    <GitHubIcon aria-label='previous'></GitHubIcon>
+                  </a>
+                  <a href='https://t.me/polin_makarova'>
+                    <TelegramIcon aria-label='previous'></TelegramIcon>
+                  </a>
+                  <a href='##'>
+                    <LinkedInIcon aria-label='previous'></LinkedInIcon>
+                  </a>
+                </Box>
               </Box>
-            </Box>
-          </Card>
+            </Card>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   )
 }
 

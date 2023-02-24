@@ -1,5 +1,6 @@
 import styles from './sideBar.module.scss'
 import 'moment/locale/ru'
+import { useTranslation } from 'react-i18next'
 
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment'
 import {
@@ -33,13 +34,17 @@ const CustomBar = () => {
     (state) => getCurrTasks(calendarSelectors.selectAll(state.calendar), new Date(dateCurrent)),
     (prev, curr) => prev.length == curr.length,
   )
+
+  const { t } = useTranslation()
+  const { lang } = useAppSelector((state) => state.lang)
+
   return (
     <>
       <p>
-        Выбранная дата: <b> {moment(new Date(dateCurrent)).format('Do MMMM YYYY')}</b>
+        {t('sideBarDate')} <b> {moment(new Date()).locale(lang).format('Do MMMM YYYY')}</b>
       </p>
       <p>
-        Количество задач: <strong>{taskList.length}</strong>
+        {t('sideBarTasksAmount')} <b>{taskList.length}</b>
       </p>
     </>
   )
@@ -51,6 +56,8 @@ const SideBar = () => {
   )
   const taskListAll = useAppSelector((state) => calendarSelectors.selectAll(state.calendar))
   const { key } = useAppSelector((state) => state.authorization)
+  const { lang } = useAppSelector((state) => state.lang)
+
   const dispatch = useAppDispatch()
 
   console.log('sidebaRender', dateCurrent)
@@ -71,10 +78,11 @@ const SideBar = () => {
     if (key) dispatch(loadTasks(key))
     console.log('sidebar')
   }, [])
+  const { t } = useTranslation()
   return (
     <div className={styles.sidebar}>
       <Paper>
-        <LocalizationProvider dateAdapter={AdapterMoment} adapterLocale='ru'>
+        <LocalizationProvider dateAdapter={AdapterMoment} adapterLocale={lang}>
           <StaticDatePicker
             displayStaticWrapperAs='desktop'
             value={dateCurrent}
@@ -120,18 +128,18 @@ const SideBar = () => {
           aria-controls='panel1a-content'
           id='panel1a-header'
         >
-          <Typography>Мои проекты</Typography>
+          <Typography>{t('sideBarAccordeonProj')}</Typography>
         </AccordionSummary>
         <AccordionDetails>
           <NavLink to='/main' className={({ isActive }) => (isActive ? 'active-link' : '')}>
-            <Typography>Все проекты</Typography>
+            <Typography>{t('sideBarProjAll')}</Typography>
           </NavLink>
 
-          <Typography>Здоровье</Typography>
-          <Typography>Бизнес</Typography>
-          <Typography>Семья</Typography>
-          <Typography>Путешествия</Typography>
-          <Typography>Хобби</Typography>
+          <Typography>{t('sideBarProjHealth')}</Typography>
+          <Typography>{t('sideBarProjBusines')}</Typography>
+          <Typography>{t('sideBarProjFamily')}</Typography>
+          <Typography>{t('sideBarProjTravel')}</Typography>
+          <Typography>{t('sideBarProjHobby')}</Typography>
         </AccordionDetails>
       </Accordion>
       <Accordion>
@@ -140,11 +148,11 @@ const SideBar = () => {
           aria-controls='panel2a-content'
           id='panel2a-header'
         >
-          <Typography>Мои доски</Typography>
+          <Typography>{t('sideBarAccordeonBoards')}</Typography>
         </AccordionSummary>
         <AccordionDetails>
           <NavLink to='/board' className={({ isActive }) => (isActive ? styles.activeLink : '')}>
-            <Typography>Мои доски</Typography>
+            <Typography>{t('sideBarBoard')}</Typography>
           </NavLink>
         </AccordionDetails>
       </Accordion>

@@ -1,6 +1,9 @@
 import { Grid, TextField } from '@mui/material';
 import { useEffect, useState } from 'react';
 import styles from './weather.module.scss';
+import { useTranslation } from 'react-i18next';
+import { useSelector } from 'react-redux';
+import { State } from '../../../types/types';
 
 const defaultCity = localStorage.getItem('city');
 
@@ -10,31 +13,28 @@ interface IWeatherData {
   temp: string,
   description: string,
   windSpeed: string,
-  humidity: string
+  humidity: string,
+  icon?: string
 }
 
 const Weather = () => {
   const [weatherData, setData] = useState<IWeatherData | null>(null);
-
   const [city, setCity] = useState(defaultCity)
-
   const [error, setError] = useState('')
-
+  const { t, } = useTranslation();
+  const { lang } = useSelector((state: State) => state.lang)
   useEffect(() => {
     if (isFirstLoad && city !== null) {
       isFirstLoad = false
-      getWeather(city)
+      getWeather(city, lang);
     }
-  });
+  }, [lang]);
 
-  console.log(weatherData)
-
-  async function getWeather(cityValue: string): Promise<void> {
+  async function getWeather(cityValue: string, lang: string): Promise<void> {
     setCity(cityValue);
     localStorage.setItem('city', cityValue)
-    console.log('start')
     try {
-      const url = `https://api.openweathermap.org/data/2.5/weather?q=${cityValue}&lang=en&appid=f24a0e6c09481d6e6ccf0547c5467caf&units=metric`
+      const url = `https://api.openweathermap.org/data/2.5/weather?q=${cityValue}&lang=${lang}&appid=f24a0e6c09481d6e6ccf0547c5467caf&units=metric`
       const res = await fetch(url)
       const data = await res.json()
       setError('')
@@ -42,11 +42,12 @@ const Weather = () => {
         temp: data.main.temp,
         description: data.weather[0].description,
         windSpeed: data.wind.speed,
-        humidity: data.main.humidity
+        humidity: data.main.humidity,
+        icon: `http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`
       })
     } catch(error) {
       console.log(error)
-      setError('City not found.')
+      setError(`${t('weatherCityNotFound')}`)
     }
   }
 
@@ -56,13 +57,13 @@ const Weather = () => {
         <TextField
           id="wether"
           size="small"
-          label="Погода"
-          placeholder="Введите город"
+          label={t('weatherLabel')}
+          placeholder=''
           multiline
           variant="standard"
           value={city}
           onChange={(event) => {
-            getWeather(event.target.value)
+            getWeather(event.target.value, lang)
           }}
           
         />
@@ -74,17 +75,18 @@ const Weather = () => {
           </div>
         }
         { weatherData !== null && error === '' &&
-          <div>
+          <div className={styles.weather__container}>
+            {/* <div>{weatherData.description}</div> */}
+            <div className={styles.header__weather_icon}> <img src={weatherData.icon} alt='icon'/> </div>
             <div>{weatherData.temp}°C</div>
-            <div>{weatherData.description}</div>
           </div>
         }
       </Grid>
       <Grid item xs={4}>
         { weatherData !== null && error === '' &&
           <div>
-            <div>Wind: {weatherData.windSpeed} m/s</div>
-            <div>Humidity: {weatherData.humidity} %</div>
+            <div>{t('weatherWind')}: {weatherData.windSpeed} {t('weatherWindMS')}</div>
+            <div>{t('weatherHumidity')}: {weatherData.humidity} %</div>
           </div>
         }
       </Grid>

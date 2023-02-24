@@ -4,7 +4,7 @@ import authorizationReducer from './authorization'
 import { columnReducer } from './columnReducer'
 import loginSlice from './loginSlice'
 import { taskReducer } from './taskReducer'
-import { techReducer } from './techReducer'
+import { langReducer, techReducer } from './techReducer'
 
 export default combineReducers({
   authorization: authorizationReducer,
@@ -13,4 +13,5 @@ export default combineReducers({
   calendar: calendarReducer,
   task: taskReducer,
   currentId: techReducer,
+  lang: langReducer,
 })
