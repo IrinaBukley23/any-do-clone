@@ -5,11 +5,12 @@ import MenuItem from '@mui/material/MenuItem';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../../../store/hooks';
 import { logout } from '../../../store/reducers/authorization';
+import { useTranslation } from 'react-i18next'; 
 
 const UserMenu = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-
+  const { t, } = useTranslation();
   const name = localStorage.getItem('name');
   const email = localStorage.getItem('email');
 
@@ -52,7 +53,7 @@ const UserMenu = () => {
           navigate('/');
           dispatch(logout());
         }}>
-          Выход
+          {t('exitBtn')}
         </MenuItem>
       </Menu>
     </div>

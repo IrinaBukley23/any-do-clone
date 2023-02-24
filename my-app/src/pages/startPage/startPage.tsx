@@ -9,27 +9,39 @@ import styles from './startPage.module.scss';
 import { LoginForm } from '../../components/loginForm/loginForm';
 import { useAppDispatch } from '../../store/hooks';
 import { loginStart, registrationStart } from '../../store/reducers/authorization';
+import { useTranslation } from 'react-i18next';
+import { setLang } from '../../store/actions/actionCreators'
 
 const StartPage = () => {
   const dispatch = useAppDispatch();
+  const { t, i18n } = useTranslation();
+
+  const changeLanguage = (language: string) => {
+    i18n.changeLanguage(language);
+    dispatch(setLang(language))
+  };
   return (
+    <>
+    <div className={styles.localization}>
+        <Button color='primary' variant='contained' onClick={() => changeLanguage('en')} sx={{mr: '15px'}}>EN</Button>
+        <Button color='primary' variant='contained' onClick={() => changeLanguage('ru')}>RU</Button>
+      </div>
     <div className={styles.wrapper}>
       <Typography variant='h1' component='h6' sx={{ fontSize: 52 }}>
-        Добро пожаловать в ЛидерТаск!
+        {t('startPageTitle')}
       </Typography>
       <Typography variant='h3' component='p' sx={{ fontWeitgh: 700, fontSize: 38, mt: 7 }}>
-        Поздравляем! Сегодня ваш день — это великолепный день!
+      {t('startPageSubTitle')}
       </Typography>
       <div className={styles.wrapper__text}>
         <Typography component='p' sx={{ fontSize: 28, mb: 10 }}>
-          С этого дня ваша личная продуктивность и эффективность сотрудников будут непрерывно расти.
-          Вам станет просто и легко управлять делами.
+        {t('startPageDescription')}
         </Typography>
         <Button onClick={() => dispatch(loginStart())} color='primary' variant='contained' sx={{ mr: 5 }}>
-          Войти
+        {t('enterBtn')}
         </Button>
         <Button onClick={() => dispatch(registrationStart())} color='primary' variant='contained'>
-          Зарегистрироваться
+        {t('regBtn')}
         </Button>
         <LoginForm />
         <div className={styles.wrapper__team}>
@@ -40,7 +52,7 @@ const StartPage = () => {
               </div>
               <CardContent sx={{ flex: '1 0 auto' }}>
                 <Typography component='div' variant='h5' sx={{ fontSize: 16 }}>
-                  Irina Bukley
+                {t('irina')}
                 </Typography>
                 <Typography
                   variant='subtitle1'
@@ -48,7 +60,7 @@ const StartPage = () => {
                   component='div'
                   sx={{ fontSize: 14 }}
                 >
-                  Front-end developer
+                   {t('profession')}
                 </Typography>
               </CardContent>
               <Box
@@ -79,7 +91,7 @@ const StartPage = () => {
               </div>
               <CardContent sx={{ flex: '1 0 auto' }}>
                 <Typography component='div' variant='h5' sx={{ fontSize: 16 }}>
-                  Uladzislava Shkrabava
+                {t('vlada')}
                 </Typography>
                 <Typography
                   variant='subtitle1'
@@ -87,7 +99,7 @@ const StartPage = () => {
                   component='div'
                   sx={{ fontSize: 14 }}
                 >
-                  Front-end developer
+                  {t('profession')}
                 </Typography>
               </CardContent>
               <Box
@@ -118,7 +130,7 @@ const StartPage = () => {
               </div>
               <CardContent sx={{ flex: '1 0 auto' }}>
                 <Typography component='div' variant='h5' sx={{ fontSize: 16 }}>
-                  Polina Makarova
+                {t('polina')}
                 </Typography>
                 <Typography
                   variant='subtitle1'
@@ -126,7 +138,7 @@ const StartPage = () => {
                   component='div'
                   sx={{ fontSize: 14 }}
                 >
-                  Front-end developer
+                  {t('profession')}
                 </Typography>
               </CardContent>
               <Box
@@ -153,6 +165,7 @@ const StartPage = () => {
         </div>
       </div>
     </div>
+    </>
   )
 }
 

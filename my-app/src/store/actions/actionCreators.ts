@@ -97,3 +97,8 @@ export const sortTaskList = (taskList: TaskItemType[], taskDrop: TaskItemType, t
     taskDrag,
   },
 })
+
+export const setLang = (lang: string) => ({
+  type: Actions.SET_LANG,
+  payload: lang,
+})

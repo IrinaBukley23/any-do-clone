@@ -15,7 +15,7 @@ export enum Actions {
   EDIT_TASK_DESCR = 'EDIT_TASK_DESCR',
   REMOVE_TASK = 'REMOVE_TASK',
   SORT_TASK_LIST = 'SORT_TASK_LIST',
-  SORT_TASK_LIST_BETWEEN = 'SORT_TASK_LIST_BETWEEN',
+  SET_LANG = 'SET_LANG',
 }
 
 export enum DialogForm {
@@ -39,10 +39,23 @@ export enum Projects {
   journey = 'Путешествия',
   hobby = 'Хобби',
 }
+
+export enum ProjectsEn {
+  health = 'Health',
+  buiseness = 'Business',
+  family = 'Family',
+  journey = 'Travel',
+  hobby = 'Hobby',
+}
 export enum Importance {
   immediat = 'Срочно',
   important = 'Важно',
   notImediat = 'Не срочно',
+}
+export enum ImportanceEn {
+  immediat = 'Urgently',
+  important = 'Important',
+  notImediat = 'Not urgently',
 }
 
 export enum TypeChip {
@@ -59,4 +72,12 @@ export enum TypeStatusTask {
   pause = 'отложено',
   cancel = 'отменено',
   done = 'сделано',
+}
+
+export enum TypeStatusTaskEn {
+  notStart = 'did not start',
+  start = 'in work',
+  pause = 'postponed',
+  cancel = 'canceled',
+  done = 'done',
 }
