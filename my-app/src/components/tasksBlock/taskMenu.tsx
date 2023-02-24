@@ -1,10 +1,11 @@
 import { ListItemButton, ListItemText, Menu, MenuItem } from '@mui/material'
 import React from 'react'
+import { MenuItemType, Project } from '../../types/types'
 
 type Props = {
   open: boolean
   anchorEl: null | HTMLElement
-  values: string[]
+  values: MenuItemType[]
   closeMenu: () => void
   aceptMenu: (value?: string) => void
 }
@@ -25,8 +26,8 @@ const TaskMenu = ({ open, anchorEl, values, closeMenu, aceptMenu }: Props) => {
       }}
     >
       {values.map((value) => (
-        <MenuItem key={value} onClick={handleClick} data-value={value}>
-          {value}
+        <MenuItem key={value.id} onClick={handleClick} data-value={value.id}>
+          {value.value}
         </MenuItem>
       ))}
     </Menu>

@@ -75,7 +75,7 @@ export interface ITaskCalendarCreate {
   status: TypeStatusTask
   description?: string
   project?: Projects
-  idProject?: number
+  projectId?: number
   tag?: Importance
 }
 export interface ITaskCalendar extends ITaskCalendarCreate {
@@ -93,4 +93,9 @@ export type TaskCalendarItemType = Omit<ITaskCalendar, 'taskList'>
 export type TimeCalendar = {
   id: number
   time: Moment
+}
+
+export type MenuItemType = {
+  id: string | number
+  value: string
 }

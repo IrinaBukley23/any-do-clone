@@ -47,7 +47,7 @@ export enum Importance {
 
 export enum TypeChip {
   important = 'tag',
-  project = 'project',
+  project = 'projectId',
   description = 'description',
   title = 'title',
   status = 'status',

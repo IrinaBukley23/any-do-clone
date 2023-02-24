@@ -4,7 +4,7 @@ import CardActions from '@mui/material/CardActions'
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment'
 
 import DeleteIcon from '@mui/icons-material/Delete'
-import { TaskCalendarItemType } from '../../types/types'
+import { MenuItemType, Project, TaskCalendarItemType } from '../../types/types'
 import { Stack } from '@mui/system'
 import Typography from '@mui/material/Typography'
 import styles from './tasksBlock.module.scss'
@@ -20,21 +20,34 @@ import { Importance, Projects, TypeChip, TypeStatusTask } from '../../types/enum
 import GetIcon from './getIcon'
 import { setColor } from './utils'
 import { setNestedObjectValues } from 'formik'
+import { useAppSelector } from '../../store/hooks'
+import { projectSelectors } from '../../store/reducers/projectReducer'
 
 type Props = {
   task: TaskCalendarItemType
   onDelete: (id: number) => void
   onChange: (task: TaskCalendarItemType) => void
 }
+const toMenuItems = (values: string[] | Project[]): MenuItemType[] => {
+  const menuItems: MenuItemType[] = []
+  values.map((value) => {
+    typeof value == 'string'
+      ? menuItems.push({ id: value, value: value })
+      : menuItems.push({ id: value.id, value: value.name })
+  })
+  return menuItems
+}
 
 const TaskCard = ({ task, onDelete, onChange }: Props) => {
-  const typesProj = Object.values(Projects)
-  const typesImportant = Object.values(Importance)
-  const typesStartTask = Object.values(TypeStatusTask)
+  const projectAll = useAppSelector((state) => projectSelectors.selectAll(state.project))
+  const typesProj = toMenuItems(projectAll)
+  const typesImportant = toMenuItems(Object.values(Importance))
+  const typesStartTask = toMenuItems(Object.values(TypeStatusTask))
   const [isEdit, setIsEdit] = useState({ title: false, description: false })
   const [isNeedToUpdate, setIsNeedToUpdate] = useState(false)
   const [dataValue, setDataValue] = useState<string>('')
-  const [menuItems, setMenuItems] = useState<string[]>([])
+  const [menuItems, setMenuItems] = useState<MenuItemType[]>([])
+  const [project, setProject] = useState<Project | null>(null)
   const [taskEdit, setTaskIsEdit] = useState<TaskCalendarItemType>(task)
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
@@ -48,6 +61,7 @@ const TaskCard = ({ task, onDelete, onChange }: Props) => {
   useEffect(() => {
     setTaskIsEdit(task)
     setDataValue(moment(task.performDate).utc().format('YYYY-MM-DD HH:mm'))
+    setProject(projectAll.find((project) => project.id == task.projectId) || null)
   }, [task])
   useEffect(() => {
     setMenuItems(typesProj)
@@ -197,13 +211,13 @@ const TaskCard = ({ task, onDelete, onChange }: Props) => {
           sx={{ width: '100%' }}
         >
           <Stack spacing={2} direction='row'>
-            {taskEdit.project ? (
+            {project ? (
               <Chip
                 data-name={TypeChip.project}
                 variant='outlined'
-                label={taskEdit.project}
+                label={project.name}
                 onClick={showMenu}
-                color={setColor(taskEdit.project as Projects)}
+                // color={setColor(taskEdit.project as Projects)}
                 onDelete={() => deleteChip(TypeChip.project)}
               />
             ) : (

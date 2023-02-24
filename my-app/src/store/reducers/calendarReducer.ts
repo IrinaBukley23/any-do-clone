@@ -67,10 +67,16 @@ export const calendarAdapter = createEntityAdapter<TaskCalendarItemType>({
 export const calendarSelectors = calendarAdapter.getSelectors()
 
 export const getTaskList = createSelector(
-  [calendarSelectors.selectAll, (state) => state.dateCurrent, (state) => state.searchString],
-  (entities, dateCurrent, filter) => {
-    const byDate = getCurrTasks(entities, new Date(dateCurrent))
-    console.log({ byDate: byDate, ent: entities, filter: filter })
+  [
+    calendarSelectors.selectAll,
+    (state) => state.dateCurrent,
+    (state) => state.searchString,
+    (state) => state.project,
+  ],
+
+  (entities, dateCurrent, filter, project) => {
+    let byDate = getCurrTasks(entities, new Date(dateCurrent))
+    if (project) byDate = byDate.filter((task) => task.project == project)
     if (!filter) return byDate
     return byDate.filter((task) => task.title.toLowerCase().includes(filter.toLowerCase()))
   },
@@ -84,6 +90,7 @@ export const calendarSlice = createSlice({
     dateCurrent: today,
     searchString: '',
     dateSelectedInPlan: today,
+    project: null,
   }),
   reducers: {
     setCurrentDate: (state, action: PayloadAction<string>) => {

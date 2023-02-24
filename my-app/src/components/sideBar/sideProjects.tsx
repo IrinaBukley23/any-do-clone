@@ -15,19 +15,22 @@ import { createProject, loadProjects, projectSelectors } from '../../store/reduc
 import { DialogModal } from '../ui/dialogModal'
 
 const SideProjects = () => {
+  const { key } = useAppSelector((state) => state.authorization)
+  const projectAll = useAppSelector((state) => projectSelectors.selectAll(state.project))
+
+  const [open, setOpen] = useState(false)
+  const [projectName, setProjectName] = useState('')
+
   const handleAddProject = () => {
     console.log('add project')
     setOpen(true)
   }
-  const { key } = useAppSelector((state) => state.authorization)
-  const projectAll = useAppSelector((state) => projectSelectors.selectAll(state.project))
   const dispatch = useAppDispatch()
   useEffect(() => {
     if (key) dispatch(loadProjects(key))
     console.log('sidebar')
   }, [])
-  const [open, setOpen] = useState(false)
-  const [projectName, setProjectName] = useState('')
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setProjectName(e.target.value)
   }

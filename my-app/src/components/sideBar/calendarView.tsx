@@ -71,7 +71,6 @@ const CalendarView = () => {
           displayStaticWrapperAs='desktop'
           value={dateCurrent}
           onChange={changeDate}
-          // sx={{ minHeight: 'inherits' }}
           renderInput={(params) => <TextField {...params} />}
           components={{
             ActionBar: CustomBar,
