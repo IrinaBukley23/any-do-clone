@@ -9,7 +9,13 @@ import TextField from '@mui/material/TextField'
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
 import { PickersDay } from '@mui/x-date-pickers'
 import { useEffect } from 'react'
-import { calendarActions, calendarSelectors, loadTasks } from '../../store/reducers/calendarReducer'
+import {
+  calendarActions,
+  calendarSelectors,
+  getTaskList,
+  getTaskListAll,
+  loadTasks,
+} from '../../store/reducers/calendarReducer'
 import { getCurrTasks } from '../../store/utils'
 import { useTranslation } from 'react-i18next'
 import { GridExpandMoreIcon } from '@mui/x-data-grid'
@@ -44,13 +50,13 @@ const CalendarView = () => {
     (state) => state.calendar,
     (prev, curr) => prev.dateCurrent == curr.dateCurrent,
   )
-  const taskListAll = useAppSelector((state) => calendarSelectors.selectAll(state.calendar))
+  const taskListAll = useAppSelector((state) => getTaskListAll(state.calendar))
   const { key } = useAppSelector((state) => state.authorization)
   const { lang } = useAppSelector((state) => state.lang)
 
   const dispatch = useAppDispatch()
 
-  console.log('sidebaRender', dateCurrent)
+  console.log('sidebaRender', taskListAll)
 
   const changeDate = (date: string | null) => {
     if (date) {

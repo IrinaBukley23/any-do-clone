@@ -88,6 +88,20 @@ export const getTaskList = createSelector(
   },
 )
 
+export const getTaskListPlan = createSelector(
+  [calendarSelectors.selectAll, (state) => state.dateSelectedInPlan],
+  (entities, dateCurrent) => {
+    return getCurrTasks(entities, new Date(dateCurrent)).filter(
+      (task) => task.status != TypeStatusCommon.cancel && task.status != TypeStatusCommon.done,
+    )
+  },
+)
+export const getTaskListAll = createSelector([calendarSelectors.selectAll], (entities) => {
+  return entities.filter(
+    (task) => task.status != TypeStatusCommon.cancel && task.status != TypeStatusCommon.done,
+  )
+})
+
 export const calendarSlice = createSlice({
   name: 'calendar',
   initialState: calendarAdapter.getInitialState({
