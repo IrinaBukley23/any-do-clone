@@ -19,8 +19,8 @@ import {
   Importance,
   ImportanceEn,
   TypeChip,
-  TypeStatusTask,
-  TypeStatusTaskEn,
+  typesStartTask,
+  typesStartTaskEn,
 } from '../../types/enum'
 import { GetIcon } from './getIcon'
 import { useTranslation } from 'react-i18next'
@@ -47,8 +47,8 @@ const TaskCard = ({ task, onDelete, onChange }: Props) => {
 
   const typesImportant = toMenuItems(Object.values(Importance))
   const typesImportantEn = toMenuItems(Object.values(ImportanceEn))
-  const typesStartTask = toMenuItems(Object.values(TypeStatusTask))
-  const typesStartTaskEn = toMenuItems(Object.values(TypeStatusTaskEn))
+  const [typesStartTaskComm, setTypesStartTask] = useState<MenuItemType[]>(typesStartTask)
+
   const [isEdit, setIsEdit] = useState({ title: false, description: false })
   const [isNeedToUpdate, setIsNeedToUpdate] = useState(false)
   const [dataValue, setDataValue] = useState<string>('')
@@ -65,7 +65,13 @@ const TaskCard = ({ task, onDelete, onChange }: Props) => {
       setIsNeedToUpdate(false)
     }
   }, [isNeedToUpdate])
-
+  useEffect(() => {
+    if (lang == 'ru') {
+      setTypesStartTask(typesStartTask)
+    } else {
+      setTypesStartTask(typesStartTaskEn)
+    }
+  }, [lang])
   useEffect(() => {
     setTaskIsEdit(task)
     setDataValue(moment(task.performDate).utc().format('YYYY-MM-DD HH:mm'))
@@ -101,7 +107,7 @@ const TaskCard = ({ task, onDelete, onChange }: Props) => {
     } else if (e.currentTarget.dataset.name == TypeChip.important) {
       lang === 'ru' ? setMenuItems(typesImportant) : setMenuItems(typesImportantEn)
     } else {
-      lang === 'ru' ? setMenuItems(typesStartTask) : setMenuItems(typesStartTaskEn)
+      setMenuItems(typesStartTaskComm)
     }
 
     setAnchorEl(e.currentTarget)
@@ -176,7 +182,7 @@ const TaskCard = ({ task, onDelete, onChange }: Props) => {
             onClick={showMenu}
             data-name={TypeChip.status}
           >
-            <GetIcon status={taskEdit.status as TypeStatusTask} />
+            <GetIcon status={taskEdit.status} />
           </IconButton>
 
           <Stack spacing={2} alignItems='stretch' sx={{ width: '90%' }}>

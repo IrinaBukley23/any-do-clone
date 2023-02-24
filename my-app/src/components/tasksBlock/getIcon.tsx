@@ -3,32 +3,22 @@ import SlideshowOutlinedIcon from '@mui/icons-material/SlideshowOutlined'
 import DisabledByDefaultOutlinedIcon from '@mui/icons-material/DisabledByDefaultOutlined'
 import PausePresentationIcon from '@mui/icons-material/PausePresentation'
 import CheckBoxOutlinedIcon from '@mui/icons-material/CheckBoxOutlined'
-import { TypeStatusTask, TypeStatusTaskEn } from '../../types/enum'
+import { TypeStatusCommon, TypeStatusTask, TypeStatusTaskEn } from '../../types/enum'
 
-export const GetIcon = ({ status }: { status: unknown }) => {
+export const GetIcon = ({ status }: { status: TypeStatusCommon }) => {
   switch (status) {
-    case TypeStatusTask.notStart:
+    case TypeStatusCommon.notStart:
       return <CheckBoxOutlineBlankIcon />
-    case TypeStatusTask.start:
+    case TypeStatusCommon.start:
       return <SlideshowOutlinedIcon />
-    case TypeStatusTask.pause:
+    case TypeStatusCommon.pause:
       return <PausePresentationIcon />
-    case TypeStatusTask.cancel:
+    case TypeStatusCommon.cancel:
       return <DisabledByDefaultOutlinedIcon />
-    case TypeStatusTask.done:
+    case TypeStatusCommon.done:
       return <CheckBoxOutlinedIcon />
-    case TypeStatusTaskEn.notStart:
-      return <CheckBoxOutlineBlankIcon />
-    case TypeStatusTaskEn.start:
-      return <SlideshowOutlinedIcon />
-    case TypeStatusTaskEn.pause:
-      return <PausePresentationIcon />
-    case TypeStatusTaskEn.cancel:
-      return <DisabledByDefaultOutlinedIcon />
-    case TypeStatusTaskEn.done:
-      return <CheckBoxOutlinedIcon />
+
     default:
       return <SlideshowOutlinedIcon />
   }
 }
-

@@ -9,7 +9,7 @@ import {
 } from '@reduxjs/toolkit'
 import { TaskCalendarItemType, ITaskCalendarCreate, State, Project } from './../../types/types'
 import CalendarTasksApi from '../../api/calendarTasksApi'
-import { TypeStatusTask } from '../../types/enum'
+import { TypeStatusCommon, TypeStatusTask } from '../../types/enum'
 import moment from 'moment'
 
 const today = moment(new Date()).hour(0).minute(0).format('YYYY-MM-DD HH:mm')
@@ -38,7 +38,7 @@ export const createTask = createAsyncThunk(
     const newTask: ITaskCalendarCreate = {
       title: value.title,
       performDate: value.date,
-      status: TypeStatusTask.notStart,
+      status: TypeStatusCommon.notStart,
     }
     console.log(newTask)
 
@@ -72,11 +72,17 @@ export const getTaskList = createSelector(
     (state) => state.dateCurrent,
     (state) => state.searchString,
     (state) => state.project,
+    (state) => state.status,
   ],
 
-  (entities, dateCurrent, filter, project) => {
+  (entities, dateCurrent, filter, project, status) => {
     let byDate = getCurrTasks(entities, new Date(dateCurrent))
     if (project) byDate = byDate.filter((task) => task.projectId == project)
+    if (status) byDate = byDate.filter((task) => task.status == status)
+    else
+      byDate = byDate.filter(
+        (task) => task.status != TypeStatusCommon.cancel && task.status != TypeStatusCommon.done,
+      )
     if (!filter) return byDate
     return byDate.filter((task) => task.title.toLowerCase().includes(filter.toLowerCase()))
   },
@@ -89,6 +95,7 @@ export const calendarSlice = createSlice({
     searchString: '',
     dateSelectedInPlan: today,
     project: null,
+    status: null,
   }),
   reducers: {
     setCurrentDate: (state, action: PayloadAction<string>) => {
@@ -102,6 +109,9 @@ export const calendarSlice = createSlice({
     },
     setProject: (state, action) => {
       state.project = action.payload
+    },
+    setStatus: (state, action) => {
+      state.status = action.payload
     },
   },
   extraReducers(builder) {

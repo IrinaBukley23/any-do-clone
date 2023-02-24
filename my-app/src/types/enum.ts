@@ -81,3 +81,20 @@ export enum TypeStatusTaskEn {
   cancel = 'canceled',
   done = 'done',
 }
+
+export enum TypeStatusCommon {
+  notStart = 'notStart',
+  start = 'start',
+  pause = 'pause',
+  cancel = 'cancel',
+  done = 'done',
+}
+
+export const typesStartTask = Object.values(TypeStatusCommon).map((key) => ({
+  id: key,
+  value: TypeStatusTask[key],
+}))
+export const typesStartTaskEn = Object.values(TypeStatusCommon).map((key) => ({
+  id: key,
+  value: TypeStatusTaskEn[key],
+}))

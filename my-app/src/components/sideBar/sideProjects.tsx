@@ -32,7 +32,6 @@ const SideProjects = () => {
   const [projectEdit, setProjectEdit] = useState<Project | null>(null)
 
   const handleAddProject = () => {
-    console.log('add project')
     setOpen(true)
   }
   const dispatch = useAppDispatch()
@@ -82,7 +81,7 @@ const SideProjects = () => {
             to='/main'
             // selected={!project}
             onClick={() => handleClick(null)}
-            className={({ isActive }) => (!project ? styles.activeLink : '')}
+            className={!project ? styles.activeLink : ''}
           >
             <Typography>{t('sideBarProjAll')}</Typography>
           </NavLink>
@@ -102,7 +101,7 @@ const SideProjects = () => {
                 to='/main'
                 onClick={() => handleClick(projectCurr.id)}
                 onDoubleClick={() => handleDoubleClick(projectCurr)}
-                className={({ isActive }) => (project == projectCurr.id ? styles.activeLink : '')}
+                className={project == projectCurr.id ? styles.activeLink : ''}
               >
                 <Typography>{projectCurr.name}</Typography>
               </NavLink>
