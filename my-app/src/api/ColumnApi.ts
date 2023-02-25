@@ -4,14 +4,17 @@ export interface IColumn {
   id: number;
   title: string;
   ownerId: number;
+  order: number;
 }
 
 export interface IColumnCreation {
   title: string;
+  order: number;
 }
 
 export interface IColumnUpdate {
   title: string;
+  order: number;
 }
 
 export default class ColumnApi {
@@ -20,30 +23,40 @@ export default class ColumnApi {
   ) {
   }
 
-  public getAll(): Promise<IColumn[]> {
-    return this.client.send('GET', '/columns', {
+  public async getAll(): Promise<IColumn[]> {
+    const columns = await this.client.send('GET', '/columns', {
       apiKey: localStorage.getItem('api-key') ?? undefined
     });
+    for (const column of columns) {
+      column.order = 0
+    };
+    return columns;
   }
 
-  public getOne(id: number): Promise<IColumn> {
-    return this.client.send('GET', `/columns/${id}`, {
+  public async getOne(id: number): Promise<IColumn> {
+    const column = await this.client.send('GET', `/columns/${id}`, {
       apiKey: localStorage.getItem('api-key') ?? undefined
     });
+    column.order = 0;
+    return column;
   }
 
-  public create(columnCreation: IColumnCreation): Promise<IColumn> {
-    return this.client.send('POST', '/columns', {
+  public async create(columnCreation: IColumnCreation): Promise<IColumn> {
+    const column = await this.client.send('POST', '/columns', {
       apiKey: localStorage.getItem('api-key') ?? undefined,
       body: columnCreation,
     });
+    column.order = columnCreation.order;
+    return column;
   }
 
-  public update(id: number, columnUpdate: IColumnUpdate): Promise<IColumn> {
-    return this.client.send('PUT', `/columns/${id}`, {
+  public async update(id: number, columnUpdate: IColumnUpdate): Promise<IColumn> {
+    const column = await this.client.send('PUT', `/columns/${id}`, {
       apiKey: localStorage.getItem('api-key') ?? undefined,
       body: columnUpdate,
     });
+    column.order = columnUpdate.order;
+    return column;
   }
 
   public delete(id: number): Promise<void> {

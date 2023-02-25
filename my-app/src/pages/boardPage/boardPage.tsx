@@ -6,7 +6,7 @@ import { setColumnTitle, sortColumnList } from '../../store/actions/actionCreato
 import { minNumberOfLetters } from '../../types/constants';
 import { useTranslation } from 'react-i18next';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { columnSelectors, createColumn, loadColumns } from '../../store/reducers/columns';
+import { columnSelectors, createColumn, insertColumnBefore, loadColumns } from '../../store/reducers/columns';
 import FormControl from '@mui/material/FormControl';
 import { IColumn } from '../../api/ColumnApi';
 import { insertCardToColumn } from '../../store/reducers/cards';
@@ -55,7 +55,7 @@ const BoardPage = () => {
       setIsCreate(false);
       setIsError(true);
       event.preventDefault();
-      dispatch(createColumn({ title: columnTitle }))
+      dispatch(createColumn({ title: columnTitle, order: 0 }))
     };
 
     const onCreationFormReset = (): void => {
@@ -85,13 +85,13 @@ const BoardPage = () => {
       e.preventDefault();
       (e.target as HTMLDivElement).style.background = '';
       if (currentTask !== undefined) {
-        dispatch(insertCardToColumn(currentTask, column.id))
+        dispatch(insertCardToColumn(currentTask, column.id));
+        setCurrentTask(undefined);
       }
 
-      if((e.target as HTMLElement).classList.contains('column__title') && currentColumn !== null) {
-        dispatch(
-          sortColumnList([...columnList], column, currentColumn)
-          );
+      if(currentColumn !== null) {
+        dispatch(insertColumnBefore(currentColumn, column));
+        setCurrentColumn(null)
       }
      
       (e.target as HTMLDivElement).style.background = '';
@@ -110,6 +110,7 @@ const BoardPage = () => {
                 onDrop={(e: React.DragEvent<HTMLDivElement>) => dropHandler(e, column)}
                 draggable={true}
               >
+                <div>order: {column.order}</div>
                 <Column
                   key={column.id}
                   columnItem={column}
