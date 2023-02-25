@@ -1,6 +1,7 @@
 import { createAsyncThunk, createEntityAdapter, createSlice } from '@reduxjs/toolkit';
 import Client from '../../api/Client';
-import UserApi, { IUser } from '../../api/UserApi';
+import UserApi from '../../api/UserApi';
+import { IUser } from '../../types/types';
 
 const userApi = new UserApi(new Client());
 

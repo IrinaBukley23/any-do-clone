@@ -1,6 +1,7 @@
-import { createAsyncThunk, createEntityAdapter, createSlice, EntityState, PayloadAction } from '@reduxjs/toolkit';
+import { createAsyncThunk, createEntityAdapter, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import Client from '../../api/Client';
-import ColumnApi, { IColumn, IColumnCreation, IColumnUpdate } from '../../api/ColumnApi';
+import ColumnApi from '../../api/ColumnApi';
+import { IColumn, IColumnCreation, IColumnUpdate } from '../../types/types';
 import { AppDispatch, GetRootState } from '../store';
 
 interface IColumnBeforeInsertion {

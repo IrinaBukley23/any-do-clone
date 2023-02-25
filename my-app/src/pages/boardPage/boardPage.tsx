@@ -2,15 +2,13 @@ import styles from './boardPage.module.scss';
 import React, { useEffect, useState } from 'react';
 import { Button, TextField, Typography } from '@mui/material';
 import Column from '../../components/column/column';
-import { setColumnTitle, sortColumnList } from '../../store/actions/actionCreators';
 import { minNumberOfLetters } from '../../types/constants';
 import { useTranslation } from 'react-i18next';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { columnSelectors, createColumn, insertColumnBefore, loadColumns } from '../../store/reducers/columns';
 import FormControl from '@mui/material/FormControl';
-import { IColumn } from '../../api/ColumnApi';
 import { insertCardToColumn } from '../../store/reducers/cards';
-import { ICard } from '../../api/CardApi';
+import { ICard, IColumn } from '../../types/types';
 
 const BOARD_REFRESH_INTERVAL = 5000;
 
@@ -21,8 +19,6 @@ const BoardPage = () => {
 
     const [isCreate, setIsCreate] = useState(false);
 
-    const { columnTitle } = useAppSelector((state) => state.column);
-    const { columnList } = useAppSelector((state) => state.column);
     const [isError, setIsError] = useState(false);
 
     const { t, } = useTranslation();
@@ -30,6 +26,8 @@ const BoardPage = () => {
     const [currentColumn, setCurrentColumn] = useState<IColumn | null>(null);
     const [currentTask, setCurrentTask] = useState<ICard | undefined>();
     const [isFirstEffect, setIsFirstEffect] = useState(true);
+    const [title, setTitle] = useState('');
+
     useEffect(() => {
       if (isFirstEffect) {
         setIsFirstEffect(false);
@@ -48,14 +46,14 @@ const BoardPage = () => {
     const handleChangeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
       const length = e.target.value.length;
       setIsError(length < minNumberOfLetters);
-      dispatch(setColumnTitle(e.target.value));
+      setTitle(e.target.value);
     };
 
     const onCreationFormSubmit = (event: React.FormEvent): void => {
       setIsCreate(false);
       setIsError(true);
       event.preventDefault();
-      dispatch(createColumn({ title: columnTitle, order: 0 }))
+      dispatch(createColumn({ title, order: 0 }))
     };
 
     const onCreationFormReset = (): void => {

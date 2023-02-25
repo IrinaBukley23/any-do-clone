@@ -1,22 +1,5 @@
+import { IColumn, IColumnCreation, IColumnUpdate } from '../types/types';
 import Client from './Client';
-
-export interface IColumn {
-  id: number;
-  title: string;
-  ownerId: number;
-  order: number;
-}
-
-export interface IColumnCreation {
-  title: string;
-  order: number;
-}
-
-export interface IColumnUpdate {
-  title: string;
-  order: number;
-}
-
 export default class ColumnApi {
   public constructor(
     private client: Client

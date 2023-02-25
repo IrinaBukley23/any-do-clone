@@ -1,10 +1,5 @@
+import { IUser } from '../types/types';
 import Client from './Client';
-
-export interface IUser {
-  id: string,
-  name: string,
-  email: string
-}
 
 export default class UserApi {
   constructor(

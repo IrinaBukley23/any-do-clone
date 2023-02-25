@@ -16,10 +16,10 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import { DialogConfirm } from '../ui/dialogConfirm';
 import DownloadDoneIcon from '@mui/icons-material/DownloadDone';
 import { useTranslation } from 'react-i18next';
-import { ICard } from '../../api/CardApi';
 import { deleteCard, updateCard, updateCardDescription, updateCardTitle } from '../../store/reducers/cards';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { loadUsers, userSelectors } from '../../store/reducers/users';
+import { ICard } from '../../types/types';
 
 interface IProps {
   card: ICard;

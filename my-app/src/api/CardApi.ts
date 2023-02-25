@@ -1,21 +1,5 @@
+import { ICard, ICardEdit } from '../types/types';
 import Client from './Client';
-
-export interface ICard {
-  id: number,
-  columnId: number,
-  title: string,
-  description?: string,
-  participant?: string,
-  order: number,
-}
-
-export interface ICardEdit {
-  columnId: number,
-  title: string,
-  description?: string,
-  participant?: string,
-  order: number,
-}
 
 export default class ColumnApi {
   public constructor(

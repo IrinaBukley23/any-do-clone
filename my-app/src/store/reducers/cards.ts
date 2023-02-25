@@ -1,7 +1,8 @@
 import { createAsyncThunk, createEntityAdapter, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import Client from '../../api/Client';
-import CardApi, { ICard, ICardEdit } from '../../api/CardApi';
+import CardApi from '../../api/CardApi';
 import { AppDispatch, GetRootState } from '../store';
+import { ICard, ICardEdit } from '../../types/types';
 
 interface ICardBeforeInsertion {
   insertedCard: ICard;

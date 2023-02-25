@@ -5,10 +5,10 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
 import TaskForm from '../taskForm/taskForm';
 import { useTranslation } from 'react-i18next';
-import { IColumn } from '../../api/ColumnApi';
+import { IColumn } from '../../types/types';
 
 interface PropsDialogModal {
-    column: IColumn
+    column: IColumn;
     isOpen: boolean;
     handleClose: () => void;
   }

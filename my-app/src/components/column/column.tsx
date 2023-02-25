@@ -2,7 +2,6 @@ import styles from './column.module.scss';
 import React, { useEffect, useState } from 'react';
 import { Button, IconButton, TextField, Tooltip, Typography } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { setCurrentId } from '../../store/actions/actionCreators';
 import CancelIcon from '@mui/icons-material/Cancel';
 import Task from '../task/task';
 import { DialogConfirm } from '../ui/dialogConfirm';
@@ -10,10 +9,9 @@ import ResponsiveDialog from '../ui/openDialog';
 import DownloadDoneIcon from '@mui/icons-material/DownloadDone'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { IColumn } from '../../api/ColumnApi';
 import { deleteColumn, updateColumnTitle } from '../../store/reducers/columns';
 import { cardSelectors, insertCardBefore, loadCards } from '../../store/reducers/cards';
-import { ICard } from '../../api/CardApi';
+import { ICard, IColumn } from '../../types/types';
 
 interface IProps {
   columnItem: IColumn;
@@ -87,7 +85,6 @@ const Column = (props: IProps) => {
     };
 
     const handleTaskFormOpen = () => {
-        dispatch(setCurrentId(columnId));
         setIsTaskModal(true);
     };
 
