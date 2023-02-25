@@ -32,7 +32,6 @@ export const LoginView = ({ formId }: ViewProps) => {
     initialValues: { email: '', password: '' },
     validationSchema: validationSchem,
     onSubmit: (values) => {
-      console.log({ email: values.email, password: values.password })
       dispatch(login({ email: values.email, password: values.password }))
         .unwrap()
         .then(() => {

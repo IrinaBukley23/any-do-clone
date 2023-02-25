@@ -1,7 +1,7 @@
 .central {
   padding: 0 1rem 0 1rem;
   flex-grow: 1;
-  height: 90vh;
+  height: calc(100vh - 90px - 2rem);
 }
 .wrapper {
   display: flex;

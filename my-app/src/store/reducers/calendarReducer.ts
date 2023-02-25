@@ -1,86 +1,127 @@
-import { TypeStatusTask } from './../../types/enum'
-import { createTask } from '../actions/actionCalendar'
+import { RootState } from './../store'
 import { getCurrTasks } from './../utils'
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { ICalendar, TaskCalendarItemType } from './../../types/types'
+import {
+  createSlice,
+  PayloadAction,
+  createAsyncThunk,
+  createEntityAdapter,
+  createSelector,
+} from '@reduxjs/toolkit'
+import { TaskCalendarItemType, ITaskCalendarCreate, State } from './../../types/types'
+import CalendarTasksApi from '../../api/calendarTasksApi'
+import { TypeStatusTask } from '../../types/enum'
 import moment from 'moment'
+import { getByPlaceholderText } from '@testing-library/react'
 
-const tasks: TaskCalendarItemType[] = [
-  {
-    id: 1,
-    title: 'Task1',
-    // description: 'Description1',
-    // people: [],
-    // date: moment('2023-03-06 15:30').toDate(),
-    dateCreate: '2023-02-06 11:20',
-    status: TypeStatusTask.notStart,
-  },
-  {
-    id: 2,
-    title: 'Task2',
-    // description: 'Description2',
-    // people: [],
-    // date: moment('2023-03-06 12:30').toDate(),
-    dateCreate: '2023-02-07 17:00',
-    status: TypeStatusTask.notStart,
-  },
-  {
-    id: 3,
-    title: 'Task3',
-    // description: 'Description3',
-    // people: [],
-    dateCreate: '2023-02-09 15:30',
-    status: TypeStatusTask.notStart,
-  },
-]
+export const loadTasks = createAsyncThunk(
+  'calendar/getTasks',
+  async (key: string) => await calendarTasksApi.getTasks(key),
+)
 
-const today = new Date()
-export const initialState: ICalendar = {
-  dateCurrent: today.toDateString(),
-  taskListAll: tasks,
-  searchString: '',
-  taskList: getCurrTasks(tasks, today),
-  dateSelectedInPlan: today.toDateString(),
-  taskListInPlan: getCurrTasks(tasks, today),
+const today = moment(new Date()).hour(0).minute(0).format('YYYY-MM-DD HH:mm')
+
+type DeleteTaskValue = {
+  key: string
+  id: number
 }
+type CreateTaskValue = {
+  key: string
+  title: string
+  date: string
+}
+type ChangeValue = {
+  key: string
+  task: TaskCalendarItemType
+}
+export const createTask = createAsyncThunk(
+  'calendar/createTask',
+  async (value: CreateTaskValue) => {
+    const newTask: ITaskCalendarCreate = {
+      title: value.title,
+      performDate: value.date,
+      status: TypeStatusTask.notStart,
+    }
+    console.log(newTask)
+
+    const createdTask = await calendarTasksApi.createTask(value.key, newTask)
+    return createdTask
+  },
+)
+export const changeTask = createAsyncThunk('calendar/changeTask', async (value: ChangeValue) => {
+  const task = await calendarTasksApi.changeTask(value.key, value.task)
+  console.log('changed')
+  return task
+})
+
+// export const changeDate= createAsyncThunk('calendar/changeTask', async (value: ChangeValue) => {
+//   const task = await calendarTasksApi.changeTask(value.key, value.task)
+//   return task
+// })
+
+export const deleteTask = createAsyncThunk(
+  'calendar/deleteTask',
+  async (value: DeleteTaskValue) => {
+    await calendarTasksApi.deleteTask(value.key, value.id)
+    return value.id
+  },
+)
+
+export const calendarAdapter = createEntityAdapter<TaskCalendarItemType>({
+  selectId: (task) => task.id,
+})
+
+export const calendarSelectors = calendarAdapter.getSelectors()
+
+export const getTaskList = createSelector(
+  [calendarSelectors.selectAll, (state) => state.dateCurrent, (state) => state.searchString],
+  (entities, dateCurrent, filter) => {
+    const byDate = getCurrTasks(entities, new Date(dateCurrent))
+    console.log({ byDate: byDate, ent: entities, filter: filter })
+    if (!filter) return byDate
+    return byDate.filter((task) => task.title.toLowerCase().includes(filter.toLowerCase()))
+  },
+)
+
+// export const getTaskByTime = createSelector([calendarSelectors.selectAll,(state) => state.dateSelectedInPlan],(entities, dateCurrent)=>{})
 
 export const calendarSlice = createSlice({
   name: 'calendar',
-  initialState,
+  initialState: calendarAdapter.getInitialState({
+    dateCurrent: today,
+    searchString: '',
+    dateSelectedInPlan: today,
+  }),
   reducers: {
     setCurrentDate: (state, action: PayloadAction<string>) => {
       state.dateCurrent = action.payload
     },
-    getCurrTasks: (state) => {
-      state.taskList = getCurrTasks(state.taskListAll, new Date(state.dateCurrent))
-    },
-    filterCurrTasks: (state, action: PayloadAction<string>) => {
-      state.taskList = state.taskList.filter((task) =>
-        task.title.toLowerCase().includes(action.payload.toLowerCase()),
-      )
-    },
     setDateSelectedInPlan: (state, action: PayloadAction<string>) => {
       state.dateSelectedInPlan = action.payload
     },
-    getListInPlan: (state) => {
-      state.taskListInPlan = getCurrTasks(state.taskListAll, new Date(state.dateSelectedInPlan))
-    },
-    createTask: (state, action: PayloadAction<TaskCalendarItemType>) => {
-      state.taskListAll.push(action.payload)
-    },
-    deleteTask: (state, action: PayloadAction<number>) => {
-      state.taskListAll = state.taskListAll.filter((task) => task.id !== action.payload)
-    },
-    changeTask: (state, action: PayloadAction<TaskCalendarItemType>) => {
-      const searchTask = state.taskListAll.find((task) => task.id === action.payload.id)
-      if (searchTask) Object.assign(searchTask, action.payload)
-      else state.taskListAll.push(action.payload)
+    setSearchString: (state, action) => {
+      state.searchString = action.payload
     },
   },
+  extraReducers(builder) {
+    builder.addCase(loadTasks.fulfilled, (state, action: PayloadAction<TaskCalendarItemType[]>) => {
+      calendarAdapter.setAll(state, action.payload)
+    })
+    builder.addCase(deleteTask.fulfilled, (state, action) => {
+      calendarAdapter.removeOne(state, action.payload)
+    })
+    builder.addCase(createTask.fulfilled, (state, action) => {
+      calendarAdapter.addOne(state, action.payload)
+    })
+    builder.addCase(changeTask.fulfilled, (state, action) => {
+      console.log('change')
+      calendarAdapter.updateOne(state, { id: action.payload.id, changes: action.payload })
+    })
+  },
 })
-export const { setCurrentDate } = calendarSlice.actions
 export const calendarActions = calendarSlice.actions
-// export const dateCurrent=(state:RootState)
+
 const calendarReducer = calendarSlice.reducer
+
+export const calendarTasksApi = new CalendarTasksApi()
 
 export default calendarReducer

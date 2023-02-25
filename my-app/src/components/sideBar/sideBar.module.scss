@@ -1,8 +1,9 @@
 .sidebar {
   width: 320px;
   position: fixed;
-  // background: #ffffff;
-  height: 100vh;
+
+  height: calc(100vh - 90px - 2rem);
+  overflow: auto;
 }
 a {
   text-decoration: none;

@@ -1,4 +1,11 @@
-import { TypeStatusTask, Projects, Importance, ImportanceEn, ProjectsEn, TypeStatusTaskEn } from './enum'
+import {
+  TypeStatusTask,
+  Projects,
+  Importance,
+  ImportanceEn,
+  ProjectsEn,
+  TypeStatusTaskEn,
+} from './enum'
 import { Moment } from 'moment'
 export interface IColumn {
   columnId: string
@@ -74,20 +81,20 @@ export type ICalendar = {
   taskListInPlan: TaskCalendarItemType[]
 }
 
-export interface ITaskCalendar {
-  id: number
-  dateCreate: string
-  status: TypeStatusTask | TypeStatusTaskEn
-  dateStart?: string
-  dateEnd?: string
+export interface ITaskCalendarCreate {
   title: string
+  performDate: string
+  status: TypeStatusTask
   description?: string
-  idPersons?: number[]
-
-  important?: Importance | ImportanceEn
   project?: Projects | ProjectsEn
+  idProject?: number
+  tag?: Importance | ImportanceEn
+}
+export interface ITaskCalendar extends ITaskCalendarCreate {
+  id: number
   taskList: ITaskCalendar[]
 }
+
 export type TaskCalendarItemType = Omit<ITaskCalendar, 'taskList'>
 
 export type TimeCalendar = {

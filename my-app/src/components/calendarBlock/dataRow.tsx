@@ -6,9 +6,7 @@ import { Draggable, Droppable } from 'react-beautiful-dnd'
 import { TypeStatusTask } from '../../types/enum'
 import { TaskCalendarItemType } from '../../types/types'
 import styles from './datePlan.module.scss'
-interface IIsEdit {
-  [id: string]: boolean
-}
+
 type Props = {
   idRow: number
   time: Moment
@@ -17,32 +15,25 @@ type Props = {
   changeTask: (task: TaskCalendarItemType) => void
 }
 const DataRow = ({ idRow, time, task, isEven, changeTask }: Props) => {
-  const [isEdit, setIsEdit] = useState<IIsEdit>({})
-  const [id, setId] = useState(0)
   const [changedTask, setchangedTask] = useState<TaskCalendarItemType | null>()
 
   const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    let newId = +new Date()
+    let newId = 0
 
     if (e.target instanceof HTMLDivElement && e.target.dataset.id) {
       newId = +e.target.dataset.id
-      console.log('dgdfhhgjkl', e.target)
       const findTask = task.find((currTask) => currTask.id == newId)
-      console.log(findTask)
       if (findTask) setchangedTask({ ...findTask })
     } else {
       setchangedTask({
         id: newId,
-        dateCreate: time.format('YYYY-MM-DD HH:mm'),
+        performDate: time.format('YYYY-MM-DD HH:mm'),
         title: '',
         status: TypeStatusTask.notStart,
       })
     }
-
-    setIsEdit((prevState) => ({ ...prevState, [newId]: true }))
-
-    setId(newId)
   }
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (changedTask) {
       const currTask = { ...changedTask, title: e.target.value }
@@ -50,13 +41,11 @@ const DataRow = ({ idRow, time, task, isEven, changeTask }: Props) => {
     }
   }
   const handleBlur = () => {
-    setIsEdit((prevState) => ({ ...prevState, [id]: false }))
     if (changedTask && changedTask.title.trim()) changeTask(changedTask)
     setchangedTask(null)
-    setId(0)
   }
   return (
-    <TableRow sx={{ height: '2rem' }}>
+    <TableRow sx={{ height: '2.5rem' }}>
       <TableCell>
         {isEven ? (
           <>
@@ -119,15 +108,19 @@ const DataRow = ({ idRow, time, task, isEven, changeTask }: Props) => {
             {task.map((t, index) => (
               <Draggable draggableId={t.id.toString()} index={index} key={t.id}>
                 {(draggableProvided) => (
-                  <Card
-                    {...draggableProvided.draggableProps}
-                    {...draggableProvided.dragHandleProps}
-                    ref={draggableProvided.innerRef}
-                    data-id={t.id}
-                    className={styles.text}
-                  >
-                    {t.title}
-                  </Card>
+                  <>
+                    {changedTask?.id != t.id && (
+                      <Card
+                        {...draggableProvided.draggableProps}
+                        {...draggableProvided.dragHandleProps}
+                        ref={draggableProvided.innerRef}
+                        data-id={t.id}
+                        className={styles.text}
+                      >
+                        {t.title}
+                      </Card>
+                    )}
+                  </>
                 )}
               </Draggable>
             ))}

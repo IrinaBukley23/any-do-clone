@@ -1,6 +1,6 @@
 import styles from './sideBar.module.scss'
 import 'moment/locale/ru'
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next'
 
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment'
 import {
@@ -17,16 +17,26 @@ import { StaticDatePicker } from '@mui/x-date-pickers/StaticDatePicker'
 import moment from 'moment'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import TextField from '@mui/material/TextField'
-
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
-import { setCurrDate } from '../../store/actions/actionCalendar'
 import { PickersDay } from '@mui/x-date-pickers'
-import { useSelector } from 'react-redux';
-import { State } from '../../types/types';
+import { useEffect } from 'react'
+import { useSelector } from 'react-redux'
+import { calendarActions, calendarSelectors, loadTasks } from '../../store/reducers/calendarReducer'
+
+import { getCurrTasks } from '../../store/utils'
+
 const CustomBar = () => {
-  const { t, } = useTranslation();
-  const { taskList } = useAppSelector((state) => state.calendar)
-  const { lang } = useSelector((state: State) => state.lang)
+  const { dateCurrent } = useAppSelector(
+    (state) => state.calendar,
+    (prev, curr) => prev.dateCurrent == curr.dateCurrent,
+  )
+  const taskList = useAppSelector(
+    (state) => getCurrTasks(calendarSelectors.selectAll(state.calendar), new Date(dateCurrent)),
+    (prev, curr) => prev.length == curr.length,
+  )
+
+  const { t } = useTranslation()
+  const { lang } = useAppSelector((state) => state.lang)
 
   return (
     <>
@@ -40,16 +50,35 @@ const CustomBar = () => {
   )
 }
 const SideBar = () => {
-  const { dateCurrent } = useAppSelector((state) => state.calendar)
-  const { lang } = useSelector((state: State) => state.lang)
-  const { taskListAll } = useAppSelector((state) => state.calendar)
+  const { dateCurrent } = useAppSelector(
+    (state) => state.calendar,
+    (prev, curr) => prev.dateCurrent == curr.dateCurrent,
+  )
+  const taskListAll = useAppSelector((state) => calendarSelectors.selectAll(state.calendar))
+  const { key } = useAppSelector((state) => state.authorization)
+  const { lang } = useAppSelector((state) => state.lang)
+
   const dispatch = useAppDispatch()
+
+  console.log('sidebaRender', dateCurrent)
+
   const changeDate = (date: string | null) => {
     if (date) {
-      dispatch(setCurrDate(moment(date).format('YYYY-MM-DD HH:mm')))
+      dispatch(
+        calendarActions.setCurrentDate(moment(date).hour(0).minute(0).format('YYYY-MM-DD HH:mm')),
+      )
+      dispatch(
+        calendarActions.setDateSelectedInPlan(
+          moment(date).hour(0).minute(0).format('YYYY-MM-DD HH:mm'),
+        ),
+      )
     }
   }
-  const { t, } = useTranslation();
+  useEffect(() => {
+    if (key) dispatch(loadTasks(key))
+    console.log('sidebar')
+  }, [])
+  const { t } = useTranslation()
   return (
     <div className={styles.sidebar}>
       <Paper>
@@ -58,13 +87,14 @@ const SideBar = () => {
             displayStaticWrapperAs='desktop'
             value={dateCurrent}
             onChange={changeDate}
+            // sx={{ minHeight: 'inherits' }}
             renderInput={(params) => <TextField {...params} />}
             components={{
               ActionBar: CustomBar,
             }}
             renderDay={(day, _value, DayComponentProps) => {
               const isSelected = taskListAll
-                .map((task) => task.dateCreate)
+                .map((task) => task.performDate)
                 .some((x) => moment(day).isSame(x, 'day'))
 
               return (
