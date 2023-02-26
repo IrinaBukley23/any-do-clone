@@ -31,7 +31,13 @@ RACI matrix https://docs.google.com/spreadsheets/d/1N8AeRUxPxquk6BgXVHpto-4pDoae
 * deploy https://any-do-clone-api-doc.netlify.app/
 * repo: https://github.com/vladislava96/any-do-clone-server
 
-## Stack
+## Backend Stack
+* Node.js
+* Prisma ORM
+* PostgreSQL
+* Express
+
+## Frontend Stack
 * React
 * Redux
 * Typescript
