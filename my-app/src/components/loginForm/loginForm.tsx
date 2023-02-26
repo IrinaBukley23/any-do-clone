@@ -8,7 +8,7 @@ import { SyntheticEvent } from 'react'
 import { RegistrationView } from './registrationView'
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
 import { hideDialog, selectDialogForm } from '../../store/reducers/authorization'
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next'
 
 // const formsParams = {
 //   [DialogForm.login]: {
@@ -22,10 +22,12 @@ import { useTranslation } from 'react-i18next';
 // }
 
 export const LoginForm = () => {
-  const dispatch = useAppDispatch();
-  const {isDialogShown, dialogForm: currentDialogForm} = useAppSelector(state => state.authorization);
-  const { t, } = useTranslation();
-  const dialogForm: DialogForm = currentDialogForm ?? DialogForm.login;
+  const dispatch = useAppDispatch()
+  const { isDialogShown, dialogForm: currentDialogForm } = useAppSelector(
+    (state) => state.authorization,
+  )
+  const { t } = useTranslation()
+  const dialogForm: DialogForm = currentDialogForm ?? DialogForm.login
   const formsParams = {
     [DialogForm.login]: {
       textApprove: `${t('loginFormEnterText')}`,
@@ -34,11 +36,11 @@ export const LoginForm = () => {
     [DialogForm.register]: {
       textApprove: `${t('loginFormRegText')}`,
       formId: `form-${DialogForm.register}`,
-    }
+    },
   }
-  
-  const formParams = formsParams[dialogForm];
-  const formId = formParams.formId;
+
+  const formParams = formsParams[dialogForm]
+  const formId = formParams.formId
 
   const handleChange = (e: SyntheticEvent, newValue: DialogForm) => {
     dispatch(selectDialogForm(newValue))
@@ -59,7 +61,7 @@ export const LoginForm = () => {
         <LoginView formId={formId} />
       ) : (
         <RegistrationView formId={formId} />
-      ) }
+      )}
     </DialogModal>
   )
 }

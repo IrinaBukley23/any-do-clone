@@ -15,10 +15,19 @@ import TextFieldEdit from '../ui/textFieldEdit/textFieldEdit'
 
 import TaskMenu from './taskMenu'
 import moment from 'moment'
-import { Importance, ImportanceEn, Projects, ProjectsEn, TypeChip, TypeStatusTask, TypeStatusTaskEn } from '../../types/enum'
+import { setNestedObjectValues } from 'formik'
+import {
+  Importance,
+  ImportanceEn,
+  Projects,
+  ProjectsEn,
+  TypeChip,
+  TypeStatusTask,
+  TypeStatusTaskEn,
+} from '../../types/enum'
 import { GetIcon } from './getIcon'
 import { setColor, setColorEn } from './utils'
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import { DialogConfirm } from '../ui/dialogConfirm'
 
@@ -36,21 +45,25 @@ const TaskCard = ({ task, onDelete, onChange }: Props) => {
   const typesStartTask = Object.values(TypeStatusTask)
   const typesStartTaskEn = Object.values(TypeStatusTaskEn)
   const [isEdit, setIsEdit] = useState({ title: false, description: false })
+  const [isNeedToUpdate, setIsNeedToUpdate] = useState(false)
   const [dataValue, setDataValue] = useState<string>('')
   const [menuItems, setMenuItems] = useState<string[]>([])
   const [taskEdit, setTaskIsEdit] = useState<TaskCalendarItemType>(task)
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
-  const [isOpen, setIsOpen] = useState(false)
   const {lang} = useSelector((state: State) => state.lang);
+  const [isOpen, setIsOpen] = useState(false)
   const open = Boolean(anchorEl)
-  const { t, } = useTranslation();
+  const { t } = useTranslation()
   useEffect(() => {
-    onChange(taskEdit)
-  }, [taskEdit])
+    if (isNeedToUpdate) {
+      onChange(taskEdit)
+      setIsNeedToUpdate(false)
+    }
+  }, [isNeedToUpdate])
 
   useEffect(() => {
     setTaskIsEdit(task)
-    setDataValue(task.dateCreate)
+    setDataValue(moment(task.performDate).utc().format('YYYY-MM-DD HH:mm'))
   }, [task])
   useEffect(() => {
     setMenuItems(typesProj)
@@ -62,11 +75,13 @@ const TaskCard = ({ task, onDelete, onChange }: Props) => {
   }
 
   const handleEdit = (date: string | null) => {
-    if (date)
+    if (date) {
       setTaskIsEdit((prevState) => ({
         ...prevState,
-        dateCreate: moment(date).format('YYYY-MM-DD HH:mm'),
+        performDate: moment(date).format('YYYY-MM-DD HH:mm'),
       }))
+      setIsNeedToUpdate(true)
+    }
   }
   const handleDateChange = (date: string | null) => {
     if (date) {
@@ -76,22 +91,24 @@ const TaskCard = ({ task, onDelete, onChange }: Props) => {
 
   const showMenu = (e: React.MouseEvent<HTMLDivElement | HTMLButtonElement>) => {
     if (e.currentTarget.dataset.name == TypeChip.project) {
-      (lang === 'ru') ? setMenuItems(typesProj) : setMenuItems(typesProjEn)
+      lang === 'ru' ? setMenuItems(typesProj) : setMenuItems(typesProjEn)
     } else if (e.currentTarget.dataset.name == TypeChip.important) {
-      (lang === 'ru') ? setMenuItems(typesImportant) : setMenuItems(typesImportantEn)
+      lang === 'ru' ? setMenuItems(typesImportant) : setMenuItems(typesImportantEn)
     } else {
-      (lang === 'ru') ? setMenuItems(typesStartTask) : setMenuItems(typesStartTaskEn)
+      lang === 'ru' ? setMenuItems(typesStartTask) : setMenuItems(typesStartTaskEn)
     }
 
     setAnchorEl(e.currentTarget)
   }
   const aceptMenu = (value?: string) => {
     const field = anchorEl?.dataset.name
+    console.log(field, value)
     if (field && value) {
       setTaskIsEdit((prevState) => ({
         ...prevState,
         [field]: value,
       }))
+      setIsNeedToUpdate(true)
     }
     closeMenu()
   }
@@ -100,6 +117,7 @@ const TaskCard = ({ task, onDelete, onChange }: Props) => {
   }
   const deleteChip = (field: string) => {
     setTaskIsEdit((prevState: TaskCalendarItemType) => ({ ...prevState, [field]: null }))
+    setIsNeedToUpdate(true)
   }
   const handleCancel = (type: string) => {
     if (type) setIsEdit((prevState) => ({ ...prevState, [type]: false }))
@@ -107,6 +125,7 @@ const TaskCard = ({ task, onDelete, onChange }: Props) => {
   const handleApprove = (type: string, value: string) => {
     setTaskIsEdit((prevState) => ({ ...prevState, [type]: value }))
     setIsEdit((prevState) => ({ ...prevState, [type]: false }))
+    setIsNeedToUpdate(true)
   }
   const handleClickEdit = (
     e: React.MouseEvent<HTMLDivElement> | React.MouseEvent<HTMLButtonElement>,
@@ -118,18 +137,18 @@ const TaskCard = ({ task, onDelete, onChange }: Props) => {
     }
   }
   const setColorImportance = (lang: string) => {
-    if(lang === 'ru') {
-      return taskEdit.important == Importance.immediat
-                    ? 'error'
-                    : taskEdit.important == Importance.important
-                    ? 'warning'
-                    : 'success'
+    if (lang === 'ru') {
+      return taskEdit.tag == Importance.immediat
+        ? 'error'
+        : taskEdit.tag == Importance.important
+        ? 'warning'
+        : 'success'
     } else {
-      return taskEdit.important == ImportanceEn.immediat
-                    ? 'error'
-                    : taskEdit.important == ImportanceEn.important
-                    ? 'warning'
-                    : 'success'
+      return taskEdit.tag == ImportanceEn.immediat
+        ? 'error'
+        : taskEdit.tag == ImportanceEn.important
+        ? 'warning'
+        : 'success'
     }
   }
 
@@ -149,9 +168,9 @@ const TaskCard = ({ task, onDelete, onChange }: Props) => {
             onClick={showMenu}
             data-name={TypeChip.status}
           >
-            <GetIcon status={taskEdit.status as TypeStatusTask} /> 
+            <GetIcon status={taskEdit.status as TypeStatusTask} />
           </IconButton>
-          
+
           <Stack spacing={2} alignItems='stretch' sx={{ width: '90%' }}>
             {isEdit.title ? (
               <TextFieldEdit
@@ -224,7 +243,11 @@ const TaskCard = ({ task, onDelete, onChange }: Props) => {
                 variant='outlined'
                 label={taskEdit.project}
                 onClick={showMenu}
-                color={(lang === 'ru') ? setColor(taskEdit.project as Projects) : setColorEn(taskEdit.project as ProjectsEn)}
+                color={
+                  lang === 'ru'
+                    ? setColor(taskEdit.project as Projects)
+                    : setColorEn(taskEdit.project as ProjectsEn)
+                }
                 onDelete={() => deleteChip(TypeChip.project)}
               />
             ) : (
@@ -237,13 +260,13 @@ const TaskCard = ({ task, onDelete, onChange }: Props) => {
               />
             )}
 
-            {taskEdit.important ? (
+            {taskEdit.tag ? (
               <Chip
                 data-name={TypeChip.important}
                 // variant='outlined'
-                label={taskEdit.important}
+                label={taskEdit.tag}
                 onClick={showMenu}
-                color={ setColorImportance(lang) }
+                color={setColorImportance(lang)}
                 onDelete={() => deleteChip(TypeChip.important)}
               />
             ) : (
