@@ -30,7 +30,6 @@ const Column = (props: IProps) => {
   const { columnTitle, columnId } = props.columnItem
   const dispatch = useDispatch()
   const { taskList } = useSelector((state: State) => state.task)
-  const taskQuantity = taskList.length
   const { t } = useTranslation()
   const [isEdit, setIsEdit] = useState(false)
   const [correctedTitle, setCorrectedTitle] = useState(columnTitle)
@@ -76,16 +75,15 @@ const Column = (props: IProps) => {
 
   function dragStartHandler(e: React.DragEvent<HTMLDivElement>, task: ITask): void {
     props.onTaskOnDragChange(task)
-    // setCurrentTask(task);
   }
 
   function dragOverHandler(e: React.DragEvent<HTMLDivElement>): void {
-    e.preventDefault()
-    ;(e.target as HTMLDivElement).style.boxShadow = '0 2 px 3px gray'
+    e.preventDefault();
+    (e.target as HTMLDivElement).style.boxShadow = '0 2 px 3px gray'
   }
 
   function dragEndHandler(e: React.DragEvent<HTMLDivElement>): void {
-    ;(e.target as HTMLDivElement).style.boxShadow = 'none'
+    (e.target as HTMLDivElement).style.boxShadow = 'none'
   }
 
   function dropHandler(e: React.DragEvent<HTMLDivElement>, task: TaskItemType): void {

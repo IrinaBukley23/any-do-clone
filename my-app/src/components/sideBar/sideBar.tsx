@@ -20,7 +20,6 @@ import TextField from '@mui/material/TextField'
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
 import { PickersDay } from '@mui/x-date-pickers'
 import { useEffect } from 'react'
-import { useSelector } from 'react-redux'
 import { calendarActions, calendarSelectors, loadTasks } from '../../store/reducers/calendarReducer'
 
 import { getCurrTasks } from '../../store/utils'

@@ -15,7 +15,7 @@ const Layout = () => {
   const { key } = useAppSelector((state) => state.authorization)
   const dispatch = useAppDispatch()
 
-  const { t, i18n } = useTranslation()
+  const { i18n } = useTranslation()
 
   const changeLanguage = (language: string) => {
     i18n.changeLanguage(language)

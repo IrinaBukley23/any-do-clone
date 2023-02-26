@@ -1,4 +1,3 @@
-import { current } from '@reduxjs/toolkit';
 import { Actions } from '../../types/enum';
 import { ITask, TaskItemType } from '../../types/types';
 import { Action } from '../actions/actionTypes';

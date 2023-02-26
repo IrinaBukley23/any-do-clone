@@ -1,46 +1,58 @@
-# Getting Started with Create React App
+# Lider Task
+A simple collaboration tool. Helps to work together and be on time! 
+(RSSchool 2022Q3 - Team 21)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+### Task
+https://github.com/rolling-scopes-school/tasks/blob/master/tasks/rsclone/rsclone.md
 
-## Available Scripts
+### Deploy
+https://08f38d69.any-do-clone.pages.dev
 
-In the project directory, you can run:
+### Developers
+**Ирина (irinabukley23)** - Team Lead, Developer
+Сборка, Роутер, Стартовая (описание, о команде), локализация на два языка
+Страница досок
 
-### `npm start`
+**Владислава (vladislava96)** - Developer
+header с виджетами, 
+Бэкенд с нуля до деплоя. Также проделала много работы по связи front части с backend.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+**Полина (sunnyfur)** - Developer
+Авторизация, главная страница - каледарь, проекты, правый экран, формы с валидацией
+Проделал много работы по code review и типизации проекта.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+### Teamwork
 
-### `npm test`
+RACI matrix https://docs.google.com/spreadsheets/d/1N8AeRUxPxquk6BgXVHpto-4pDoaeZRob1olvzOnZ2E0/edit#gid=946984
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Kanban board 
+(trello)
 
-### `npm run build`
+,,,,,,,,,,,Overview (for crosscheck)
+,,,,,,,,,,,https://youtu.be/7cRpzRZ3rT8
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Backend
+* deploy https://any-do-clone-api-doc.netlify.app/
+* repo: https://github.com/vladislava96/any-do-clone-server
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### Stack
+* React
+* Redux
+* Typescript
+* Webpack
+* Eslint airbnb
+* Prettier
+* SCSS
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Used libs
+* Material UI
+* React DND
+* i18next
+* Formik
+* Yup
 
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+### Scripts
+npm i
+npm start
+npm run build
+npm run lint

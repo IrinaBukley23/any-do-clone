@@ -15,7 +15,7 @@ import TextFieldEdit from '../ui/textFieldEdit/textFieldEdit'
 
 import TaskMenu from './taskMenu'
 import moment from 'moment'
-import { setNestedObjectValues } from 'formik'
+
 import {
   Importance,
   ImportanceEn,
