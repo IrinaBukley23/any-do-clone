@@ -3,7 +3,7 @@ import { Moment } from 'moment'
 import { useState } from 'react'
 import { Draggable, Droppable } from 'react-beautiful-dnd'
 
-import { TypeStatusTask } from '../../types/enum'
+import { TypeStatusCommon, TypeStatusTask } from '../../types/enum'
 import { TaskCalendarItemType } from '../../types/types'
 import styles from './datePlan.module.scss'
 
@@ -29,7 +29,7 @@ const DataRow = ({ idRow, time, task, isEven, changeTask }: Props) => {
         id: newId,
         performDate: time.format('YYYY-MM-DD HH:mm'),
         title: '',
-        status: TypeStatusTask.notStart,
+        status: TypeStatusCommon.notStart,
       })
     }
   }
@@ -63,7 +63,7 @@ const DataRow = ({ idRow, time, task, isEven, changeTask }: Props) => {
             ref={droppableProvided.innerRef}
             {...droppableProvided.droppableProps}
           >
-{/* <<<<<<< HEAD
+            {/* <<<<<<< HEAD
             {task.map((t, index) =>
               isEdit[t.id] ? (
                 <TextField

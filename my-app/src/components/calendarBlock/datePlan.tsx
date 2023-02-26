@@ -17,6 +17,7 @@ import {
   calendarSelectors,
   changeTask,
   createTask,
+  getTaskListPlan,
 } from '../../store/reducers/calendarReducer'
 import { getCurrTasks } from '../../store/utils'
 
@@ -42,12 +43,7 @@ const DatePlan = () => {
     (state) => state.calendar,
     (oldValue, newValue) => oldValue.dateSelectedInPlan == newValue.dateSelectedInPlan,
   )
-  const taskListInPlan = useAppSelector((state) =>
-    getCurrTasks(
-      calendarSelectors.selectAll(state.calendar),
-      new Date(state.calendar.dateSelectedInPlan),
-    ),
-  )
+  const taskListInPlan = useAppSelector((state) => getTaskListPlan(state.calendar))
 
   const { key } = useAppSelector((state) => state.authorization)
   const [listTasks, setListTasks] = useState<TimeCalendar[]>([])

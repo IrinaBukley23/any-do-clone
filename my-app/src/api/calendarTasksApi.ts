@@ -1,5 +1,5 @@
 import { BACKEND_BASE_URL } from './AuthorizationApi'
-import { TaskCalendarItemType, ITaskCalendarCreate } from './../types/types'
+import { TaskCalendarItemType, ITaskCalendarCreate, Project } from './../types/types'
 import { IError } from '../types/types'
 
 export default class CalendarTasksApi {
@@ -65,21 +65,5 @@ export default class CalendarTasksApi {
       const data: IError = await res.json()
       throw new Error(data.message)
     }
-  }
-  async getProjects(key: string) {
-    const res = await fetch(`${BACKEND_BASE_URL}/api/projects`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'Api-Key': key,
-      },
-    })
-    if (res.status != 200) {
-      const data: IError = await res.json()
-      throw new Error(data.message)
-    }
-    const data = await res.json()
-
-    return data
   }
 }

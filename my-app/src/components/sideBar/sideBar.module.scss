@@ -1,8 +1,9 @@
 .sidebar {
   width: 320px;
+  box-sizing: border-box;
   position: fixed;
 
-  height: calc(100vh - 90px - 2rem);
+  height: calc(100vh - 150px);
   overflow: auto;
 }
 a {
@@ -14,4 +15,22 @@ a {
   margin: 0 -16px;
   text-decoration: none;
   background: #d8d4d4;
+}
+
+.form {
+  width: 100%;
+  height: 10rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.calendarWrapper {
+  width: 100%;
+}
+
+.calendar {
+  width: 300px;
+  overflow: hidden;
+  box-sizing: border-box;
 }

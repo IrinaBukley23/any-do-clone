@@ -60,24 +60,41 @@ export enum ImportanceEn {
 
 export enum TypeChip {
   important = 'tag',
-  project = 'project',
+  project = 'projectId',
   description = 'description',
   title = 'title',
   status = 'status',
 }
 
 export enum TypeStatusTask {
-  notStart = 'не начиналось',
-  start = 'в работе',
-  pause = 'отложено',
-  cancel = 'отменено',
-  done = 'сделано',
+  notStart = 'Не начиналось',
+  start = 'В работе',
+  pause = 'Отложено',
+  cancel = 'Отменено',
+  done = 'Сделано',
 }
 
 export enum TypeStatusTaskEn {
-  notStart = 'did not start',
-  start = 'in work',
-  pause = 'postponed',
-  cancel = 'canceled',
+  notStart = 'Did not start',
+  start = 'In work',
+  pause = 'Postponed',
+  cancel = 'Canceled',
+  done = 'Done',
+}
+
+export enum TypeStatusCommon {
+  notStart = 'notStart',
+  start = 'start',
+  pause = 'pause',
+  cancel = 'cancel',
   done = 'done',
 }
+
+export const typesStartTask = Object.values(TypeStatusCommon).map((key) => ({
+  id: key,
+  value: TypeStatusTask[key],
+}))
+export const typesStartTaskEn = Object.values(TypeStatusCommon).map((key) => ({
+  id: key,
+  value: TypeStatusTaskEn[key],
+}))

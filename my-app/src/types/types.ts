@@ -3,7 +3,9 @@ import {
   Projects,
   Importance,
   ImportanceEn,
-  ProjectsEn
+  ProjectsEn,
+  TypeStatusTaskEn,
+  TypeStatusCommon,
 } from './enum'
 import { Moment } from 'moment'
 export interface IColumn {
@@ -83,10 +85,10 @@ export type ICalendar = {
 export interface ITaskCalendarCreate {
   title: string
   performDate: string
-  status: TypeStatusTask
+  status: TypeStatusCommon
   description?: string
   project?: Projects | ProjectsEn
-  idProject?: number
+  projectId?: number
   tag?: Importance | ImportanceEn
 }
 export interface ITaskCalendar extends ITaskCalendarCreate {
@@ -94,9 +96,19 @@ export interface ITaskCalendar extends ITaskCalendarCreate {
   taskList: ITaskCalendar[]
 }
 
+export type Project = {
+  id: number
+  name: string
+}
+
 export type TaskCalendarItemType = Omit<ITaskCalendar, 'taskList'>
 
 export type TimeCalendar = {
   id: number
   time: Moment
+}
+
+export type MenuItemType = {
+  id: string | number
+  value: string
 }

@@ -6,15 +6,10 @@ import {
   createEntityAdapter,
   createSelector,
 } from '@reduxjs/toolkit'
-import { TaskCalendarItemType, ITaskCalendarCreate } from './../../types/types'
+import { TaskCalendarItemType, ITaskCalendarCreate, State, Project } from './../../types/types'
 import CalendarTasksApi from '../../api/calendarTasksApi'
-import { TypeStatusTask } from '../../types/enum'
+import { TypeStatusCommon, TypeStatusTask } from '../../types/enum'
 import moment from 'moment'
-
-export const loadTasks = createAsyncThunk(
-  'calendar/getTasks',
-  async (key: string) => await calendarTasksApi.getTasks(key),
-)
 
 const today = moment(new Date()).hour(0).minute(0).format('YYYY-MM-DD HH:mm')
 
@@ -31,13 +26,18 @@ type ChangeValue = {
   key: string
   task: TaskCalendarItemType
 }
+export const loadTasks = createAsyncThunk(
+  'calendar/getTasks',
+  async (key: string) => await calendarTasksApi.getTasks(key),
+)
+
 export const createTask = createAsyncThunk(
   'calendar/createTask',
   async (value: CreateTaskValue) => {
     const newTask: ITaskCalendarCreate = {
       title: value.title,
       performDate: value.date,
-      status: TypeStatusTask.notStart,
+      status: TypeStatusCommon.notStart,
     }
     console.log(newTask)
 
@@ -50,11 +50,6 @@ export const changeTask = createAsyncThunk('calendar/changeTask', async (value: 
   console.log('changed')
   return task
 })
-
-// export const changeDate= createAsyncThunk('calendar/changeTask', async (value: ChangeValue) => {
-//   const task = await calendarTasksApi.changeTask(value.key, value.task)
-//   return task
-// })
 
 export const deleteTask = createAsyncThunk(
   'calendar/deleteTask',
@@ -71,16 +66,40 @@ export const calendarAdapter = createEntityAdapter<TaskCalendarItemType>({
 export const calendarSelectors = calendarAdapter.getSelectors()
 
 export const getTaskList = createSelector(
-  [calendarSelectors.selectAll, (state) => state.dateCurrent, (state) => state.searchString],
-  (entities, dateCurrent, filter) => {
-    const byDate = getCurrTasks(entities, new Date(dateCurrent))
-    console.log({ byDate: byDate, ent: entities, filter: filter })
+  [
+    calendarSelectors.selectAll,
+    (state) => state.dateCurrent,
+    (state) => state.searchString,
+    (state) => state.project,
+    (state) => state.status,
+  ],
+
+  (entities, dateCurrent, filter, project, status) => {
+    let byDate = getCurrTasks(entities, new Date(dateCurrent))
+    if (project) byDate = byDate.filter((task) => task.projectId == project)
+    if (status) byDate = byDate.filter((task) => task.status == status)
+    else
+      byDate = byDate.filter(
+        (task) => task.status != TypeStatusCommon.cancel && task.status != TypeStatusCommon.done,
+      )
     if (!filter) return byDate
     return byDate.filter((task) => task.title.toLowerCase().includes(filter.toLowerCase()))
   },
 )
 
-// export const getTaskByTime = createSelector([calendarSelectors.selectAll,(state) => state.dateSelectedInPlan],(entities, dateCurrent)=>{})
+export const getTaskListPlan = createSelector(
+  [calendarSelectors.selectAll, (state) => state.dateSelectedInPlan],
+  (entities, dateCurrent) => {
+    return getCurrTasks(entities, new Date(dateCurrent)).filter(
+      (task) => task.status != TypeStatusCommon.cancel && task.status != TypeStatusCommon.done,
+    )
+  },
+)
+export const getTaskListAll = createSelector([calendarSelectors.selectAll], (entities) => {
+  return entities.filter(
+    (task) => task.status != TypeStatusCommon.cancel && task.status != TypeStatusCommon.done,
+  )
+})
 
 export const calendarSlice = createSlice({
   name: 'calendar',
@@ -88,6 +107,8 @@ export const calendarSlice = createSlice({
     dateCurrent: today,
     searchString: '',
     dateSelectedInPlan: today,
+    project: null,
+    status: null,
   }),
   reducers: {
     setCurrentDate: (state, action: PayloadAction<string>) => {
@@ -99,11 +120,18 @@ export const calendarSlice = createSlice({
     setSearchString: (state, action) => {
       state.searchString = action.payload
     },
+    setProject: (state, action) => {
+      state.project = action.payload
+    },
+    setStatus: (state, action) => {
+      state.status = action.payload
+    },
   },
   extraReducers(builder) {
     builder.addCase(loadTasks.fulfilled, (state, action: PayloadAction<TaskCalendarItemType[]>) => {
       calendarAdapter.setAll(state, action.payload)
     })
+
     builder.addCase(deleteTask.fulfilled, (state, action) => {
       calendarAdapter.removeOne(state, action.payload)
     })
@@ -111,7 +139,6 @@ export const calendarSlice = createSlice({
       calendarAdapter.addOne(state, action.payload)
     })
     builder.addCase(changeTask.fulfilled, (state, action) => {
-      console.log('change')
       calendarAdapter.updateOne(state, { id: action.payload.id, changes: action.payload })
     })
   },

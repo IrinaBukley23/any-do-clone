@@ -3,54 +3,60 @@ import CardContent from '@mui/material/CardContent'
 import CardActions from '@mui/material/CardActions'
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment'
 import DeleteIcon from '@mui/icons-material/Delete'
-import { State, TaskCalendarItemType } from '../../types/types'
+import { MenuItemType, Project, TaskCalendarItemType } from '../../types/types'
 import { Stack } from '@mui/system'
 import Typography from '@mui/material/Typography'
 import styles from './tasksBlock.module.scss'
 import ControlPointIcon from '@mui/icons-material/ControlPoint'
 import React, { useEffect, useState } from 'react'
-
 import { LocalizationProvider, MobileDateTimePicker } from '@mui/x-date-pickers'
 import TextFieldEdit from '../ui/textFieldEdit/textFieldEdit'
-
 import TaskMenu from './taskMenu'
 import moment from 'moment'
-
 import {
   Importance,
   ImportanceEn,
-  Projects,
-  ProjectsEn,
   TypeChip,
-  TypeStatusTask,
-  TypeStatusTaskEn,
+  typesStartTask,
+  typesStartTaskEn,
 } from '../../types/enum'
 import { GetIcon } from './getIcon'
-import { setColor, setColorEn } from './utils'
 import { useTranslation } from 'react-i18next'
-import { useSelector } from 'react-redux'
 import { DialogConfirm } from '../ui/dialogConfirm'
+import { useAppSelector } from '../../store/hooks'
+import { projectSelectors } from '../../store/reducers/projectReducer'
 
 type Props = {
   task: TaskCalendarItemType
   onDelete: (id: number) => void
   onChange: (task: TaskCalendarItemType) => void
 }
+const toMenuItems = (values: string[] | Project[]): MenuItemType[] => {
+  const menuItems: MenuItemType[] = []
+  values.map((value) => {
+    typeof value == 'string'
+      ? menuItems.push({ id: value, value: value })
+      : menuItems.push({ id: value.id, value: value.name })
+  })
+  return menuItems
+}
 
 const TaskCard = ({ task, onDelete, onChange }: Props) => {
-  const typesProj = Object.values(Projects)
-  const typesProjEn = Object.values(ProjectsEn)
-  const typesImportant = Object.values(Importance)
-  const typesImportantEn = Object.values(ImportanceEn)
-  const typesStartTask = Object.values(TypeStatusTask)
-  const typesStartTaskEn = Object.values(TypeStatusTaskEn)
+  const projectAll = useAppSelector((state) => projectSelectors.selectAll(state.project))
+  const typesProj = toMenuItems(projectAll)
+
+  const typesImportant = toMenuItems(Object.values(Importance))
+  const typesImportantEn = toMenuItems(Object.values(ImportanceEn))
+  const [typesStartTaskComm, setTypesStartTask] = useState<MenuItemType[]>(typesStartTask)
+
   const [isEdit, setIsEdit] = useState({ title: false, description: false })
   const [isNeedToUpdate, setIsNeedToUpdate] = useState(false)
   const [dataValue, setDataValue] = useState<string>('')
-  const [menuItems, setMenuItems] = useState<string[]>([])
+  const [menuItems, setMenuItems] = useState<MenuItemType[]>([])
+  const [project, setProject] = useState<Project | null>(null)
   const [taskEdit, setTaskIsEdit] = useState<TaskCalendarItemType>(task)
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
-  const {lang} = useSelector((state: State) => state.lang);
+  const { lang } = useAppSelector((state) => state.lang)
   const [isOpen, setIsOpen] = useState(false)
   const open = Boolean(anchorEl)
   const { t } = useTranslation()
@@ -60,11 +66,18 @@ const TaskCard = ({ task, onDelete, onChange }: Props) => {
       setIsNeedToUpdate(false)
     }
   }, [isNeedToUpdate])
-
+  useEffect(() => {
+    if (lang == 'ru') {
+      setTypesStartTask(typesStartTask)
+    } else {
+      setTypesStartTask(typesStartTaskEn)
+    }
+  }, [lang])
   useEffect(() => {
     setTaskIsEdit(task)
     setDataValue(moment(task.performDate).utc().format('YYYY-MM-DD HH:mm'))
-  }, [task])
+    setProject(projectAll.find((project) => project.id == task.projectId) || null)
+  }, [task, projectAll])
   useEffect(() => {
     setMenuItems(typesProj)
     setTaskIsEdit(task)
@@ -91,11 +104,11 @@ const TaskCard = ({ task, onDelete, onChange }: Props) => {
 
   const showMenu = (e: React.MouseEvent<HTMLDivElement | HTMLButtonElement>) => {
     if (e.currentTarget.dataset.name == TypeChip.project) {
-      lang === 'ru' ? setMenuItems(typesProj) : setMenuItems(typesProjEn)
+      setMenuItems(typesProj)
     } else if (e.currentTarget.dataset.name == TypeChip.important) {
       lang === 'ru' ? setMenuItems(typesImportant) : setMenuItems(typesImportantEn)
     } else {
-      lang === 'ru' ? setMenuItems(typesStartTask) : setMenuItems(typesStartTaskEn)
+      setMenuItems(typesStartTaskComm)
     }
 
     setAnchorEl(e.currentTarget)
@@ -136,28 +149,38 @@ const TaskCard = ({ task, onDelete, onChange }: Props) => {
       setIsEdit((prevState) => ({ ...prevState, [type]: true }))
     }
   }
-  const setColorImportance = (lang: string) => {
-    if (lang === 'ru') {
-      return taskEdit.tag == Importance.immediat
-        ? 'error'
-        : taskEdit.tag == Importance.important
-        ? 'warning'
-        : 'success'
+  const setColorImportance = () => {
+    return taskEdit.tag == Importance.immediat || taskEdit.tag == ImportanceEn.immediat
+      ? 'error'
+      : taskEdit.tag == Importance.important || taskEdit.tag == ImportanceEn.important
+      ? 'warning'
+      : 'success'
+  }
+  const getImportance = () => {
+    let res = null
+    if (lang == 'ru') {
+      taskEdit.tag == Importance.immediat || taskEdit.tag == ImportanceEn.immediat
+        ? (res = Importance.immediat)
+        : taskEdit.tag == Importance.important || taskEdit.tag == ImportanceEn.important
+        ? (res = Importance.important)
+        : (res = Importance.notImediat)
     } else {
-      return taskEdit.tag == ImportanceEn.immediat
-        ? 'error'
-        : taskEdit.tag == ImportanceEn.important
-        ? 'warning'
-        : 'success'
+      taskEdit.tag == Importance.immediat || taskEdit.tag == ImportanceEn.immediat
+        ? (res = ImportanceEn.immediat)
+        : taskEdit.tag == Importance.important || taskEdit.tag == ImportanceEn.important
+        ? (res = ImportanceEn.important)
+        : (res = ImportanceEn.notImediat)
     }
+
+    return res
   }
 
   const handleClose = () => {
-    setIsOpen(false);
-  };
+    setIsOpen(false)
+  }
   const handleOpen = () => {
-    setIsOpen(true);
-  };
+    setIsOpen(true)
+  }
 
   return (
     <Card className={styles.card}>
@@ -168,7 +191,7 @@ const TaskCard = ({ task, onDelete, onChange }: Props) => {
             onClick={showMenu}
             data-name={TypeChip.status}
           >
-            <GetIcon status={taskEdit.status as TypeStatusTask} />
+            <GetIcon status={taskEdit.status} />
           </IconButton>
 
           <Stack spacing={2} alignItems='stretch' sx={{ width: '90%' }}>
@@ -237,17 +260,17 @@ const TaskCard = ({ task, onDelete, onChange }: Props) => {
           sx={{ width: '100%' }}
         >
           <Stack spacing={2} direction='row'>
-            {taskEdit.project ? (
+            {project ? (
               <Chip
                 data-name={TypeChip.project}
                 variant='outlined'
-                label={taskEdit.project}
+                label={project.name}
                 onClick={showMenu}
-                color={
-                  lang === 'ru'
-                    ? setColor(taskEdit.project as Projects)
-                    : setColorEn(taskEdit.project as ProjectsEn)
-                }
+                // color={
+                //   lang === 'ru'
+                //     ? setColor(taskEdit.project as Projects)
+                //     : setColorEn(taskEdit.project as ProjectsEn)
+                // }
                 onDelete={() => deleteChip(TypeChip.project)}
               />
             ) : (
@@ -264,9 +287,9 @@ const TaskCard = ({ task, onDelete, onChange }: Props) => {
               <Chip
                 data-name={TypeChip.important}
                 // variant='outlined'
-                label={taskEdit.tag}
+                label={getImportance()}
                 onClick={showMenu}
-                color={setColorImportance(lang)}
+                color={setColorImportance()}
                 onDelete={() => deleteChip(TypeChip.important)}
               />
             ) : (
