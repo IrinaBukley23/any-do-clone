@@ -70,12 +70,13 @@
   "taskCreatePlaceholder": "Enter task",
   "taskDescription": "description",
   "taskDate": "Date",
-  "taskProj": "project",
+  "taskProj": "Project",
   "taskDelele": "Delete",
   "taskImportance": "importance",
   "modalDeleteTitle": "Removal",
   "modalDeleteText": "Are you sure you want to delete?",
   "modalDeleteNo": "No",
   "modalDeleteYes": "Yes",
-  "modalCreateTask": "Create task?"
+  "modalCreateTask": "Create task?",
+  "modalAddProject": "Create"
 }

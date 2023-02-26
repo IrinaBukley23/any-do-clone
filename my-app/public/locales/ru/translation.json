@@ -70,12 +70,13 @@
   "taskCreatePlaceholder": "Введите задачу",
   "taskDescription": "описание",
   "taskDate": "Дата",
-  "taskProj": "проект",
+  "taskProj": "Проект",
   "taskDelele": "Удалить",
   "taskImportance": "важность",
   "modalDeleteTitle": "Удаление",
   "modalDeleteText": "Вы действительно хотите удалить?",
   "modalDeleteNo": "Нет",
   "modalDeleteYes": "Да",
-  "modalCreateTask": "Создать задачу?"
+  "modalCreateTask": "Создать задачу?",
+  "modalAddProject": "Добавить"
 }

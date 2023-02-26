@@ -90,7 +90,7 @@ const SideProjects = () => {
               <TextFieldEdit
                 dataName='project'
                 key={projectEdit.id}
-                label='Проект'
+                label={t('taskProj')}
                 value={projectEdit.name}
                 onAprove={handleAprove}
                 onCancel={handleCancel}
@@ -113,10 +113,10 @@ const SideProjects = () => {
       <DialogModal
         onClose={handleClose}
         isOpen={open}
-        formsParams={{ textApprove: 'Добавить', formId: 'addProject' }}
+        formsParams={{ textApprove: t('modalAddProject'), formId: 'addProject' }}
       >
         <form id='addProject' onSubmit={handleSubmit} className={styles.form}>
-          <TextField fullWidth label='Проект' value={projectName} onChange={handleChange} />
+          <TextField fullWidth label={t('taskProj')} value={projectName} onChange={handleChange} />
         </form>
       </DialogModal>
     </>
