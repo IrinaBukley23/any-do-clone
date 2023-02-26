@@ -49,6 +49,9 @@ RACI matrix https://docs.google.com/spreadsheets/d/1N8AeRUxPxquk6BgXVHpto-4pDoae
 
 ## Scripts
 npm i
+
 npm start
+
 npm run build
+
 npm run lint
