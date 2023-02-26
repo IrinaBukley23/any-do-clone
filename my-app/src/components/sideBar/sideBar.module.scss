@@ -1,5 +1,6 @@
 .sidebar {
   width: 320px;
+  box-sizing: border-box;
   position: fixed;
 
   height: calc(100vh - 150px);
@@ -26,4 +27,10 @@ a {
 
 .calendarWrapper {
   width: 100%;
+}
+
+.calendar {
+  width: 300px;
+  overflow: hidden;
+  box-sizing: border-box;
 }

@@ -67,19 +67,19 @@ export enum TypeChip {
 }
 
 export enum TypeStatusTask {
-  notStart = 'не начиналось',
-  start = 'в работе',
-  pause = 'отложено',
-  cancel = 'отменено',
-  done = 'сделано',
+  notStart = 'Не начиналось',
+  start = 'В работе',
+  pause = 'Отложено',
+  cancel = 'Отменено',
+  done = 'Сделано',
 }
 
 export enum TypeStatusTaskEn {
-  notStart = 'did not start',
-  start = 'in work',
-  pause = 'postponed',
-  cancel = 'canceled',
-  done = 'done',
+  notStart = 'Did not start',
+  start = 'In work',
+  pause = 'Postponed',
+  cancel = 'Canceled',
+  done = 'Done',
 }
 
 export enum TypeStatusCommon {

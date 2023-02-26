@@ -12,7 +12,6 @@ import { useEffect } from 'react'
 import {
   calendarActions,
   calendarSelectors,
-  getTaskList,
   getTaskListAll,
   loadTasks,
 } from '../../store/reducers/calendarReducer'
@@ -56,7 +55,7 @@ const CalendarView = () => {
 
   const dispatch = useAppDispatch()
 
-  console.log('sidebaRender', taskListAll)
+  // console.log('sidebaRender', taskListAll)
 
   const changeDate = (date: string | null) => {
     if (date) {
@@ -86,6 +85,7 @@ const CalendarView = () => {
             displayStaticWrapperAs='desktop'
             value={dateCurrent}
             onChange={changeDate}
+            className={styles.calendar}
             renderInput={(params) => <TextField {...params} />}
             renderDay={(day, _value, DayComponentProps) => {
               const isSelected = taskListAll

@@ -8,8 +8,10 @@ import { useEffect, useState } from 'react'
 import { MenuItemType } from '../../types/types'
 import { typesStartTask, typesStartTaskEn, TypeStatusCommon } from '../../types/enum'
 import { calendarActions } from '../../store/reducers/calendarReducer'
+import { useTranslation } from 'react-i18next'
 
 const SideStatus = () => {
+  const { t } = useTranslation()
   const { key } = useAppSelector((state) => state.authorization)
   const { status } = useAppSelector((state) => state.calendar)
   const { lang } = useAppSelector((state) => state.lang)
@@ -28,7 +30,7 @@ const SideStatus = () => {
   return (
     <Accordion>
       <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-        <Typography>Статус</Typography>
+        <Typography>{t('sideBarStatus')}</Typography>
       </AccordionSummary>
       <AccordionDetails>
         <NavLink
@@ -36,7 +38,7 @@ const SideStatus = () => {
           onClick={() => handleClick(null)}
           className={!status ? styles.activeLink : ''}
         >
-          <Typography>Текущие задачи</Typography>
+          <Typography>{t('sideBarCurrTasks')}</Typography>
         </NavLink>
         {statusAll.map((currStatus) => (
           <NavLink
