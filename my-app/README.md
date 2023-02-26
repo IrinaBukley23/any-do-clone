@@ -13,7 +13,7 @@ https://08f38d69.any-do-clone.pages.dev
 CRA, Router, Starter (description, about the team), localization into two languages
 Boards page
 
-**Владислава (vladislava96)** - Developer
+**Vlada (vladislava96)** - Developer
 Header with widgets,
 Backend from scratch to deployment. I also did a lot of work on connecting the front part with the backend.
 
@@ -36,7 +36,6 @@ RACI matrix https://docs.google.com/spreadsheets/d/1N8AeRUxPxquk6BgXVHpto-4pDoae
 * Redux
 * Typescript
 * Webpack
-* Eslint airbnb
 * Prettier
 * SCSS
 
