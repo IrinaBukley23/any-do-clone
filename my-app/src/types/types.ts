@@ -3,8 +3,7 @@ import {
   Projects,
   Importance,
   ImportanceEn,
-  ProjectsEn,
-  TypeStatusTaskEn,
+  ProjectsEn
 } from './enum'
 import { Moment } from 'moment'
 export interface IColumn {

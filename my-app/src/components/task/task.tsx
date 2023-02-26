@@ -1,4 +1,4 @@
-import styles from './task.module.scss'
+import './task.scss'
 import React, { useState } from 'react'
 import {
   FormControl,
@@ -16,7 +16,6 @@ import { useDispatch } from 'react-redux'
 import DeleteIcon from '@mui/icons-material/Delete'
 import { editTaskDescr, editTaskTitle, setRemoveTask } from '../../store/actions/actionCreators'
 import CancelIcon from '@mui/icons-material/Cancel'
-import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt'
 import { DialogConfirm } from '../ui/dialogConfirm'
 import DownloadDoneIcon from '@mui/icons-material/DownloadDone'
 import { useTranslation } from 'react-i18next'
@@ -39,17 +38,6 @@ const users = [
     email: 'vlada@mail.ru',
   },
 ]
-
-// const regUsers = async function getRandomQuote() {
-//   try {
-//     const url = 'http://143.42.31.53:8080/api/users'
-//     const res = await fetch(url);
-//     const data = await res.json();
-//     console.log(data);
-//   } catch(error) {
-//     console.log(error);
-//   }
-// }
 
 const Task = (props: IProps) => {
   const [openConfirm, setOpenConfirm] = useState(false)

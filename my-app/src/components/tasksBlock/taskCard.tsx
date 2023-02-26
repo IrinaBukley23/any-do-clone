@@ -15,7 +15,7 @@ import TextFieldEdit from '../ui/textFieldEdit/textFieldEdit'
 
 import TaskMenu from './taskMenu'
 import moment from 'moment'
-import { setNestedObjectValues } from 'formik'
+
 import {
   Importance,
   ImportanceEn,
@@ -29,6 +29,7 @@ import { GetIcon } from './getIcon'
 import { setColor, setColorEn } from './utils'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
+import { DialogConfirm } from '../ui/dialogConfirm'
 
 type Props = {
   task: TaskCalendarItemType
@@ -49,7 +50,8 @@ const TaskCard = ({ task, onDelete, onChange }: Props) => {
   const [menuItems, setMenuItems] = useState<string[]>([])
   const [taskEdit, setTaskIsEdit] = useState<TaskCalendarItemType>(task)
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
-  const { lang } = useSelector((state: State) => state.lang)
+  const {lang} = useSelector((state: State) => state.lang);
+  const [isOpen, setIsOpen] = useState(false)
   const open = Boolean(anchorEl)
   const { t } = useTranslation()
   useEffect(() => {
@@ -150,6 +152,13 @@ const TaskCard = ({ task, onDelete, onChange }: Props) => {
     }
   }
 
+  const handleClose = () => {
+    setIsOpen(false);
+  };
+  const handleOpen = () => {
+    setIsOpen(true);
+  };
+
   return (
     <Card className={styles.card}>
       <CardContent>
@@ -212,9 +221,10 @@ const TaskCard = ({ task, onDelete, onChange }: Props) => {
             )}
           </Stack>
           <Stack justifyContent='space-between' alignItems='flex-end'>
-            <IconButton color='primary' onClick={handleDelete}>
+            <IconButton color='primary' onClick={handleOpen}>
               <DeleteIcon />
             </IconButton>
+            <DialogConfirm isOpen={isOpen} handleClose={handleClose} handleRemove={handleDelete} />
           </Stack>
         </Stack>
       </CardContent>

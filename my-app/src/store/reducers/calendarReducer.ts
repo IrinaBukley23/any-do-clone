@@ -1,4 +1,3 @@
-import { RootState } from './../store'
 import { getCurrTasks } from './../utils'
 import {
   createSlice,
@@ -7,11 +6,10 @@ import {
   createEntityAdapter,
   createSelector,
 } from '@reduxjs/toolkit'
-import { TaskCalendarItemType, ITaskCalendarCreate, State } from './../../types/types'
+import { TaskCalendarItemType, ITaskCalendarCreate } from './../../types/types'
 import CalendarTasksApi from '../../api/calendarTasksApi'
 import { TypeStatusTask } from '../../types/enum'
 import moment from 'moment'
-import { getByPlaceholderText } from '@testing-library/react'
 
 export const loadTasks = createAsyncThunk(
   'calendar/getTasks',
