@@ -108,6 +108,9 @@ const Column = (props: IProps) => {
 
   const sortTasks = (task1: TaskItemType, task2: TaskItemType) => task1.taskOrder - task2.taskOrder
 
+  const filteredList = [...taskList]
+  ?.filter((task) => task.currentColumnId === columnId);
+
   return (
     <div id={columnId} className='column'>
       {!isEdit && (
@@ -133,7 +136,7 @@ const Column = (props: IProps) => {
         </div>
       )}
       <Typography variant='h5' component='p' sx={{ fontSize: '14px', textAlign: 'left' }}>
-        {t('columnCards')} - {taskQuantity}
+        {t('columnCards')} - {filteredList.length}
       </Typography>
       <div>
         <Tooltip title={t('columnDel')}>
