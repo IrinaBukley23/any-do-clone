@@ -9,17 +9,17 @@ https://github.com/rolling-scopes-school/tasks/blob/master/tasks/rsclone/rsclone
 https://08f38d69.any-do-clone.pages.dev
 
 ## Developers
-**Ирина (irinabukley23)** - Team Lead, Developer
-Сборка, Роутер, Стартовая (описание, о команде), локализация на два языка
-Страница досок
+**Irina (irinabukley23)** - Team Lead, Developer
+CRA, Router, Starter (description, about the team), localization into two languages
+Boards page
 
 **Владислава (vladislava96)** - Developer
-header с виджетами, 
-Бэкенд с нуля до деплоя. Также проделала много работы по связи front части с backend.
+Header with widgets,
+Backend from scratch to deployment. I also did a lot of work on connecting the front part with the backend.
 
-**Полина (sunnyfur)** - Developer
-Авторизация, главная страница - каледарь, проекты, правый экран, формы с валидацией
-Проделал много работы по code review и типизации проекта.
+**Polina (sunnyfur)** - Developer
+Authorization, main page - calendar, projects, right screen, forms with validation
+Did a lot of work on code review and project typing.
 
 ## Teamwork
 
