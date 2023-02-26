@@ -57,7 +57,7 @@ const DataRow = ({ idRow, time, task, isEven, changeTask }: Props) => {
         )}
       </TableCell>
       <Droppable droppableId={idRow.toString()}>
-        {(droppableProvided, droppableSnapshot) => (
+        {(droppableProvided) => (
           <TableCell
             onDoubleClick={handleClick}
             ref={droppableProvided.innerRef}

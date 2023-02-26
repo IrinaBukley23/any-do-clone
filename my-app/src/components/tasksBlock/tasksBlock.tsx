@@ -9,13 +9,11 @@ import { useCallback, useEffect, useState } from 'react'
 import { TaskCalendarItemType } from '../../types/types'
 import {
   calendarActions,
-  calendarSelectors,
   changeTask,
   createTask,
   deleteTask,
   getTaskList,
 } from '../../store/reducers/calendarReducer'
-import { getCurrTasks } from '../../store/utils'
 
 const TasksBlock = () => {
   const { dateCurrent } = useAppSelector(

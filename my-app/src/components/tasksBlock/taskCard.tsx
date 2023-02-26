@@ -13,8 +13,6 @@ import { LocalizationProvider, MobileDateTimePicker } from '@mui/x-date-pickers'
 import TextFieldEdit from '../ui/textFieldEdit/textFieldEdit'
 import TaskMenu from './taskMenu'
 import moment from 'moment'
-import { useAppSelector } from '../../store/hooks'
-import { projectSelectors } from '../../store/reducers/projectReducer'
 import {
   Importance,
   ImportanceEn,
@@ -24,7 +22,9 @@ import {
 } from '../../types/enum'
 import { GetIcon } from './getIcon'
 import { useTranslation } from 'react-i18next'
-import { useSelector } from 'react-redux'
+import { DialogConfirm } from '../ui/dialogConfirm'
+import { useAppSelector } from '../../store/hooks'
+import { projectSelectors } from '../../store/reducers/projectReducer'
 
 type Props = {
   task: TaskCalendarItemType
@@ -57,6 +57,7 @@ const TaskCard = ({ task, onDelete, onChange }: Props) => {
   const [taskEdit, setTaskIsEdit] = useState<TaskCalendarItemType>(task)
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const { lang } = useAppSelector((state) => state.lang)
+  const [isOpen, setIsOpen] = useState(false)
   const open = Boolean(anchorEl)
   const { t } = useTranslation()
   useEffect(() => {
@@ -173,6 +174,13 @@ const TaskCard = ({ task, onDelete, onChange }: Props) => {
     return res
   }
 
+  const handleClose = () => {
+    setIsOpen(false)
+  }
+  const handleOpen = () => {
+    setIsOpen(true)
+  }
+
   return (
     <Card className={styles.card}>
       <CardContent>
@@ -235,9 +243,10 @@ const TaskCard = ({ task, onDelete, onChange }: Props) => {
             )}
           </Stack>
           <Stack justifyContent='space-between' alignItems='flex-end'>
-            <IconButton color='primary' onClick={handleDelete}>
+            <IconButton color='primary' onClick={handleOpen}>
               <DeleteIcon />
             </IconButton>
+            <DialogConfirm isOpen={isOpen} handleClose={handleClose} handleRemove={handleDelete} />
           </Stack>
         </Stack>
       </CardContent>

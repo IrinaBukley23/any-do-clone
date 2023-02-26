@@ -30,7 +30,6 @@ const Column = (props: IProps) => {
   const { columnTitle, columnId } = props.columnItem
   const dispatch = useDispatch()
   const { taskList } = useSelector((state: State) => state.task)
-  const taskQuantity = taskList.length
   const { t } = useTranslation()
   const [isEdit, setIsEdit] = useState(false)
   const [correctedTitle, setCorrectedTitle] = useState(columnTitle)
@@ -76,16 +75,15 @@ const Column = (props: IProps) => {
 
   function dragStartHandler(e: React.DragEvent<HTMLDivElement>, task: ITask): void {
     props.onTaskOnDragChange(task)
-    // setCurrentTask(task);
   }
 
   function dragOverHandler(e: React.DragEvent<HTMLDivElement>): void {
-    e.preventDefault()
-    ;(e.target as HTMLDivElement).style.boxShadow = '0 2 px 3px gray'
+    e.preventDefault();
+    (e.target as HTMLDivElement).style.boxShadow = '0 2 px 3px gray'
   }
 
   function dragEndHandler(e: React.DragEvent<HTMLDivElement>): void {
-    ;(e.target as HTMLDivElement).style.boxShadow = 'none'
+    (e.target as HTMLDivElement).style.boxShadow = 'none'
   }
 
   function dropHandler(e: React.DragEvent<HTMLDivElement>, task: TaskItemType): void {
@@ -107,6 +105,9 @@ const Column = (props: IProps) => {
   }
 
   const sortTasks = (task1: TaskItemType, task2: TaskItemType) => task1.taskOrder - task2.taskOrder
+
+  const filteredList = [...taskList]
+  ?.filter((task) => task.currentColumnId === columnId);
 
   return (
     <div id={columnId} className='column'>
@@ -133,7 +134,7 @@ const Column = (props: IProps) => {
         </div>
       )}
       <Typography variant='h5' component='p' sx={{ fontSize: '14px', textAlign: 'left' }}>
-        {t('columnCards')} - {taskQuantity}
+        {t('columnCards')} - {filteredList.length}
       </Typography>
       <div>
         <Tooltip title={t('columnDel')}>
