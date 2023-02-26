@@ -150,27 +150,28 @@ const TaskCard = ({ task, onDelete, onChange }: Props) => {
     }
   }
   const setColorImportance = () => {
-    return taskEdit.tag == Importance.immediat || ImportanceEn.immediat
+    return taskEdit.tag == Importance.immediat || taskEdit.tag == ImportanceEn.immediat
       ? 'error'
-      : taskEdit.tag == Importance.important || ImportanceEn.important
+      : taskEdit.tag == Importance.important || taskEdit.tag == ImportanceEn.important
       ? 'warning'
       : 'success'
   }
   const getImportance = () => {
     let res = null
     if (lang == 'ru') {
-      taskEdit.tag == Importance.immediat || ImportanceEn.immediat
+      taskEdit.tag == Importance.immediat || taskEdit.tag == ImportanceEn.immediat
         ? (res = Importance.immediat)
-        : taskEdit.tag == Importance.important || ImportanceEn.important
+        : taskEdit.tag == Importance.important || taskEdit.tag == ImportanceEn.important
         ? (res = Importance.important)
         : (res = Importance.notImediat)
     } else {
-      taskEdit.tag == Importance.immediat || ImportanceEn.immediat
+      taskEdit.tag == Importance.immediat || taskEdit.tag == ImportanceEn.immediat
         ? (res = ImportanceEn.immediat)
-        : taskEdit.tag == Importance.important || ImportanceEn.important
+        : taskEdit.tag == Importance.important || taskEdit.tag == ImportanceEn.important
         ? (res = ImportanceEn.important)
         : (res = ImportanceEn.notImediat)
     }
+
     return res
   }
 
