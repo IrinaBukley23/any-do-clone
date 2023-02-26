@@ -2,13 +2,13 @@
 A simple collaboration tool. Helps to work together and be on time! 
 (RSSchool 2022Q3 - Team 21)
 
-### Task
+## Task
 https://github.com/rolling-scopes-school/tasks/blob/master/tasks/rsclone/rsclone.md
 
-### Deploy
+## Deploy
 https://08f38d69.any-do-clone.pages.dev
 
-### Developers
+## Developers
 **Ирина (irinabukley23)** - Team Lead, Developer
 Сборка, Роутер, Стартовая (описание, о команде), локализация на два языка
 Страница досок
@@ -21,21 +21,17 @@ header с виджетами,
 Авторизация, главная страница - каледарь, проекты, правый экран, формы с валидацией
 Проделал много работы по code review и типизации проекта.
 
-### Teamwork
+## Teamwork
 
 RACI matrix https://docs.google.com/spreadsheets/d/1N8AeRUxPxquk6BgXVHpto-4pDoaeZRob1olvzOnZ2E0/edit#gid=946984
 
-### Kanban board 
-(trello)
+## Kanban board (trello)
 
-,,,,,,,,,,,Overview (for crosscheck)
-,,,,,,,,,,,https://youtu.be/7cRpzRZ3rT8
-
-### Backend
+## Backend
 * deploy https://any-do-clone-api-doc.netlify.app/
 * repo: https://github.com/vladislava96/any-do-clone-server
 
-### Stack
+## Stack
 * React
 * Redux
 * Typescript
@@ -44,14 +40,14 @@ RACI matrix https://docs.google.com/spreadsheets/d/1N8AeRUxPxquk6BgXVHpto-4pDoae
 * Prettier
 * SCSS
 
-### Used libs
+## Used libs
 * Material UI
 * React DND
 * i18next
 * Formik
 * Yup
 
-### Scripts
+## Scripts
 npm i
 npm start
 npm run build
