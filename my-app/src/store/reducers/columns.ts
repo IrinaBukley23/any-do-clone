@@ -104,25 +104,8 @@ export const columnsSlice = createSlice({
         console.error(action.error);
       })
       .addCase(loadColumns.fulfilled, (state, action) => {
-        let columns = columnSelectors.selectAll(state);
-        const orders = columns.reduce((orders, column) => {
-          orders.set(column.id, column.order)
-          return orders
-        }, new Map<number, number>())
-
         columnAdapter.removeAll(state);
         columnAdapter.addMany(state, action.payload);
-
-        columns = columnSelectors.selectAll(state);
-        columns.forEach((column) => {
-          columnAdapter.updateOne(state, {
-            id: column.id,
-            changes: {
-              ...column,
-              order: orders.get(column.id) ?? 0
-            }
-          })
-        })
       })
       .addCase(loadColumns.rejected, (state, action) => {
         console.error(action.error);
@@ -153,16 +136,19 @@ export const columnsSlice = createSlice({
 
 export function insertColumnBefore(insertedColumn: IColumn, beforeColumn: IColumn) {
   return async (dispatch: AppDispatch, getState: GetRootState) => {
+    const oldState = getState();
     await dispatch(columnsSlice.actions.insertColumnBefore({insertedColumn, beforeColumn}));
     const state = getState();
-    const column = columnSelectors.selectById(state.columns, insertedColumn.id);
-    if (column === undefined) {
-      return
-    };
-    await dispatch(updateColumn({
-      id: insertedColumn.id,
-      columnUpdate: column
-    }))
+    const columns = columnSelectors.selectAll(state.columns);
+    for (const column of columns) {
+      const oldColumn = columnSelectors.selectById(oldState.columns, column.id)
+      if (oldColumn !== undefined && oldColumn.order !== column.order) {
+        await dispatch(updateColumn({
+          id : column.id,
+          columnUpdate: column
+        }))
+      }
+    }
   }
 }
 

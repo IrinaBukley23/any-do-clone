@@ -1,7 +1,7 @@
 import styles from './boardPage.module.scss';
 import React, { useEffect, useState } from 'react';
 import { Button, TextField, Typography } from '@mui/material';
-import Column from '../../components/column/column';
+import Column, { COLUMN_CLASS_NAME } from '../../components/column/column';
 import { minNumberOfLetters } from '../../types/constants';
 import { useTranslation } from 'react-i18next';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
@@ -67,7 +67,10 @@ const BoardPage = () => {
     }
 
     function dragStartHandler(e: React.DragEvent<HTMLDivElement>, column: IColumn): void {
-      setCurrentColumn(column);
+      const target = e.target as HTMLElement;
+      if (target.querySelector(`.${COLUMN_CLASS_NAME}`)) {
+        setCurrentColumn(column);
+      }
     }
 
     function dragOverHandler(e: React.DragEvent<HTMLDivElement>): void {

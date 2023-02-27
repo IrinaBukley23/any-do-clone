@@ -149,25 +149,8 @@ export const cardsSlice = createSlice({
         console.error(action.error);
       })
       .addCase(loadCards.fulfilled, (state, action) => {
-        let cards = cardSelectors.selectAll(state);
-        const orders = cards.reduce((orders, card) => {
-          orders.set(card.id, card.order)
-          return orders
-        }, new Map<number, number>())
-
         cardAdapter.removeAll(state);
         cardAdapter.addMany(state, action.payload);
-
-        cards = cardSelectors.selectAll(state);
-        cards.forEach((card) => {
-          cardAdapter.updateOne(state, {
-            id: card.id,
-            changes: {
-              ...card,
-              order: orders.get(card.id) ?? 0
-            }
-          })
-        })
       })
       .addCase(loadCards.rejected, (state, action) => {
         console.error(action.error);
@@ -198,31 +181,38 @@ export const cardsSlice = createSlice({
 
 export function insertCardBefore(insertedCard: ICard, beforeCard: ICard) {
   return async (dispatch: AppDispatch, getState: GetRootState) => {
+    const oldState = getState();
     await dispatch(cardsSlice.actions.insertCardBefore({insertedCard, beforeCard}));
     const state = getState();
-    const card = cardSelectors.selectById(state.cards, insertedCard.id);
-    if (card === undefined) {
-      return
-    };
-    await dispatch(updateCard({
-      id: insertedCard.id,
-      cardUpdate: card
-    }))
+
+    const cards = cardSelectors.selectAll(state.cards);
+    for (const card of cards) {
+      const oldCard = cardSelectors.selectById(oldState.cards, card.id)
+      if (oldCard !== undefined && (oldCard.order !== card.order || oldCard.columnId !== card.columnId)){
+        await dispatch(updateCard({
+          id : card.id,
+          cardUpdate: card
+        }))
+      }
+    }
   }
 }
 
 export function insertCardToColumn(insertedCard: ICard, columnId: number) {
   return async (dispatch: AppDispatch, getState: GetRootState) => {
+    const oldState = getState();
     await dispatch(cardsSlice.actions.insertCardToColumn({insertedCard, columnId}));
     const state = getState();
-    const card = cardSelectors.selectById(state.cards, insertedCard.id);
-    if(card === undefined) {
-      return
-    };
-    await dispatch(updateCard({
-      id: insertedCard.id,
-      cardUpdate: card
-    }))
+    const cards = cardSelectors.selectAll(state.cards);
+    for (const card of cards) {
+      const oldCard = cardSelectors.selectById(oldState.cards, card.id)
+      if (oldCard !== undefined && (oldCard.order !== card.order || oldCard.columnId !== card.columnId)){
+        await dispatch(updateCard({
+          id : card.id,
+          cardUpdate: card
+        }))
+      }
+    }
   }
 }
 

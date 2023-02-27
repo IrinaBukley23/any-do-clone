@@ -182,4 +182,5 @@ const Column = (props: IProps) => {
     )
 }
 
-export default Column
+export default Column;
+export const COLUMN_CLASS_NAME = styles.column;
