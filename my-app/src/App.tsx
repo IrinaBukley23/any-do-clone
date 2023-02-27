@@ -5,10 +5,8 @@ import MainPage from './pages/mainPage/mainPage'
 import NotFoundPage from './pages/notFoundPage/notFoundPage'
 import BoardPage from './pages/boardPage/boardPage'
 import Layout from './components/layout/layout'
-// import { LoginForm } from './components/LoginForm/LoginForm';
 
 function App() {
-  // const { user } = useSelector((state: RootState) => state.loginReducer)
   return (
     <div className='App'>
       <Routes>

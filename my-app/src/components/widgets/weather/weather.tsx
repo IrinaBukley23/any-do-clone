@@ -5,10 +5,6 @@ import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { State } from '../../../types/types';
 
-const defaultCity = localStorage.getItem('city');
-
-let isFirstLoad = true;
-
 interface IWeatherData {
   temp: string,
   description: string,
@@ -19,19 +15,25 @@ interface IWeatherData {
 
 const Weather = () => {
   const [weatherData, setData] = useState<IWeatherData | null>(null);
-  const [city, setCity] = useState(defaultCity)
+  const [city, setCity] = useState<string | null>(null)
   const [error, setError] = useState('')
   const { t, } = useTranslation();
   const { lang } = useSelector((state: State) => state.lang)
+  const [isFirstLoad, setIsFirstLoad] = useState(true);
   useEffect(() => {
-    if (isFirstLoad && city !== null) {
-      isFirstLoad = false
-      getWeather(city, lang);
+    if (isFirstLoad) {
+      setIsFirstLoad(false);
+      const city = localStorage.getItem('city');
+      setCity(city);
+      if (city) {
+        getWeather(city, lang);
+      }
     }
   }, [lang]);
 
   async function getWeather(cityValue: string, lang: string): Promise<void> {
     setCity(cityValue);
+    console.log('getWeather');
     localStorage.setItem('city', cityValue)
     try {
       const url = `https://api.openweathermap.org/data/2.5/weather?q=${cityValue}&lang=${lang}&appid=f24a0e6c09481d6e6ccf0547c5467caf&units=metric`
@@ -76,7 +78,6 @@ const Weather = () => {
         }
         { weatherData !== null && error === '' &&
           <div className={styles.weather__container}>
-            {/* <div>{weatherData.description}</div> */}
             <div className={styles.header__weather_icon}> <img src={weatherData.icon} alt='icon'/> </div>
             <div>{weatherData.temp}°C</div>
           </div>

@@ -6,7 +6,7 @@ import {
   createEntityAdapter,
   createSelector,
 } from '@reduxjs/toolkit'
-import { TaskCalendarItemType, ITaskCalendarCreate, State, Project } from './../../types/types'
+import { TaskCalendarItemType, ITaskCalendarCreate } from './../../types/types'
 import CalendarTasksApi from '../../api/calendarTasksApi'
 import { TypeStatusCommon } from '../../types/enum'
 import moment from 'moment'
@@ -39,7 +39,6 @@ export const createTask = createAsyncThunk(
       performDate: value.date,
       status: TypeStatusCommon.notStart,
     }
-    console.log(newTask)
 
     const createdTask = await calendarTasksApi.createTask(value.key, newTask)
     return createdTask
@@ -47,7 +46,6 @@ export const createTask = createAsyncThunk(
 )
 export const changeTask = createAsyncThunk('calendar/changeTask', async (value: ChangeValue) => {
   const task = await calendarTasksApi.changeTask(value.key, value.task)
-  console.log('changed')
   return task
 })
 

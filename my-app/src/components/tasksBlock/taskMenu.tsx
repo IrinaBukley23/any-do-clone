@@ -1,6 +1,6 @@
 import { Menu, MenuItem } from '@mui/material'
 import React from 'react'
-import { MenuItemType, Project } from '../../types/types'
+import { MenuItemType } from '../../types/types'
 
 type Props = {
   open: boolean

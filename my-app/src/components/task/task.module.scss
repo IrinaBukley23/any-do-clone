@@ -1,13 +1,13 @@
 .task {
     background: #ffffff;
-    box-shadow: 6px 6px 10px 1px rgba(0, 0, 0, 0.2);
+    box-shadow: 2px 2px 5px 1px rgba(0, 0, 0, 0.2);
     border-radius: 5px;
     margin-bottom: 10px;
     position: relative;
-    width: 95%;
+    width: 97%;
     transition: all 0.8s ease-in;
     &:hover {
-        transform: scale(1.05);
+        background: rgba(129, 88, 211, 0.08);
     }
     &__edit {
         width: 100%;

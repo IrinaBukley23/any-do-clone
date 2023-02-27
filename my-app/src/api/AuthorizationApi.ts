@@ -18,7 +18,6 @@ export default class AuthorizationApi {
     }
 
     const data = await res.json()
-    console.log(data)
     return data
   }
 
@@ -37,7 +36,6 @@ export default class AuthorizationApi {
     }
 
     const data = await res.json()
-    console.log(data)
     return data
   }
 

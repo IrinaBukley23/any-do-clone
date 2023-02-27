@@ -3,7 +3,7 @@ import SlideshowOutlinedIcon from '@mui/icons-material/SlideshowOutlined'
 import DisabledByDefaultOutlinedIcon from '@mui/icons-material/DisabledByDefaultOutlined'
 import PausePresentationIcon from '@mui/icons-material/PausePresentation'
 import CheckBoxOutlinedIcon from '@mui/icons-material/CheckBoxOutlined'
-import { TypeStatusCommon, TypeStatusTask, TypeStatusTaskEn } from '../../types/enum'
+import { TypeStatusCommon } from '../../types/enum'
 
 export const GetIcon = ({ status }: { status: TypeStatusCommon }) => {
   switch (status) {

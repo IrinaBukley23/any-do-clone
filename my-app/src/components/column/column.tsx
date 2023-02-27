@@ -34,13 +34,11 @@ const Column = (props: IProps) => {
     );
 
     const taskQuantity = cards.length;
-
     const [open, setOpen] = useState(false);
     const [isTaskModal, setIsTaskModal] = useState(false);
     const { t, } = useTranslation();
     const [isEdit, setIsEdit] = useState(false);
     const [correctedTitle, setCorrectedTitle] = useState(columnTitle);
-
     const [isFirstEffect, setIsFirstEffect] = useState(true);
     
     useEffect(() => {
@@ -123,7 +121,6 @@ const Column = (props: IProps) => {
                 <div className={styles.column__edit}>
                     <TextField
                         id="outlined-basic"
-                        label="Outlined"
                         variant="outlined"
                         value={correctedTitle}
                         onChange={handleCorrect}
@@ -134,7 +131,8 @@ const Column = (props: IProps) => {
                     </IconButton>
                     <CancelIcon
                         onClick={handleCancel}
-                        sx={{color: 'blue', ml: '10px'}}
+                        color='error'
+                        sx={{ ml: '10px'}}
                     />
                 </div>
             ) : (

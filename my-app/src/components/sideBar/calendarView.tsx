@@ -55,8 +55,6 @@ const CalendarView = () => {
 
   const dispatch = useAppDispatch()
 
-  // console.log('sidebaRender', taskListAll)
-
   const changeDate = (date: string | null) => {
     if (date) {
       dispatch(
@@ -71,7 +69,6 @@ const CalendarView = () => {
   }
   useEffect(() => {
     if (key) dispatch(loadTasks(key))
-    console.log('sidebar')
   }, [])
 
   return (
