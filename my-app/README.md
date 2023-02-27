@@ -27,9 +27,14 @@ RACI matrix https://docs.google.com/spreadsheets/d/1N8AeRUxPxquk6BgXVHpto-4pDoae
 
 ## Kanban board (trello)
 
+## Frontend
+* deploy https://lider-task-clone.netlify.app/
+* repo: https://github.com/IrinaBukley23/any-do-clone/edit/develop/my-app/
+
 ## Backend
 * deploy https://any-do-clone-api-doc.netlify.app/
 * repo: https://github.com/vladislava96/any-do-clone-server
+* documentation: https://candid-genie-d6f0ab.netlify.app/
 
 ## Backend Stack
 * Node.js
