@@ -111,7 +111,6 @@ const BoardPage = () => {
                 onDrop={(e: React.DragEvent<HTMLDivElement>) => dropHandler(e, column)}
                 draggable={true}
               >
-                <div>order: {column.order}</div>
                 <Column
                   key={column.id}
                   columnItem={column}
