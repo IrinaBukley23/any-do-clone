@@ -21,6 +21,29 @@
         }
     }
 }
+
+.logo {
+    $img_height: 80px;
+    $year_height: 2em;
+
+    position: relative;
+    text-align: left;
+
+    &__content {
+        position: absolute;
+        left: 20px;
+        top: calc(-#{$year_height} - #{$img_height});
+    }
+
+    &__img {
+        height: $img_height;
+    }
+
+    &__year {
+        font-size: $year_height;
+    }
+}
+
 .localization {
     padding: 25px 25px 0 0;
     display: flex;
