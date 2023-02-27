@@ -70,9 +70,10 @@ export const getTaskList = createSelector(
     (state) => state.searchString,
     (state) => state.project,
     (state) => state.status,
+    (state) => state.tag,
   ],
 
-  (entities, dateCurrent, filter, project, status) => {
+  (entities, dateCurrent, filter, project, status, tag) => {
     let byDate = getCurrTasks(entities, new Date(dateCurrent))
     if (project) byDate = byDate.filter((task) => task.projectId == project)
     if (status) byDate = byDate.filter((task) => task.status == status)
@@ -80,6 +81,7 @@ export const getTaskList = createSelector(
       byDate = byDate.filter(
         (task) => task.status != TypeStatusCommon.cancel && task.status != TypeStatusCommon.done,
       )
+    if (tag) byDate = byDate.filter((task) => task.tag == tag)
     if (!filter) return byDate
     return byDate.filter((task) => task.title.toLowerCase().includes(filter.toLowerCase()))
   },
@@ -107,6 +109,7 @@ export const calendarSlice = createSlice({
     dateSelectedInPlan: today,
     project: null,
     status: null,
+    tag: null,
   }),
   reducers: {
     setCurrentDate: (state, action: PayloadAction<string>) => {
@@ -123,6 +126,9 @@ export const calendarSlice = createSlice({
     },
     setStatus: (state, action) => {
       state.status = action.payload
+    },
+    setTag: (state, action) => {
+      state.tag = action.payload
     },
   },
   extraReducers(builder) {

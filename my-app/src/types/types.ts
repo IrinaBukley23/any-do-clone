@@ -1,10 +1,4 @@
-import {
-  Projects,
-  Importance,
-  ImportanceEn,
-  ProjectsEn,
-  TypeStatusCommon,
-} from './enum'
+import { TypeTagCommon, TypeStatusCommon } from './enum'
 import { Moment } from 'moment'
 import { RootState } from '../store/store'
 
@@ -13,42 +7,42 @@ export type Lang = {
 }
 
 export interface ICard {
-  id: number,
-  columnId: number,
-  title: string,
-  description?: string,
-  participant?: string,
-  order: number,
+  id: number
+  columnId: number
+  title: string
+  description?: string
+  participant?: string
+  order: number
 }
 
 export interface ICardEdit {
-  columnId: number,
-  title: string,
-  description?: string,
-  participant?: string,
-  order: number,
+  columnId: number
+  title: string
+  description?: string
+  participant?: string
+  order: number
 }
 
 export interface IColumn {
-  id: number;
-  title: string;
-  ownerId: number;
-  order: number;
+  id: number
+  title: string
+  ownerId: number
+  order: number
 }
 
 export interface IColumnCreation {
-  title: string;
-  order: number;
+  title: string
+  order: number
 }
 
 export interface IColumnUpdate {
-  title: string;
-  order: number;
+  title: string
+  order: number
 }
 
 export interface IUser {
-  id: string,
-  name: string,
+  id: string
+  name: string
   email: string
 }
 
@@ -95,9 +89,8 @@ export interface ITaskCalendarCreate {
   performDate: string
   status: TypeStatusCommon
   description?: string
-  project?: Projects | ProjectsEn
   projectId?: number
-  tag?: Importance | ImportanceEn
+  tag?: TypeTagCommon
 }
 export interface ITaskCalendar extends ITaskCalendarCreate {
   id: number
