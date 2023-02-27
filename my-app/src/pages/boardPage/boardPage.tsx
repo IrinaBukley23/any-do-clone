@@ -128,17 +128,17 @@ const BoardPage = () => {
                       placeholder=''
                       label={t('boardPageInputText')}
                       variant="filled" 
-                      sx={{mt: '30px', ml: '15px'}}
+                      sx={{ ml: '15px'}}
                   />
                   {isError && (
-                    <Typography variant="h5" component="p" sx={{fontSize: '12px', textAlign: 'left', color: 'red', mt: '15px', ml: '15px'}}> {t('boardPageInputError')} </Typography>
+                    <Typography variant="h5" component="p" sx={{fontSize: '12px', textAlign: 'left', color: 'red',  ml: '15px'}}> {t('boardPageInputError')} </Typography>
                   )}
                 </FormControl>
                 <Button
                   type='submit'
                   color='primary' 
                   variant='contained'
-                  sx={{height: '40px', mt: '30px', ml: '15px', minWidth: '160px'}}
+                  sx={{height: '40px', ml: '15px', minWidth: '160px'}}
                   disabled={isError}
                 >
                     {t('boardPageSaveCol')}
@@ -147,7 +147,7 @@ const BoardPage = () => {
                   type='reset'
                   color='primary'
                   variant='contained'
-                  sx={{height: '40px', mt: '30px', ml: '15px', minWidth: '160px'}}
+                  sx={{height: '40px', ml: '15px', minWidth: '160px'}}
                 >
                     Отмена
                 </Button>

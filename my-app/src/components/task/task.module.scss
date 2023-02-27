@@ -4,10 +4,10 @@
     border-radius: 5px;
     margin-bottom: 10px;
     position: relative;
-    width: 95%;
+    width: 97%;
     transition: all 0.8s ease-in;
     &:hover {
-        transform: scale(1.05);
+        background: #ebeaea;
     }
     &__edit {
         width: 100%;
