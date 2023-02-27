@@ -8,50 +8,60 @@ import {
   TypeStatusCommon,
 } from './enum'
 import { Moment } from 'moment'
-export interface IColumn {
-  columnId: string
-  columnTitle: string
-  columnOrder: number
-  columnList: IColumn[]
-  taskList?: ITask[]
-}
-
-export type ColumnItemType = Omit<IColumn, 'columnList'>
-export type CurrentId = {
-  currentId: string
-}
+import { RootState } from '../store/store'
 
 export type Lang = {
   lang: string
 }
 
-export interface ITask {
-  taskId: string
-  taskTitle: string
-  taskDescr: string
-  taskOrder: number
-  taskList: ITask[]
-  currentColumnId: string
+export interface ICard {
+  id: number,
+  columnId: number,
+  title: string,
+  description?: string,
+  participant?: string,
+  order: number,
 }
 
-export type TaskItemType = Omit<ITask, 'taskList'>
+export interface ICardEdit {
+  columnId: number,
+  title: string,
+  description?: string,
+  participant?: string,
+  order: number,
+}
+
+export interface IColumn {
+  id: number;
+  title: string;
+  ownerId: number;
+  order: number;
+}
+
+export interface IColumnCreation {
+  title: string;
+  order: number;
+}
+
+export interface IColumnUpdate {
+  title: string;
+  order: number;
+}
+
+export interface IUser {
+  id: string,
+  name: string,
+  email: string
+}
 
 export type FormParam = {
   textApprove: string
   formId: string
 }
 
-export type State = {
-  token: string
-  user: null
-  column: IColumn
-  task: ITask
-  calendar: ICalendar
-  currentId: CurrentId
-  lang: Lang
-}
+export type State = RootState
 
-export interface IUser {
+export interface IRegistration {
   name: string
   email: string
   password: string

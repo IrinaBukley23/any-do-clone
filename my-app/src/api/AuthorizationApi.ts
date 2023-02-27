@@ -1,9 +1,9 @@
-import { IAuthorization, IError, ISession, IUser } from '../types/types'
+import { IAuthorization, IError, IRegistration, ISession, IUser } from '../types/types';
 
-export const BACKEND_BASE_URL = 'http://143.42.31.53:8080'
+export const BACKEND_BASE_URL = 'https://top-twelve.online:8080'
 
 export default class AuthorizationApi {
-  async register(user: IUser): Promise<IUser> {
+  async register(user: IRegistration): Promise<IUser> {
     const res = await fetch(`${BACKEND_BASE_URL}/api/registration`, {
       method: 'POST',
       headers: {
@@ -55,7 +55,6 @@ export default class AuthorizationApi {
       throw new Error(data.message)
     }
     const data = await res.json()
-    console.log(11111111111, data)
     return data
   }
 }

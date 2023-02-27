@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import AuthorizationApi from '../../api/AuthorizationApi';
 import { DialogForm } from '../../types/enum';
-import { IUser, IAuthorization } from '../../types/types';
+import { IAuthorization, IRegistration, IUser } from '../../types/types';
 
 const authorizationApi = new AuthorizationApi();
 interface IAuthorizationState {
@@ -25,7 +25,7 @@ const initialState: IAuthorizationState = {
 
 export const register = createAsyncThunk(
   'authorization/register',
-  async (user: IUser) => authorizationApi.register(user),
+  async (registration: IRegistration) => authorizationApi.register(registration),
 )
 
 export const login = createAsyncThunk(
