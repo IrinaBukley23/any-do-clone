@@ -17,13 +17,11 @@ import './i18n'
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 root.render(
   <Provider store={store}>
-    {/* <React.StrictMode> */}
     <ThemeProvider theme={theme}>
       <BrowserRouter>
         <App />
       </BrowserRouter>
     </ThemeProvider>
-    {/* </React.StrictMode> */}
   </Provider>,
 )
 

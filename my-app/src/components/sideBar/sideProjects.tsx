@@ -37,7 +37,6 @@ const SideProjects = () => {
   const dispatch = useAppDispatch()
   useEffect(() => {
     if (key) dispatch(loadProjects(key))
-    console.log('sidebar')
   }, [])
   const handleClick = (project: number | null) => {
     dispatch(calendarActions.setProject(project))
@@ -53,7 +52,6 @@ const SideProjects = () => {
   }
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    console.log({ key: key, name: projectName })
     if (key) dispatch(createProject({ key: key, name: projectName }))
     setOpen(false)
   }
@@ -79,7 +77,6 @@ const SideProjects = () => {
         <AccordionDetails>
           <NavLink
             to='/main'
-            // selected={!project}
             onClick={() => handleClick(null)}
             className={!project ? styles.activeLink : ''}
           >

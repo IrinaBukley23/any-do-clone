@@ -1,6 +1,4 @@
 import { Tab, Tabs } from '@mui/material'
-// import { useDispatch } from 'react-redux';
-// import { loginSlice } from '../../store/reducers/loginSlice';
 import { DialogForm } from '../../types/enum'
 import { DialogModal } from '../ui/dialogModal'
 import { LoginView } from './loginView'
@@ -9,17 +7,6 @@ import { RegistrationView } from './registrationView'
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
 import { hideDialog, selectDialogForm } from '../../store/reducers/authorization'
 import { useTranslation } from 'react-i18next'
-
-// const formsParams = {
-//   [DialogForm.login]: {
-//     textApprove: 'Войти',
-//     formId: `form-${DialogForm.login}`,
-//   },
-//   [DialogForm.register]: {
-//     textApprove: 'Зарегистрироваться',
-//     formId: `form-${DialogForm.register}`,
-//   }
-// }
 
 export const LoginForm = () => {
   const dispatch = useAppDispatch()

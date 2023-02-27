@@ -1,7 +1,6 @@
 import { Alert, Grid, TextField } from '@mui/material'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
-// import theme from '../../defaultTheme'
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
 import { register } from '../../store/reducers/authorization'
 import styles from './form.module.scss'
@@ -51,7 +50,6 @@ export const RegistrationView = ({ formId }: ViewProps) => {
     },
     validationSchema: validationSchem,
     onSubmit: (values) => {
-      console.log({ name: values.name, email: values.email, password: values.password })
       dispatch(register({
         name: values.name,
         email: values.email,

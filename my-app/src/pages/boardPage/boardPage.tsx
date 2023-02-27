@@ -149,7 +149,7 @@ const BoardPage = () => {
                   variant='contained'
                   sx={{height: '40px', ml: '15px', minWidth: '160px'}}
                 >
-                    Отмена
+                    {t('taskCancel')}
                 </Button>
               </form>
             ) : (

@@ -91,7 +91,6 @@ export const authorizationSlice = createSlice({
         localStorage.setItem('name', state.loginName);
         localStorage.setItem('email', state.loginEmail);
         localStorage.setItem('api-key', state.key);
-        console.log(action.payload)
       })
       .addCase(login.rejected, (state, action) => {
         state.isDialogShown = true;

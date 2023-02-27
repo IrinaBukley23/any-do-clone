@@ -34,13 +34,11 @@ const Column = (props: IProps) => {
     );
 
     const taskQuantity = cards.length;
-
     const [open, setOpen] = useState(false);
     const [isTaskModal, setIsTaskModal] = useState(false);
     const { t, } = useTranslation();
     const [isEdit, setIsEdit] = useState(false);
     const [correctedTitle, setCorrectedTitle] = useState(columnTitle);
-
     const [isFirstEffect, setIsFirstEffect] = useState(true);
     
     useEffect(() => {
