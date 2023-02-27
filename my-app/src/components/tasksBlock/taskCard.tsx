@@ -14,11 +14,14 @@ import TextFieldEdit from '../ui/textFieldEdit/textFieldEdit'
 import TaskMenu from './taskMenu'
 import moment from 'moment'
 import {
-  Importance,
-  ImportanceEn,
+  TagDescription,
+  TypeTagCommon,
+  TagDescriptionEn,
   TypeChip,
   typesStartTask,
   typesStartTaskEn,
+  typesTag,
+  typesTagEn,
 } from '../../types/enum'
 import { GetIcon } from './getIcon'
 import { useTranslation } from 'react-i18next'
@@ -44,11 +47,10 @@ const toMenuItems = (values: string[] | Project[]): MenuItemType[] => {
 const TaskCard = ({ task, onDelete, onChange }: Props) => {
   const projectAll = useAppSelector((state) => projectSelectors.selectAll(state.project))
   const typesProj = toMenuItems(projectAll)
-
-  const typesImportant = toMenuItems(Object.values(Importance))
-  const typesImportantEn = toMenuItems(Object.values(ImportanceEn))
+  // const typesImportant = toMenuItems(Object.values(TagDescription))
+  // const typesImportantEn = toMenuItems(Object.values(TagDescriptionEn))
+  const [typesTagTask, setTypesTagTask] = useState<MenuItemType[]>(typesTag)
   const [typesStartTaskComm, setTypesStartTask] = useState<MenuItemType[]>(typesStartTask)
-
   const [isEdit, setIsEdit] = useState({ title: false, description: false })
   const [isNeedToUpdate, setIsNeedToUpdate] = useState(false)
   const [dataValue, setDataValue] = useState<string>('')
@@ -69,8 +71,10 @@ const TaskCard = ({ task, onDelete, onChange }: Props) => {
   useEffect(() => {
     if (lang == 'ru') {
       setTypesStartTask(typesStartTask)
+      setTypesTagTask(typesTag)
     } else {
       setTypesStartTask(typesStartTaskEn)
+      setTypesTagTask(typesTagEn)
     }
   }, [lang])
   useEffect(() => {
@@ -106,7 +110,7 @@ const TaskCard = ({ task, onDelete, onChange }: Props) => {
     if (e.currentTarget.dataset.name == TypeChip.project) {
       setMenuItems(typesProj)
     } else if (e.currentTarget.dataset.name == TypeChip.important) {
-      lang === 'ru' ? setMenuItems(typesImportant) : setMenuItems(typesImportantEn)
+      setMenuItems(typesTagTask)
     } else {
       setMenuItems(typesStartTaskComm)
     }
@@ -150,26 +154,26 @@ const TaskCard = ({ task, onDelete, onChange }: Props) => {
     }
   }
   const setColorImportance = () => {
-    return taskEdit.tag == Importance.immediat || taskEdit.tag == ImportanceEn.immediat
+    return taskEdit.tag == TypeTagCommon.immediat
       ? 'error'
-      : taskEdit.tag == Importance.important || taskEdit.tag == ImportanceEn.important
+      : taskEdit.tag == TypeTagCommon.important
       ? 'warning'
       : 'success'
   }
   const getImportance = () => {
     let res = null
     if (lang == 'ru') {
-      taskEdit.tag == Importance.immediat || taskEdit.tag == ImportanceEn.immediat
-        ? (res = Importance.immediat)
-        : taskEdit.tag == Importance.important || taskEdit.tag == ImportanceEn.important
-        ? (res = Importance.important)
-        : (res = Importance.notImediat)
+      taskEdit.tag == TypeTagCommon.immediat
+        ? (res = TagDescription.immediat)
+        : taskEdit.tag == TypeTagCommon.important
+        ? (res = TagDescription.important)
+        : (res = TagDescription.notImediat)
     } else {
-      taskEdit.tag == Importance.immediat || taskEdit.tag == ImportanceEn.immediat
-        ? (res = ImportanceEn.immediat)
-        : taskEdit.tag == Importance.important || taskEdit.tag == ImportanceEn.important
-        ? (res = ImportanceEn.important)
-        : (res = ImportanceEn.notImediat)
+      taskEdit.tag == TypeTagCommon.immediat
+        ? (res = TagDescriptionEn.immediat)
+        : taskEdit.tag == TypeTagCommon.important
+        ? (res = TagDescriptionEn.important)
+        : (res = TagDescriptionEn.notImediat)
     }
 
     return res
@@ -238,7 +242,6 @@ const TaskCard = ({ task, onDelete, onChange }: Props) => {
                 variant='outlined'
                 label={t('taskDescription')}
                 onClick={handleClickEdit}
-                // onDelete={showMenu}
                 icon={<ControlPointIcon />}
               />
             )}
@@ -266,11 +269,6 @@ const TaskCard = ({ task, onDelete, onChange }: Props) => {
                 variant='outlined'
                 label={project.name}
                 onClick={showMenu}
-                // color={
-                //   lang === 'ru'
-                //     ? setColor(taskEdit.project as Projects)
-                //     : setColorEn(taskEdit.project as ProjectsEn)
-                // }
                 onDelete={() => deleteChip(TypeChip.project)}
               />
             ) : (
@@ -286,7 +284,6 @@ const TaskCard = ({ task, onDelete, onChange }: Props) => {
             {taskEdit.tag ? (
               <Chip
                 data-name={TypeChip.important}
-                // variant='outlined'
                 label={getImportance()}
                 onClick={showMenu}
                 color={setColorImportance()}
@@ -298,7 +295,6 @@ const TaskCard = ({ task, onDelete, onChange }: Props) => {
                 variant='outlined'
                 label={t('taskImportance')}
                 onClick={showMenu}
-                // onDelete={showMenu}
                 icon={<ControlPointIcon />}
               />
             )}

@@ -16,30 +16,20 @@ export enum ActionsCalendar {
   ADD_TASK = 'ADD_TASK',
 }
 
-export enum Projects {
-  health = 'Здоровье',
-  buiseness = 'Бизнес',
-  family = 'Семья',
-  journey = 'Путешествия',
-  hobby = 'Хобби',
-}
-
-export enum ProjectsEn {
-  health = 'Health',
-  buiseness = 'Business',
-  family = 'Family',
-  journey = 'Travel',
-  hobby = 'Hobby',
-}
-export enum Importance {
+export enum TagDescription {
   immediat = 'Срочно',
   important = 'Важно',
   notImediat = 'Не срочно',
 }
-export enum ImportanceEn {
+export enum TagDescriptionEn {
   immediat = 'Urgently',
   important = 'Important',
   notImediat = 'Not urgently',
+}
+export enum TypeTagCommon {
+  immediat = 'immediat',
+  important = 'important',
+  notImediat = 'notImediat',
 }
 
 export enum TypeChip {
@@ -81,4 +71,12 @@ export const typesStartTask = Object.values(TypeStatusCommon).map((key) => ({
 export const typesStartTaskEn = Object.values(TypeStatusCommon).map((key) => ({
   id: key,
   value: TypeStatusTaskEn[key],
+}))
+export const typesTag = Object.values(TypeTagCommon).map((key) => ({
+  id: key,
+  value: TagDescription[key],
+}))
+export const typesTagEn = Object.values(TypeTagCommon).map((key) => ({
+  id: key,
+  value: TagDescriptionEn[key],
 }))

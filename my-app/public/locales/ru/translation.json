@@ -44,6 +44,8 @@
   "sideBarTasksAmount": "Количество задач: ",
   "sideBarStatus": "Статус",
   "sideBarCurrTasks": "Текущие задачи",
+  "sideBarTag": "Важность",
+  "sideBarAllTags": "Все задачи",
   "exitBtn": "Выход",
   "404PageTitle": "Страница не найдена",
   "404PageBack": "Назад",

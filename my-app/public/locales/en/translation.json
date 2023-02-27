@@ -44,6 +44,8 @@
   "sideBarTasksAmount": "Number of tasks:",
   "sideBarStatus": "Status",
   "sideBarCurrTasks": "Current tasks",
+  "sideBarTag": "Importance",
+  "sideBarAllTags": "All tasks",
   "exitBtn": "Exit",
   "404PageTitle": "Page not found",
   "404PageBack": "Back...",

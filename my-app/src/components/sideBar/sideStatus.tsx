@@ -2,13 +2,13 @@ import { Accordion, AccordionDetails, AccordionSummary } from '@mui/material'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import Typography from '@mui/material/Typography'
 import { NavLink } from 'react-router-dom'
-import styles from './sideBar.module.scss'
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
 import { useEffect, useState } from 'react'
 import { MenuItemType } from '../../types/types'
 import { typesStartTask, typesStartTaskEn, TypeStatusCommon } from '../../types/enum'
 import { calendarActions } from '../../store/reducers/calendarReducer'
 import { useTranslation } from 'react-i18next'
+import styles from './sideBar.module.scss'
 
 const SideStatus = () => {
   const { t } = useTranslation()
