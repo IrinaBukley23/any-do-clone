@@ -11,7 +11,7 @@ import { useAppDispatch, useAppSelector } from '../../store/hooks'
 import { loginStart, registrationStart } from '../../store/reducers/authorization'
 import { useTranslation } from 'react-i18next'
 import { setLang } from '../../store/actions/actionCreators'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 const StartPage = () => {
   const { key } = useAppSelector((state) => state.authorization)
@@ -182,6 +182,14 @@ const StartPage = () => {
               </Box>
             </Card>
           </div>
+        </div>
+      </div>
+      <div className={styles.logo}>
+        <div className={styles.logo__content}>
+          <Link to='https://rs.school'>
+            <img className={styles.logo__img} src='https://rs.school/images/rs_school_js.svg'/>
+          </Link>
+          <div className={styles.logo__year}>2023</div>
         </div>
       </div>
     </>
