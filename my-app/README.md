@@ -6,7 +6,7 @@ A simple collaboration tool. Helps to work together and be on time!
 https://github.com/rolling-scopes-school/tasks/blob/master/tasks/rsclone/rsclone.md
 
 ## Deploy
-lider-task-clone.netlify.app
+[lider-task-clone.netlify.app](https://lider-task-clone.netlify.app/)
 
 ## Developers
 **Irina (irinabukley23)** - Team Lead, Developer
