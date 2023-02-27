@@ -1,5 +1,5 @@
 import { BACKEND_BASE_URL } from './AuthorizationApi'
-import { TaskCalendarItemType, ITaskCalendarCreate, Project } from './../types/types'
+import { TaskCalendarItemType, ITaskCalendarCreate } from './../types/types'
 import { IError } from '../types/types'
 
 export default class CalendarTasksApi {
@@ -16,7 +16,6 @@ export default class CalendarTasksApi {
       throw new Error(data.message)
     }
     const data = await res.json()
-    console.log('getAll', data)
     return data as TaskCalendarItemType[]
   }
 

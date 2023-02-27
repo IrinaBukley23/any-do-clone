@@ -78,7 +78,6 @@ const Weather = () => {
         }
         { weatherData !== null && error === '' &&
           <div className={styles.weather__container}>
-            {/* <div>{weatherData.description}</div> */}
             <div className={styles.header__weather_icon}> <img src={weatherData.icon} alt='icon'/> </div>
             <div>{weatherData.temp}°C</div>
           </div>

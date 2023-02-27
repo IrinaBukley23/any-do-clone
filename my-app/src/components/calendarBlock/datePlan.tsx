@@ -14,12 +14,10 @@ import { DateBody } from './dateBody'
 import { DragDropContext, DropResult } from 'react-beautiful-dnd'
 import {
   calendarActions,
-  calendarSelectors,
   changeTask,
   createTask,
   getTaskListPlan,
 } from '../../store/reducers/calendarReducer'
-import { getCurrTasks } from '../../store/utils'
 
 const generateTime = (date: string): TimeCalendar[] => {
   const arr: TimeCalendar[] = []

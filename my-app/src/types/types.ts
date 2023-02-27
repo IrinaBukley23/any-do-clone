@@ -1,10 +1,8 @@
 import {
-  TypeStatusTask,
   Projects,
   Importance,
   ImportanceEn,
   ProjectsEn,
-  TypeStatusTaskEn,
   TypeStatusCommon,
 } from './enum'
 import { Moment } from 'moment'

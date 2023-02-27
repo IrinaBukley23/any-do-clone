@@ -27,7 +27,6 @@ export const changeProject = createAsyncThunk(
   'calendar/changeProject',
   async (value: { key: string; project: Project }) => {
     const project = await projectApi.changeProject(value.key, value.project)
-    console.log('changed')
     return project
   },
 )

@@ -238,7 +238,6 @@ const TaskCard = ({ task, onDelete, onChange }: Props) => {
                 variant='outlined'
                 label={t('taskDescription')}
                 onClick={handleClickEdit}
-                // onDelete={showMenu}
                 icon={<ControlPointIcon />}
               />
             )}
@@ -266,11 +265,6 @@ const TaskCard = ({ task, onDelete, onChange }: Props) => {
                 variant='outlined'
                 label={project.name}
                 onClick={showMenu}
-                // color={
-                //   lang === 'ru'
-                //     ? setColor(taskEdit.project as Projects)
-                //     : setColorEn(taskEdit.project as ProjectsEn)
-                // }
                 onDelete={() => deleteChip(TypeChip.project)}
               />
             ) : (
@@ -286,7 +280,6 @@ const TaskCard = ({ task, onDelete, onChange }: Props) => {
             {taskEdit.tag ? (
               <Chip
                 data-name={TypeChip.important}
-                // variant='outlined'
                 label={getImportance()}
                 onClick={showMenu}
                 color={setColorImportance()}
@@ -298,7 +291,6 @@ const TaskCard = ({ task, onDelete, onChange }: Props) => {
                 variant='outlined'
                 label={t('taskImportance')}
                 onClick={showMenu}
-                // onDelete={showMenu}
                 icon={<ControlPointIcon />}
               />
             )}
