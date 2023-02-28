@@ -41,8 +41,8 @@ const DatePlan = () => {
     (state) => state.calendar,
     (oldValue, newValue) => oldValue.dateSelectedInPlan == newValue.dateSelectedInPlan,
   )
-  const taskListInPlan = useAppSelector((state) => getTaskListPlan(state.calendar))
-
+  const taskListInPlanServe = useAppSelector((state) => getTaskListPlan(state.calendar))
+  const [taskListInPlan, setTaskListInPlan] = useState<TaskCalendarItemType[]>([])
   const { key } = useAppSelector((state) => state.authorization)
   const [listTasks, setListTasks] = useState<TimeCalendar[]>([])
   const dispatch = useAppDispatch()
@@ -60,21 +60,25 @@ const DatePlan = () => {
     setListTasks([...list])
   }, [dateSelectedInPlan])
 
-  const handleRight = () => {
-    dispatch(
+  useEffect(() => {
+    setTaskListInPlan(taskListInPlanServe)
+  }, [taskListInPlanServe])
+
+  const handleRight = async () => {
+    await dispatch(
       calendarActions.setDateSelectedInPlan(
         moment(dateSelectedInPlan).subtract(1, 'd').format('YYYY-MM-DD HH:mm'),
       ),
     )
   }
-  const handleChahgeTask = (task: TaskCalendarItemType) => {
+  const handleChahgeTask = async (task: TaskCalendarItemType) => {
     if (key) {
       if (task.id == 0)
-        dispatch(createTask({ title: task.title, date: task.performDate, key: key }))
-      else dispatch(changeTask({ task: task, key: key }))
+        await dispatch(createTask({ title: task.title, date: task.performDate, key: key }))
+      else await dispatch(changeTask({ task: task, key: key }))
     }
   }
-  const handleDragEnd = (result: DropResult) => {
+  const handleDragEnd = async (result: DropResult) => {
     const { destination, source, draggableId } = result
 
     if (
@@ -85,11 +89,14 @@ const DatePlan = () => {
     const destinationTimeCell: TimeCalendar = listTasks.find(
       (task) => task.id == +destination.droppableId,
     ) as TimeCalendar
+    const newTaskList = JSON.parse(JSON.stringify(taskListInPlan))
 
-    const currTask = taskListInPlan.find((task: TaskCalendarItemType) => +draggableId === task.id)
+    const currTask = newTaskList.find((task: TaskCalendarItemType) => +draggableId === task.id)
 
     if (currTask) {
-      handleChahgeTask({
+      currTask.performDate = destinationTimeCell.time.format('YYYY-MM-DD HH:mm UTC')
+      setTaskListInPlan(newTaskList)
+      await handleChahgeTask({
         ...currTask,
         performDate: destinationTimeCell.time.format('YYYY-MM-DD HH:mm'),
       })
