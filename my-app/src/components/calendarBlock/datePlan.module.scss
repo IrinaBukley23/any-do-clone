@@ -1,0 +1,23 @@
+.aside {
+  width: 30rem;
+  max-width: 30rem;
+  min-width: 30rem;
+  height: calc(100vh - 150px);
+}
+.content {
+  height: 100%;
+}
+.table {
+  flex-shrink: 1;
+  overflow: auto;
+}
+
+.text {
+  cursor: pointer;
+  margin: 0.5rem 0;
+  padding: 0.5rem;
+}
+.container {
+  height: 100%;
+  width: 100%;
+}

@@ -1,0 +1,51 @@
+.wrapper {
+    max-width: 1140px;
+    margin: 0 auto;
+    padding-top: 80px;
+    &__text {
+        width: 60%;
+        margin: 30px 0 0 auto;
+    }
+    &__team {
+        display: flex;
+        margin: 50px 0 0 0; 
+    }
+    &__photo {
+        width: 70px;
+        height: 70px;
+        overflow: hidden;
+        border-radius: 100%;
+        margin: 7px auto;
+        img{
+            width: 100%;
+        }
+    }
+}
+
+.logo {
+    $img_height: 80px;
+    $year_height: 2em;
+
+    position: relative;
+    text-align: left;
+
+    &__content {
+        position: absolute;
+        left: 20px;
+        top: calc(-#{$year_height} - #{$img_height});
+    }
+
+    &__img {
+        height: $img_height;
+    }
+
+    &__year {
+        font-size: $year_height;
+    }
+}
+
+.localization {
+    padding: 25px 25px 0 0;
+    display: flex;
+    justify-content: end;
+}

@@ -1,0 +1,21 @@
+.task {
+    background: #ffffff;
+    box-shadow: 2px 2px 5px 1px rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+    margin-bottom: 10px;
+    position: relative;
+    width: 97%;
+    transition: all 0.8s ease-in;
+    &:hover {
+        background: rgba(129, 88, 211, 0.08);
+    }
+    &__edit {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+    }
+    &__title {
+        cursor: grab;
+    }
+}
